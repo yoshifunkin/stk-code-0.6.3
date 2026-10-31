@@ -247,9 +247,9 @@ void DefaultRobot::handleBraking()
         
     const float MIN_SPEED = m_track->getWidth()[m_track_sector];
     KartInfo &kart_info   = m_world->m_kart_info[getWorldKartId()];
-    //We may brake if we are about to get out of the road, but only if the
-    //kart is on top of the road, and if we won't slow down below a certain
-    //limit.
+    // We may brake if we are about to get out of the road, but only if the
+    // kart is on top of the road, and if we won't slow down below a certain
+    // limit.
     if(m_crashes.m_road && kart_info.m_on_road && getVelocityLC().getY() > MIN_SPEED)
     {
         float kart_ang_diff = m_track->m_angle[m_track_sector] -
@@ -382,7 +382,6 @@ void DefaultRobot::handleSteering(float dt)
                 steer_angle = steerToAngle(m_track_sector, 0.0f);
             }
             else steer_angle = 0.0f;
-
             break;
         }
 
@@ -567,8 +566,8 @@ void DefaultRobot::handleAcceleration(const float DELTA)
 
     if(hasViewBlockedByPlunger())
     {
-        if(!(getSpeed() > getMaxSpeedOnTerrain()/7))
-            m_controls.m_accel = 0.005f;
+        if(!(getSpeed() > getMaxSpeedOnTerrain()/5))
+            m_controls.m_accel = 0.2f;
         else 
             m_controls.m_accel = 0.0f;
         return;
@@ -620,8 +619,8 @@ void DefaultRobot::handleRescue(const float DELTA)
         if(m_time_since_stuck > 2.0f)
         {
             forceRescue();
-            m_time_since_stuck=0.0f;
-        }   // m_time_since_stuck > 2.0f
+            m_time_since_stuck = 0.0f;
+        }  // m_time_since_stuck > 2.0f
     }
     else
     {
@@ -719,39 +718,42 @@ void DefaultRobot::handleNitroAndZipper(const float DELTA)
     }
 
     // Use nitro randomly for short boosts, then wait and 
-    // repeat the cycle once again
-    // --------------------------------------------------
-    if(m_random_nitro_cooldown > 0.0f)
+    // repeat the cycle once again (only on hard difficulty)
+    // --------------------------------------------------------
+    if(m_nitro_level == NITRO_ALL)
     {
-        m_random_nitro_cooldown -= DELTA;
-        return;
-    }
-
-    // Check if we should start a new nitro boost
-    if(m_random_nitro_timer <= 0.0f)
-    {
-        // Decide randomly whether to use nitro (1/2 chance)
-        if((rand() % 1) < 0.5f)
+        if(m_random_nitro_cooldown > 0.0f)
         {
-            // Start a new boost with random duration
-            m_random_nitro_duration = 0.1f + 
-                                     (float)(rand()) / RAND_MAX * 0.5f;
-            m_random_nitro_timer = m_random_nitro_duration;
+            m_random_nitro_cooldown -= DELTA;
+            return;
         }
-    }
 
-    // Use nitro if we have an active boost and have energy
-    if(m_random_nitro_timer > 0.0f && getEnergy() > 0.0f)
-    {
-        m_controls.m_nitro = true;
-        m_random_nitro_timer -= DELTA;
-
-        // When burst ends, set cooldown before next burst
+        // Check if we should start a new nitro boost
         if(m_random_nitro_timer <= 0.0f)
         {
-            m_random_nitro_cooldown = 0.2f + 
-                                     (float)(rand()) / RAND_MAX * 8.3f;
-            m_random_nitro_timer = 0.0f;
+            // Decide randomly whether to use nitro (1/2 chance)
+            if((rand() % 1) < 0.5f)
+            {
+                // Start a new boost with random duration
+                m_random_nitro_duration = 0.1f + 
+                                         (float)(rand()) / RAND_MAX * 0.5f;
+                m_random_nitro_timer = m_random_nitro_duration;
+            }
+        }
+
+        // Use nitro if we have an active boost and have energy
+        if(m_random_nitro_timer > 0.0f && getEnergy() > 0.0f)
+        {
+            m_controls.m_nitro = true;
+            m_random_nitro_timer -= DELTA;
+
+            // When boost ends, set cooldown before next
+            if(m_random_nitro_timer <= 0.0f)
+            {
+                m_random_nitro_cooldown = 0.2f + 
+                                         (float)(rand()) / RAND_MAX * 8.3f;
+                m_random_nitro_timer = 0.0f;
+            }
         }
     }
 }   // handleNitroAndZipper
@@ -787,6 +789,7 @@ float DefaultRobot::steerToPoint(const Vec3 point, float dt)
     if(getSpeed()==0) return 0.0f;
     float dx        = point.getX() - getXYZ().getX();
     float dy        = point.getY() - getXYZ().getY();
+
     /** Angle from the kart position to the point in world coordinates. */
     float theta           = -atan2(dx, dy);
 
@@ -965,7 +968,7 @@ void DefaultRobot::findNonCrashingPoint(sgVec2 result)
 
         float len=direction.length_2d();
         steps = int(len / m_kart_length);
-        if(steps < 3) steps = 3;
+        if(steps > 3) steps = 3;
 
         //Protection against having vel_normal with nan values
         if(len>0.0f) {

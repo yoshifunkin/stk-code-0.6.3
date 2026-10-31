@@ -1,17 +1,18 @@
 ;; -*- mode: lisp -*-
 
 (challenge
- (id            "junglefollow")
- (name          _("Follow the Leader in the Jungle"))
- (description   _("Win a Follow the Leader race\nwith 3 AI karts\nin the Amazonian Jungle."))
- (unlock-track "city")
- (depend-on    "penguinplaygroundgp" "racetracktime")
- (major        "single")
- (minor        "followtheleader")
- (track        "jungle")
- (difficulty   "medium")
- (karts        4)
- (position     2)
+ (id            "starfollow")
+ (name          _("Follow the Leader around the Solar System"))
+ (description   _("Win a Follow the Leader race with 5 AI karts on Star track."))
+ (depend-on     "energyshiftingsands")
+ (unlock-track  "city")
+ (major         "single")
+ (minor         "followtheleader")
+ (track         "startrack")
+ (difficulty    "medium")
+ (karts         6)
+ (laps          3)
+ (position      2)
 )
 
 ;; EOF ;;

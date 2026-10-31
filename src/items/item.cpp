@@ -162,7 +162,7 @@ void Item::update(float dt)
 }   // update
 
 //-----------------------------------------------------------------------------
-/** Is called when the item is hit by a kart.  It sets the flag that the item
+/** Is called when the item is hit by a kart. It sets the flag that the item
  *  has been collected, and the time to return to the parameter. 
  *  \param t Time till the object reappears (defaults to 2 seconds).
  */

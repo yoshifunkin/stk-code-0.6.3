@@ -35,8 +35,8 @@
 //-----------------------------------------------------------------------------
 Powerup::Powerup(Kart* kart)
 {
-    m_owner               = kart;
-    m_sound_use              = NULL;
+    m_owner     = kart;
+    m_sound_use = NULL;
     reset();
 }   // Powerup
 
@@ -79,11 +79,11 @@ void Powerup::set(PowerupType type, int n)
     switch(m_type)
     {
         case POWERUP_ZIPPER:
-            break ;
+            break;
             
         case POWERUP_BOWLING:
             m_sound_use = sfx_manager->newSFX(SFXManager::SOUND_BOWLING_ROLL);
-            break ;
+            break;
             
         case POWERUP_ANVIL:
             m_sound_use = sfx_manager->newSFX(SFXManager::SOUND_USE_ANVIL);
@@ -95,14 +95,14 @@ void Powerup::set(PowerupType type, int n)
             
         case POWERUP_BUBBLEGUM:
             m_sound_use = sfx_manager->newSFX(SFXManager::SOUND_GOO);
-            break ;
+            break;
             
         case POWERUP_NOTHING:
         case POWERUP_CAKE:
         case POWERUP_PLUNGER:
         default :
             m_sound_use = sfx_manager->newSFX(SFXManager::SOUND_SHOT);
-            break ;
+            break;
     }
     
 }  // set
@@ -124,99 +124,100 @@ void Powerup::use()
     m_number--;
     switch (m_type)
     {
-    case POWERUP_ZIPPER:   m_owner->handleZipper(true);
-        break ;
-    case POWERUP_CAKE:
-    case POWERUP_BOWLING:
-    case POWERUP_PLUNGER:
-        
-        m_sound_use->position(m_owner->getXYZ());
-        m_sound_use->play();
-        projectile_manager->newProjectile(m_owner, m_type);
-        break;
-        
-    case POWERUP_BUBBLEGUM:
-        {
+        case POWERUP_ZIPPER:   m_owner->handleZipper(true);
+            break;
+        case POWERUP_CAKE:
+        case POWERUP_BOWLING:
+        case POWERUP_PLUNGER:
+            
             m_sound_use->position(m_owner->getXYZ());
             m_sound_use->play();
-            btVector3 pos = m_owner->getXYZ();
-            float z_coord = Track::NOHIT;
-            Vec3 normal;
-            const Material* unused2;        
-            RaceManager::getTrack()->getTerrainInfo(pos, &z_coord, &normal, &unused2);
-            normal.normalize();
-            assert(z_coord != Track::NOHIT);
+            projectile_manager->newProjectile(m_owner, m_type);
+            break;
             
-            pos.setZ(z_coord-0.05f);
-            
-            ItemManager::get()->newItem(Item::ITEM_BUBBLEGUM, pos, normal, m_owner);
-        }
-        break;
-        
-    case POWERUP_ANVIL:
-        
-        //Attach an anvil(twice as good as the one given
-        //by the bananas) to the kart in the 1st position.
-        for(unsigned int i = 0 ; i < race_manager->getNumKarts(); ++i)
-        {
-            Kart *kart=RaceManager::getKart(i);
-            if(kart->isEliminated()) continue;
-            if(kart == m_owner) continue;
-            // FIXME : In follow the leader,
-            // the leader shouldn't get the anvil when the owner uses it.
-            if(kart->getPosition() == 1)
+        case POWERUP_BUBBLEGUM:
             {
-                kart->attach(ATTACH_ANVIL, stk_config->m_anvil_time);
-                kart->updatedWeight();
-                kart->adjustSpeed(stk_config->m_anvil_speed_factor*0.5f);
+                m_sound_use->position(m_owner->getXYZ());
+                m_sound_use->play();
+                btVector3 pos = m_owner->getXYZ();
+                float z_coord = Track::NOHIT;
+                Vec3 normal;
+                const Material* unused2;        
+                RaceManager::getTrack()->getTerrainInfo(pos, &z_coord, &normal, &unused2);
+                normal.normalize();
+                assert(z_coord != Track::NOHIT);
+                
+                pos.setZ(z_coord-0.05f);
+                
+                ItemManager::get()->newItem(Item::ITEM_BUBBLEGUM, pos, normal, m_owner);
+            }
+            break;
+            
+        case POWERUP_ANVIL:
+            
+            //Attach an anvil(twice as good as the one given
+            //by the bananas) to the kart in the 1st position.
+            for(unsigned int i = 0 ; i < race_manager->getNumKarts(); ++i)
+            {
+                Kart *kart=RaceManager::getKart(i);
+                if(kart->isEliminated()) continue;
+                if(kart == m_owner) continue;
+                // FIXME : In follow the leader,
+                // the leader shouldn't get the anvil when the owner uses it.
+                if(kart->getPosition() == 1)
+                {
+                    kart->attach(ATTACH_ANVIL, stk_config->m_anvil_time);
+                    kart->updatedWeight();
+                    kart->adjustSpeed(stk_config->m_anvil_speed_factor*0.5f);
+                    // should we position the sound at the kart that is hit,
+                    // or the kart "throwing" the anvil? Ideally it should be both.
+                    // Meanwhile, don't play it near AI karts since they obviously
+                    // don't hear anything
+                    if(kart->isPlayerKart())
+                        m_sound_use->position(kart->getXYZ());
+                    else
+                        m_sound_use->position(m_owner->getXYZ());
+                    
+                    m_sound_use->play();
+                    break;
+                }
+            }
+            break;
+
+        case POWERUP_PARACHUTE:
+            {
+                Kart* player_kart = NULL;
+                //Attach a parachutte(that last as twice as the
+                //one from the bananas) to all the karts that
+                //are in front of this one.
+                for(unsigned int i = 0 ; i < race_manager->getNumKarts(); ++i)
+                {
+                    Kart *kart=RaceManager::getKart(i);
+                    if(kart->isEliminated() || kart== m_owner) continue;
+                    if(m_owner->getPosition() > kart->getPosition())
+                    {
+                        kart->attach(ATTACH_PARACHUTE, stk_config->m_parachute_time_other);
+
+                        if(kart->isPlayerKart())
+                            player_kart = kart;
+                    }
+                }
+
                 // should we position the sound at the kart that is hit,
                 // or the kart "throwing" the anvil? Ideally it should be both.
                 // Meanwhile, don't play it near AI karts since they obviously
                 // don't hear anything
-                if(kart->isPlayerKart())
-                    m_sound_use->position(kart->getXYZ());
-                else
+                if(m_owner->isPlayerKart())
                     m_sound_use->position(m_owner->getXYZ());
-                
+                else if(player_kart)
+                    m_sound_use->position(player_kart->getXYZ());
                 m_sound_use->play();
-                break;
             }
-        }
-        break;
+            break;
 
-    case POWERUP_PARACHUTE:
-        {
-            Kart* player_kart = NULL;
-            //Attach a parachutte(that last as twice as the
-            //one from the bananas) to all the karts that
-            //are in front of this one.
-            for(unsigned int i = 0 ; i < race_manager->getNumKarts(); ++i)
-            {
-                Kart *kart=RaceManager::getKart(i);
-                if(kart->isEliminated() || kart== m_owner) continue;
-                if(m_owner->getPosition() > kart->getPosition())
-                {
-                    kart->attach(ATTACH_PARACHUTE, stk_config->m_parachute_time_other);
-
-                    if(kart->isPlayerKart())
-                        player_kart = kart;
-                }
-            }
-
-            // should we position the sound at the kart that is hit,
-            // or the kart "throwing" the anvil? Ideally it should be both.
-            // Meanwhile, don't play it near AI karts since they obviously
-            // don't hear anything
-            if(m_owner->isPlayerKart())
-                m_sound_use->position(m_owner->getXYZ());
-            else if(player_kart)
-                m_sound_use->position(player_kart->getXYZ());
-            m_sound_use->play();
-        }
-        break;
-
-    case POWERUP_NOTHING:
-    default : break;
+        case POWERUP_NOTHING:
+            m_owner->beep();
+        default : break;
     }
 
     if(m_number <= 0)

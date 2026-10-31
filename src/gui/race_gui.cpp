@@ -691,7 +691,7 @@ void RaceGUI::drawSpeed(Kart* kart, int offset_x, int offset_y,
     else
     {
         // The original speed ratio was speed/KM_PER_H/110.
-        float speedRatio = speed/KILOMETERS_PER_HOUR/119;
+        float speedRatio = speed/KILOMETERS_PER_HOUR/115;
         if(speedRatio>1) speedRatio = 1;
 
         m_speed_fore_icon->getState()->force();
@@ -734,6 +734,7 @@ void RaceGUI::drawSpeed(Kart* kart, int offset_x, int offset_y,
         }
         else
         {
+            speedRatio = speed/KILOMETERS_PER_HOUR/120;
             float y = (speedRatio-0.8f)/0.2f;
             glTexCoord2f(0, 1);
             glVertex2i(offset_x, offset_y+height);

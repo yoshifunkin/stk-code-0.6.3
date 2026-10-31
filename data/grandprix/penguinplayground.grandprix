@@ -2,9 +2,9 @@
 
 (supertuxkart-grand-prix
  (name _("Penguin Playground"))
- (description _("First grand prix, easy to get started."))
- (tracks "sandtrack" "snowmountain" "olivermath" "jungle")
- (laps        3            3             4          2    )
+ (description _("First grand prix, easy to get started"))
+ (tracks "sandtrack" "snowmountain" "olivermath" "secretgarden" "jungle")
+ (laps        3           3             5               3         2     )
 )
 
 ;; EOF ;;

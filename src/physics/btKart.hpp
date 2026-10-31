@@ -26,6 +26,7 @@ class btKart : public btRaycastVehicle
     int          m_num_wheels_on_ground;
     btScalar     m_skidding_factor;
     bool         m_zipper_active;
+    bool         m_activate_zipper;
     btScalar     m_zipper_velocity;
 public:
                  btKart(const btVehicleTuning& tuning,btRigidBody* chassis,    
@@ -43,8 +44,8 @@ public:
                                      const btVector3& hitNormal,btScalar depth);
     void         setPitchControl(btScalar pitch) {m_pitchControl = pitch;}
     bool         isZipperActive() {return m_zipper_active;}
-    void         activateZipper(btScalar vel) {m_zipper_active = true; m_zipper_velocity = vel;}
-    void         deactivateZipper() {m_zipper_active = false;}
+    void         activateZipper(btScalar vel) {m_activate_zipper = true; m_zipper_velocity = vel;}
+    void         deactivateZipper() {m_activate_zipper = false;}
     void         updateSuspension(btScalar deltaTime);
     virtual void updateFriction(btScalar timeStep);
 };

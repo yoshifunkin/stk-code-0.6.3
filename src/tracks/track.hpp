@@ -32,23 +32,30 @@
 #include <plib/ssg.h>
 #include <string>
 #include <vector>
+#include "karts/kart.hpp"
 #include "LinearMath/btTransform.h"
+#include "modes/linear_world.hpp"
 #include "material.hpp"
 #include "audio/music_information.hpp"
 #include "utils/vec3.hpp"
 
+class LinearWorld;
 class TriangleMesh;
 
 class Track
 {
 private:
     static Track*            m_track;
+    LinearWorld*             m_world;
     float                    m_gravity;
     std::string              m_ident;
     std::string              m_screenshot;
     std::string              m_top_view;
     std::vector<MusicInformation*> m_music;
-    std::vector<float>       m_start_x, m_start_y, m_start_z, m_start_heading;
+    std::vector<float>       m_start_x, 
+                             m_start_y, 
+                             m_start_z, 
+                             m_start_heading;
     std::string              m_description;
     std::string              m_designer;
     std::string              m_filename;
@@ -102,22 +109,21 @@ public:
     //FIXME: Maybe the next 4 vectors should be inside an struct and be used
     //from a vector of structs?
     //FIXME: should the driveline be set as a sgVec2?
-    std::vector<Vec3>    m_driveline;
+    //Left and Right drivelines for overhead map rendering.
+    //(Should probably be private as they are only used internally right now)
+    std::vector<Vec3>    m_left_driveline, 
+                         m_right_driveline, 
+                         m_driveline;
     /** Same as drivelines, but with stk_config->m_offroad_tolerance applied
      *  to widen the road (to make shortcut detection less severe). */
-    std::vector<Vec3>    m_dl_with_tolerance_left;
-    std::vector<Vec3>    m_dl_with_tolerance_right;
-    std::vector<SGfloat> m_distance_from_start;
-    std::vector<SGfloat> m_path_width;
-    std::vector<SGfloat> m_angle;
+    std::vector<Vec3>    m_dl_with_tolerance_left,
+                         m_dl_with_tolerance_right;
+    std::vector<SGfloat> m_distance_from_start,
+                         m_path_width,
+                         m_angle;
     
     /** Start positions for arenas (unused in linear races) */
     std::vector<Vec3>   m_start_positions;
-    
-    //Left and Right drivelines for overhead map rendering.
-    //(Should probably be private as they are only used internally right now)
-    std::vector<Vec3> m_left_driveline;
-    std::vector<Vec3> m_right_driveline;
 
     Vec3 m_driveline_min;
     Vec3 m_driveline_max;

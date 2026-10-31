@@ -50,7 +50,7 @@ ThreeStrikesBattle::ThreeStrikesBattle() : World()
         
         // no positions in this mode
         m_kart[n]->setPosition(-1);
-    }// next kart
+    }   // next kart
 }
 //-----------------------------------------------------------------------------
 ThreeStrikesBattle::~ThreeStrikesBattle()
@@ -75,7 +75,7 @@ void ThreeStrikesBattle::terminateRace()
     
     // if some karts have not yet finished yet
     const unsigned int kart_amount = m_kart.size();
-    for ( Karts::size_type i = 0; i < kart_amount; ++i)
+    for(Karts::size_type i = 0; i < kart_amount; ++i)
     {
         if(!m_kart[i]->hasFinishedRace())
         {
@@ -124,13 +124,13 @@ void ThreeStrikesBattle::updateKartRanks()
     const unsigned int NUM_KARTS = race_manager->getNumKarts();
     
     int *karts_list = new int[NUM_KARTS];
-    for( unsigned int n = 0; n < NUM_KARTS; ++n ) karts_list[n] = n;
+    for(unsigned int n=0; n<NUM_KARTS; ++n) karts_list[n] = n;
     
     bool sorted=false;
     do
     {
         sorted = true;
-        for( unsigned int n = 0; n < NUM_KARTS-1; ++n )
+        for(unsigned int n=0; n<NUM_KARTS-1; ++n)
         {
             const int this_karts_time = m_kart[karts_list[n]]->hasFinishedRace() ?
                 (int)m_kart[karts_list[n]]->getFinishTime() : (int)TimedRace::getTime();
@@ -155,11 +155,11 @@ void ThreeStrikesBattle::updateKartRanks()
         }
     } while(!sorted);
     
-    for( unsigned int n = 0; n < NUM_KARTS; ++n )
+    for(unsigned int n=0; n<NUM_KARTS; ++n)
     {
-        m_kart[ karts_list[n] ]->setPosition( n+1 );
+        m_kart[karts_list[n]]->setPosition(n+1);
     }
-    delete [] karts_list;
+    delete []karts_list;
 }
 //-----------------------------------------------------------------------------
 void ThreeStrikesBattle::update(float delta)
@@ -199,7 +199,7 @@ void ThreeStrikesBattle::restartRace()
 KartIconDisplayInfo* ThreeStrikesBattle::getKartsDisplayInfo(const RaceGUI* caller)
 {
     const unsigned int kart_amount = race_manager->getNumKarts();
-    for(unsigned int i = 0; i < kart_amount ; i++)
+    for(unsigned int i=0; i<kart_amount ; i++)
     {
         KartIconDisplayInfo& rank_info = m_kart_display_info[i];
         
@@ -277,7 +277,7 @@ void ThreeStrikesBattle::moveKartAfterRescue(Kart* kart, btRigidBody* body)
     // a rescue, ...
     float epsilon = 0.54f * kart->getKartHeight();
     btTransform pos;
-    pos.setOrigin(kart->getXYZ()+btVector3(0, 0, 0.54f*kart->getKartHeight()+epsilon));
+    pos.setOrigin(kart->getXYZ()+btVector3(0, 0, 0.54f*kart->getKartHeight()/*+epsilon*/));
     pos.setRotation(btQuaternion(btVector3(0.0f, 0.0f, 1.0f), 0 /* angle */));
     
     body->setCenterOfMassTransform(pos);
@@ -292,12 +292,12 @@ void ThreeStrikesBattle::moveKartAfterRescue(Kart* kart, btRigidBody* body)
     }
 }
 //-----------------------------------------------------------------------------
-void ThreeStrikesBattle::raceResultOrder( int* order )
+void ThreeStrikesBattle::raceResultOrder(int* order)
 {
     updateKartRanks();
     
     const unsigned int num_karts = race_manager->getNumKarts();
-    for( unsigned int kart_id = 0; kart_id < num_karts; ++kart_id )
+    for(unsigned int kart_id=0; kart_id<num_karts; ++kart_id)
     {
         const int pos = m_kart[kart_id]->getPosition() - 1;
         assert(pos >= 0);
@@ -308,8 +308,9 @@ void ThreeStrikesBattle::raceResultOrder( int* order )
 //-----------------------------------------------------------------------------
 bool ThreeStrikesBattle::acceptPowerup(const int type) const
 {
-    // these powerups don't make much sense in battle mode
-    if(type == POWERUP_PARACHUTE || type == POWERUP_ANVIL || type == POWERUP_ZIPPER) return false;
+    // These powerups don't make much sense in battle mode
+    if(type == POWERUP_PARACHUTE || type == POWERUP_ANVIL || type == POWERUP_ZIPPER) 
+        return false;
     
     return true;
 }

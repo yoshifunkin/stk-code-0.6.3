@@ -1,0 +1,19 @@
+;; -*- mode: lisp -*-
+
+(challenge
+ (id            "energyxr591")
+ (name          _("Collect fuel for your rocket"))
+ (description   _("Finish with atleast 18 nitro points on 2 laps of XR591 in under 1:45 minutes."))
+ (unlock-track  "mines")
+ (depend-on     "lighthousetime")
+ (major         "single")
+ (minor         "quickrace")
+ (track         "xr591")
+ (difficulty    "hard")
+ (laps          2)
+ (karts         1)
+ (energy       18)
+ (time        105)
+)
+
+;; EOF ;;

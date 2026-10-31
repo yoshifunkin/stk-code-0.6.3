@@ -193,16 +193,16 @@ public:
     bool        m_no_start_screen;
     bool        m_graphical_effects;
     bool        m_display_fps;
-    int         m_profile;         // Positive number: time in seconds, neg: # laps. (used to profile AI)
+    int         m_profile;          // Positive number: time in seconds, neg: # laps. (used to profile AI)
     bool        m_print_kart_sizes; // print all kart sizes
-                                   // 0 if no profiling. Never saved in config file!
+                                    // 0 if no profiling. Never saved in config file!
     float       m_sfx_volume;
     int         m_max_fps;
     std::string m_username;
     std::string m_background_music;
-    std::string m_kart_group;      /**< Kart group used last.        */
-    std::string m_track_group;     /**< Track group used last.       */
-    std::string m_last_track;      /**< name of the last track used. */
+    std::string m_kart_group;       /**< Kart group used last.        */
+    std::string m_track_group;      /**< Track group used last.       */
+    std::string m_last_track;       /**< name of the last track used. */
     std::string m_server_address;
     int         m_server_port;
     bool        m_use_kph;

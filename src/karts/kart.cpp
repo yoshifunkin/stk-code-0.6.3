@@ -221,7 +221,7 @@ void Kart::createPhysics()
     //create the engine sound
     if(m_engine_sound)
     {
-        m_engine_sound->speed(0.59f);
+        m_engine_sound->speed(0.58f);
         m_engine_sound->loop();
         m_engine_sound->play();
     }
@@ -435,8 +435,8 @@ float Kart::getActualWheelForce()
 
 //-----------------------------------------------------------------------------
 /** The kart is on ground if all 4 wheels touch the ground, and if the kart is
-*   not getting rescued.
-*/
+ *  not getting rescued.
+ */
 bool Kart::isOnGround() const
 {
     return (m_vehicle->getNumWheelsOnGround() == m_vehicle->getNumWheels()
@@ -445,10 +445,19 @@ bool Kart::isOnGround() const
 }   // isOnGround
 
 //-----------------------------------------------------------------------------
+/** This check how many wheels the kart has on the ground. It is used to handle
+ *  zippers and rescue material.
+ */
+bool Kart::hasWheelsOnGround(int wheels) const
+{
+    return (m_vehicle->getNumWheelsOnGround() >= wheels && !isRescue());         
+}   // hasHighGround
+
+//-----------------------------------------------------------------------------
 /** The kart is near the ground, but not necesarily on it (small jumps). This
  *  is used to determine when to switch off the upright constraint, so that
  *  explosions can be more violent, while still 
-*/
+ */
 bool Kart::isNearGround() const
 {
     if(getHoT()==Track::NOHIT)
@@ -516,16 +525,15 @@ void Kart::update(float dt)
     {
         // use() needs to be called even if there currently is no collecteable
         // since use() can test if something needs to be switched on/off.
-        m_powerup.use() ;
+        m_powerup.use();
         m_controls.m_fire = false;
     }
 
-    // When really on air, free fly, when near ground, try to glide / adjust for landing
-    if(!isNearGround())
-        m_uprightConstraint->setLimit(M_PI);
-    else
-        m_uprightConstraint->setLimit(m_kart_properties->getUprightTolerance());
-
+    // Previously, we would use PI as a limit when we are flying, but it would
+    // not always go the way it was intended, so instead of letting the kart
+    // free fly, we directly adjust it for landing so we don't hit the track
+    // (see mimiz videos)
+    m_uprightConstraint->setLimit(m_kart_properties->getUprightTolerance());
 
     m_zipper_time_left = m_zipper_time_left>0.0f ? m_zipper_time_left-dt : 0.0f;
 
@@ -626,8 +634,8 @@ void Kart::update(float dt)
         // since it can't hurt (material is only used for friction, zipper and
         // rescue, so those things are not triggered till the kart is on the 
         // track again)
-        if     (material->isReset()  && isOnGround()) forceRescue();
-        else if(material->isZipper() && isOnGround()) handleZipper(false);
+        if     (material->isReset()  && isOnGround())         forceRescue();
+        else if(material->isZipper() && hasWheelsOnGround(2)) handleZipper();
         else
         {
             m_power_reduction = material->getSlowDown();
@@ -988,7 +996,7 @@ void Kart::loadData()
     SSGHelp::createDisplayLists(obj);  // create all display lists
     ssgRangeSelector *lod = new ssgRangeSelector ;
 
-    lod->addKid(obj) ;
+    lod->addKid(obj);
     lod->setRanges(r, 2);
     getModelTransform()->addKid(lod);
 

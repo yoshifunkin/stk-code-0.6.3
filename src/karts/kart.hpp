@@ -246,7 +246,8 @@ public:
     void           setSuspensionLength();                                                  
     void           applyEngineForce (float force);                                         
     float          handleNitro      (float dt);                                            
-    float          getActualWheelForce();                                                  
+    float          getActualWheelForce();
+    bool           hasWheelsOnGround(int wheels) const;
     bool           isOnGround       () const;                                              
     bool           isNearGround     () const;                                              
     bool           isEliminated     () const  {return m_eliminated;                        }

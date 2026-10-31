@@ -101,9 +101,8 @@ void World::init()
 
     for(unsigned int i=0; i<race_manager->getNumKarts(); i++)
     {
-
-        btTransform init_pos=m_track->getStartTransform(i);
         Kart* newkart;
+        btTransform init_pos=m_track->getStartTransform(i);
         const std::string& kart_name = race_manager->getKartName(i);
         int local_player_id          = race_manager->getKartLocalPlayerId(i);
         int global_player_id         = race_manager->getKartGlobalPlayerId(i);

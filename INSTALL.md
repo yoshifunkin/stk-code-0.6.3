@@ -19,7 +19,7 @@ First, make sure that you have the following packages installed/compiled:
 Note: SDL 1.2 Compatibility Layer is compatible.
 
 
-**ALL OF THE PACKAGES ABOVE MUST BE COMPILED IN RELEASE AND WIN32 CONFIG!!**
+**ALL OF THE PACKAGES ABOVE MUST BE COMPILED IN RELEASE AND WIN32 CONFIG FOR A RELEASE BUILD!!**
 
 
 Make 2 folders in the SuperTuxKart 0.6.3 directory:

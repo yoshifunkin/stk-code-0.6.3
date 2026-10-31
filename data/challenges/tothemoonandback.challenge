@@ -1,19 +1,18 @@
 ;; -*- mode: lisp -*-
 
 (challenge
- (id            "energyshiftingsands")
- (name          _("Collect the Pharaohs Treasure"))
- (description   _("Finish with at least 9 nitro \npoints on 3 laps of Shifting Sands\nin under 2:20 minutes."))
- (unlock-gp    "tothemoonandback")
- (depend-on    "energymathclass" "racetracktime")
- (major        "single")
- (minor        "quickrace")
- (track        "sandtrack")
- (difficulty   "medium")
- (karts        1)
- (laps         3)
- (energy       9)
- (time       140)
+ (id            "canyon")
+ (name          _("Win a race on canyon"))
+ (description   _("Win a 2 lap race on Canyon against 4 Racer AI karts."))
+ (unlock-gp     "tothemoonandback")
+ (depend-on     "gardenhead2head" "starfollow")
+ (major         "single")
+ (minor         "quickrace")
+ (track         "canyon")
+ (difficulty    "hard")
+ (karts         5)
+ (laps          2)
+ (position      1)
 )
 
 ;; EOF ;;

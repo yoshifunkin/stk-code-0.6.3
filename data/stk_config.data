@@ -11,8 +11,11 @@
   (scores   12 11 10 8 6 5 4 3 2 1)  ;; 1st, 2nd, 3rd... 'till 10th. 
   (grid-order	   	             1)  ;; Order for grand prix, 1 is most 
                                      ;; points first, 0 is least points first.
-  (title-music              "MayDayMayhem.music")
-  (default-track-music      "kart_grand_prix.music")
+                                     
+  (title-music              "MayDayMayhem.music")  ;; The title music of SuperTuxKart.
+  (default-track-music      "Penguin_Party.music") ;; The default music that plays if there
+                                                   ;; are no musics available for a track.
+  
   ;; Two lists which must have the same length, containing the list of all
   ;; possible main menu and background images.
   (mainmenu-background      "st_title_screen.rgb" "st_title_screen_2.rgb" "st_title_screen_3.rgb")
@@ -31,8 +34,8 @@
                                       ;; are displayed.
   (final-camera-time           1.5)   ;; Time for the final camera to reach 
                                       ;; it's destination.
-  (enable_networking           #f )   ;; Enable or disable networking. Actually,
-                                      ;; it is off because it's not used at that stage.
+  (enable_networking            #f)   ;; Enable or disable networking. Actually,
+                                      ;; it is off because it's not used at this stage.
   
   ;; Attachment related parameters:
   ;; ------------------------------
@@ -82,7 +85,7 @@
     ;; making the kart more stable and less likely to topple over.
     ;; Default (if nothing is defined here) is that the center of the mass is
     ;; at the very bottom of the chassis!
-    ;;(gravity-center-shift    0.0 0.0 0.3)
+    ;; (gravity-center-shift    0.0 0.0 0.3)
 	
     (nitro-power-boost            3)   ;; increase in engine power, i.e. 1=plus 100%
 	
@@ -112,10 +115,10 @@
     (max-speed-radius   15.0   21.5)
     ;; Different engine powers for different difficulties:
     ;; hard, medium, low level order!
-    (engine-power       425 350 280)
+    (engine-power       420 350 280)
     ;; Different maximum speed for different difficulties:
     ;; hard, medium, low level order!
-    (max-speed           33  27  22) ;; ≃ 119 97 78 km/h 
+    (max-speed         32.5  27  22) ;; ≃ 117 97 78 km/h 
     (mass                     225.0)
     (suspension-stiffness      51.0)
     (wheel-damping-relaxation  20.0)

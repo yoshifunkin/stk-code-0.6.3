@@ -1,19 +1,19 @@
 ;; -*- mode: lisp -*-
 
 (challenge
- (id            "xr591nitro")
- (name          _("Collect Nitro in XR591"))
- (description   _("Finish with at least 20 points\n of nitro on one lap of\nXR591\nin under 1:10 minutes."))
- (depend-on   "tothemoonandbackgp")
- (unlock-track "xr591")
- (major        "single")
- (minor        "quickrace")
- (track        "xr591")
- (difficulty   "hard")
- (laps         1)
- (karts        1)
- (time        70)
- (energy      18)
+ (id            "lighthousetime")
+ (name          _("Win a race around a lighthouse in 1:30"))
+ (description   _("Win a 3 laps race in Lighthouse with 4 Racer AI karts in under 1:15 minutes."))
+ (depend-on     "tollwayhead2head")
+ (unlock-track  "xr591")
+ (major         "single")
+ (minor         "quickrace")
+ (track         "lighthouse")
+ (difficulty    "hard")
+ (laps          3)
+ (karts         5)
+ (position      1)
+ (time         75)
 )
 
 ;; EOF ;;

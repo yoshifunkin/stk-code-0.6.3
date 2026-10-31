@@ -51,9 +51,9 @@ public:
     virtual void restartRace();
     //virtual void getDefaultCollectibles(int& collectible_type, int& amount);
     //virtual bool enableBonusBoxes();
-    virtual bool useFastMusicNearEnd() const { return false; }
+    virtual bool useFastMusicNearEnd() const {return false;}
     virtual KartIconDisplayInfo* getKartsDisplayInfo(const RaceGUI* caller);
-    virtual bool raceHasLaps(){ return false; }
+    virtual bool raceHasLaps(){return false;}
     virtual void moveKartAfterRescue(Kart* kart, btRigidBody* body);
     virtual bool acceptPowerup(const int type) const;
     
@@ -63,7 +63,7 @@ public:
     
     /** Called by the race result GUI at the end of the race to know the final order
         (fill in the 'order' array) */
-    virtual void raceResultOrder( int* order );
+    virtual void raceResultOrder(int* order);
     
     void updateKartRanks();
 };

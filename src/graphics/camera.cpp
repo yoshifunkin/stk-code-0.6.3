@@ -46,7 +46,7 @@ Camera::Camera(int camera_index, const Kart* kart)
     if (track->useFog())
         m_camera->setNearFar(0.05f, track->getFogEnd());
     else
-        m_camera->setNearFar(0.05f, 1000.0f);
+        m_camera->setNearFar(0.05f, 1250.0f);
 
     setScreenPosition(camera_index);
 }   // Camera

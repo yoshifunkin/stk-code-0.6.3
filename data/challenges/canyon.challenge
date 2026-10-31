@@ -1,17 +1,18 @@
 ;; -*- mode: lisp -*-
 
 (challenge
- (id            "tollwaytime")
- (name          _("Finish Tux Tollway track in 3:35"))
- (description   _("Finish 3 laps on the Tux Tollway\ntrack with 3 AI karts\nin under 3:35 minutes."))
- (unlock-track "canyon")
- (major        "single")
- (minor        "quickrace")
- (track        "tuxtollway")
- (difficulty   "medium")
- (laps         3)
- (karts        4)
- (time       215)
+ (id            "gardenhead2head")
+ (name          _("Win a head to head in Secret Garden"))
+ (description   _("Win a 1 lap head to head in Secret Garden against 1 Racer AI Kart."))
+ (depend-on     "snowmountain")
+ (unlock-track  "canyon")
+ (major         "single")
+ (minor         "timetrial")
+ (track         "secretgarden")
+ (difficulty    "hard")
+ (laps          1)
+ (karts         2)
+ (position      1)
 )
 
 ;; EOF ;;

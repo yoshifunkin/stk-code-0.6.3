@@ -31,6 +31,7 @@ btKart::btKart(const btVehicleTuning& tuning,btRigidBody* chassis,
 {
     m_track_connect_accel = track_connect_accel;
     m_zipper_active = false;
+    m_activate_zipper = false;
     m_zipper_velocity = btScalar(0);
     m_num_wheels_on_ground = 0;
 }
@@ -43,7 +44,7 @@ btKart::~btKart()
 // ----------------------------------------------------------------------------
 btScalar btKart::rayCast(btWheelInfo& wheel)
 {
-    updateWheelTransformsWS( wheel,false);
+    updateWheelTransformsWS(wheel,false);
     
     btScalar depth          = -1;
     btScalar raylen         = wheel.getSuspensionRestLength()+wheel.m_wheelsRadius+
@@ -56,18 +57,18 @@ btScalar btKart::rayCast(btWheelInfo& wheel)
     
     btScalar param = btScalar(0.);
     
-    btVehicleRaycaster::btVehicleRaycasterResult    rayResults;
+    btVehicleRaycaster::btVehicleRaycasterResult rayResults;
     
     assert(m_vehicleRaycaster);
     
-    void* object            = m_vehicleRaycaster->castRay(source,target,rayResults);
+    void* object = m_vehicleRaycaster->castRay(source,target,rayResults);
     
     wheel.m_raycastInfo.m_groundObject = 0;
     
-    if (object)
+    if(object)
     {
         param = rayResults.m_distFraction;
-        depth          = raylen * rayResults.m_distFraction;
+        depth = raylen * rayResults.m_distFraction;
         wheel.m_raycastInfo.m_contactNormalWS  = rayResults.m_hitNormalInWorld;
         wheel.m_raycastInfo.m_isInContact      = true;        
 
@@ -82,11 +83,11 @@ btScalar btKart::rayCast(btWheelInfo& wheel)
         
         btScalar  minSuspensionLength = wheel.getSuspensionRestLength() - wheel.m_maxSuspensionTravelCm*btScalar(0.01);
         btScalar maxSuspensionLength = wheel.getSuspensionRestLength()+ wheel.m_maxSuspensionTravelCm*btScalar(0.01);
-        if (wheel.m_raycastInfo.m_suspensionLength < minSuspensionLength)
+        if(wheel.m_raycastInfo.m_suspensionLength < minSuspensionLength)
         {
             wheel.m_raycastInfo.m_suspensionLength = minSuspensionLength;
         }
-        if (wheel.m_raycastInfo.m_suspensionLength > maxSuspensionLength)
+        if(wheel.m_raycastInfo.m_suspensionLength > maxSuspensionLength)
         {
             wheel.m_raycastInfo.m_suspensionLength = maxSuspensionLength;
         }
@@ -102,7 +103,7 @@ btScalar btKart::rayCast(btWheelInfo& wheel)
         
         btScalar projVel = wheel.m_raycastInfo.m_contactNormalWS.dot( chassis_velocity_at_contactPoint );
         
-        if ( denominator >= btScalar(-0.1))
+        if(denominator >= btScalar(-0.1))
         {
             wheel.m_suspensionRelativeVelocity = btScalar(0.0);
             wheel.m_clippedInvContactDotSuspension = btScalar(1.0) / btScalar(0.1);
@@ -637,7 +638,7 @@ void btKart::updateFriction(btScalar timeStep)
     btScalar sideFactor = btScalar(1.);
     btScalar fwdFactor = 0.5;
     {
-        for(int wheel =0;wheel <getNumWheels();wheel++)
+        for(int wheel=0; wheel<getNumWheels(); wheel++)
         {
             btWheelInfo& wheelInfo = m_wheelInfo[wheel];
             class btRigidBody* groundObject = (class btRigidBody*) wheelInfo.m_raycastInfo.m_groundObject;
@@ -665,12 +666,10 @@ void btKart::updateFriction(btScalar timeStep)
 
             if(groundObject)
             {                
-                if(m_zipper_active)
+                if(m_activate_zipper)
                 {
-                    if(wheel==2 || wheel==3)
-                    {
-                        m_forwardImpulse[wheel] = 0.5f*(m_zipper_velocity - getRigidBody()->getLinearVelocity().length()) / m_chassisBody->getInvMass();
-                    }
+                    m_forwardImpulse[wheel] = 0.5f*(m_zipper_velocity - getRigidBody()->getLinearVelocity().length()) / m_chassisBody->getInvMass();
+                    m_zipper_active = true;
                 }
                 else
                 {
@@ -698,7 +697,7 @@ void btKart::updateFriction(btScalar timeStep)
                 }
             }
         }
-        m_zipper_active = false;
+        m_activate_zipper = false;
     }
 
     // apply the impulses

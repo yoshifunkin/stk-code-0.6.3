@@ -225,9 +225,10 @@ void PlayerKart::update(float dt)
     if(RaceManager::getWorld()->isStartPhase())
     {
         if(m_controls.m_accel || m_controls.m_brake ||
-           m_controls.m_fire || m_controls.m_nitro  || m_controls.m_drift)
+           m_controls.m_nitro || m_controls.m_drift)
         {
-            if(m_penalty_time == 0.0)//eliminates machine-gun-effect for SOUND_BZZT
+            // eliminates machine-gun-effect for SOUND_BZZT
+            if(m_penalty_time == 0.0)
             {
                 m_penalty_time=1.0;
                 m_bzzt_sound->play();
@@ -241,7 +242,7 @@ void PlayerKart::update(float dt)
             // the camera gets the wrong position. 
             Kart::update(dt);
         }
-        
+
         return;
     }
     if(m_penalty_time>0.0)
@@ -252,7 +253,7 @@ void PlayerKart::update(float dt)
 
     if(m_controls.m_fire && !isRescue())
     {
-        if (m_powerup.getType()==POWERUP_NOTHING) 
+        if(m_powerup.getType()==POWERUP_NOTHING) 
             Kart::beep();
     }
 

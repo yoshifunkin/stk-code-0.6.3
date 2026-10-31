@@ -2,9 +2,9 @@
 
 (supertuxkart-grand-prix
  (name _("Snag Drive"))
- (description _("Third grand prix."))
- (tracks "islandtrack" "tuxtollway" "secretgarden" "mines" "crescentcrossing")
- (laps         2            2              3          3            2         )
+ (description _("Third grand prix"))
+ (tracks "islandtrack" "hacienda" "tuxtollway" "crescentcrossing" "mines")
+ (laps         2           3           2               2             3   )
 )
 
 ;; EOF ;;

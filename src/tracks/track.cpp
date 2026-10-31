@@ -94,10 +94,8 @@ void Track::cleanup()
 inline float Track::pointSideToLine(const Vec3& L1, const Vec3& L2,
                                     const Vec3& P) const
 {
-    return (L2.getX()-L1.getX())*
-           ( P.getY()-L1.getY())-
-           (L2.getY()-L1.getY())*
-           ( P.getX()-L1.getX());
+    return (L2.getX()-L1.getX())*(P.getY()-L1.getY())-
+           (L2.getY()-L1.getY())*(P.getX()-L1.getX());
 }   // pointSideToLine
 
 //-------------------------------------------------------------------------------------------------
@@ -236,12 +234,11 @@ void Track::findRoadSector(const Vec3& XYZ, int *sector,
         
         dist = sgHeightAbovePlaneVec3(plane, XYZ.toFloat());
         
-        /* sgHeightAbovePlaneVec3 gives a negative dist if the plane
-           is on top, so we have to rule it out.
-           
-           However, for some reason there are cases where we get
-           negative values for the track segment we should be on.
-        */
+        /** sgHeightAbovePlaneVec3 gives a negative dist if the plane
+         *  is on top, so we have to rule it out.
+         *  However, for some reason there are cases where we get
+         *  negative values for the track segment we should be on.
+         */
         if(dist > -2.0 && dist < near_dist)
         {
             near_dist = dist;
@@ -437,7 +434,7 @@ btTransform Track::getStartTransform(unsigned int pos) const
         angle = 0;
     }
     else
-    {    
+    {
         // sometimes the first kart would be too close
         // to the first driveline point and not to the last one -->
         // This kart would not get any lap counting done in the first
@@ -445,18 +442,20 @@ btTransform Track::getStartTransform(unsigned int pos) const
         // and this offset is calculated based on the drivelines
         float offset = 1.5f;
         if(m_left_driveline[0].getY() > 0 || m_right_driveline[0].getY() > 0)
-            offset += std::max(m_left_driveline[0].getY(), m_left_driveline[0].getY());
+            offset += std::max(m_left_driveline[0].getY(), m_right_driveline[0].getY());
         
         // FIXME: Wrong calculation of start positions: uses the center point of the model
         // instead of the center point between right and left drivelines (i.e, in The Island
         // track, if you delete the start settings, karts will spawn under the track, because
         // the center of the model is not on the start of the track but on the left). Every kart
-        // is located in a sector (which is a fragment of the track, i.e, a quad in STK 0.7)
+        // is located in a sector (which is a fragment of the track, known as a quad in STK 0.7)
         // which means that, for the new calculation, we will need to use karts positions,
         // sectors, and rotation of the point we found for the kart in that sector. 
-        orig.setX(pos<m_start_x.size() ? m_start_x[pos] : ((pos%2==0)?1.5f:-1.5f));
-        orig.setY(pos<m_start_y.size() ? m_start_y[pos] : -1.5f*pos-offset       );
-        orig.setZ(pos<m_start_z.size() ? m_start_z[pos] :  1.0f                  );
+        orig.setX(pos<m_start_x.size() ? m_start_x[pos] : ((pos%2==0)? +1.5f : -1.5f));
+        orig.setY(pos<m_start_y.size() ? m_start_y[pos] : -1.5f*pos-offset);
+        orig.setZ(pos<m_start_z.size() ? m_start_z[pos] :  1.0f);
+
+        
     }
     btTransform start;
     start.setOrigin(orig);
@@ -1174,7 +1173,7 @@ void Track::loadTrackModel()
             ssgRangeSelector *lod   = new ssgRangeSelector;
             ssgTransform     *trans = new ssgTransform(&loc);
 
-            float r[2] = {-10.0f, 7000.0f};
+            float r[2] = {-10.0f, 1250.0f};
 
             lod->addKid(obj);
             trans->addKid(lod);

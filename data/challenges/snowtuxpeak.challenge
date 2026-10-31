@@ -2,17 +2,17 @@
 
 (challenge
  (id            "citytime")
- (name          _("Finish the City track in 4:20"))
- (description   _("Finish 3 laps on the City track\nwith 3 AI karts\nin under 4:20 minutes."))
- (unlock-track "snowtuxpeak")
- (depend-on    "junglefollow")
- (major        "single")
- (minor        "quickrace")
- (track        "city")
- (difficulty   "hard")
- (laps         3)
- (karts        4)
- (time       260)
+ (name          _("Finish the City track in 4:00"))
+ (description   _("Finish 3 laps on the City track\nwith 4 AI karts\nin under 4:00 minutes."))
+ (unlock-track  "snowtuxpeak")
+ (depend-on     "junglefollow" "starfollow")
+ (major         "single")
+ (minor         "quickrace")
+ (track         "city")
+ (difficulty    "hard")
+ (laps          3)
+ (karts         5)
+ (time        240)
 )
 
 ;; EOF ;;
