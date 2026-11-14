@@ -62,6 +62,7 @@ Track::Track(std::string filename_)
     m_screenshot       = "";
     m_top_view         = "";
     m_version          = 0;
+    m_default_laps     = 3;
     m_has_final_camera = false;
     m_is_arena         = false;
     m_track            = this;
@@ -395,7 +396,7 @@ int Track::spatialToTrack
 
     dst.setX(sgDistToLineVec2(line_eqn, POS.toFloat()));
 
-    sgAddScaledVec2(tmp, POS.toFloat(), line_eqn, -dst.getX());
+    sgAddScaledVec3(tmp, POS.toFloat(), line_eqn, -dst.getX());
 
     float dist_from_driveline_p1 = sgDistanceVec2(tmp, m_driveline[p1].toFloat());
     dst.setY(dist_from_driveline_p1 + m_distance_from_start[p1]);
@@ -632,6 +633,15 @@ void Track::loadTrack(std::string filename_)
     LISP->get      ("description",           m_description);
     LISP->get      ("designer",              m_designer);
     LISP->get      ("version",               m_version);
+    LISP->get      ("default-laps",          m_default_laps);
+    if(m_default_laps < 1 || m_default_laps > 20)
+    {
+        delete ROOT;
+        std::ostringstream msg;
+        msg << "Invalid default-laps value in track '"<<m_filename<<
+            "' (must be between 1 and 20).";
+        throw std::runtime_error(msg.str());
+    }
     std::vector<std::string> filenames;
     LISP->getVector("music",                 filenames);
     getMusicInformation(filenames, m_music);
@@ -896,7 +906,7 @@ void Track::convertTrackToBullet(ssgEntity *track, sgMat4 m)
             btVector3 vb1(vv1[0],vv1[1],vv1[2]);
             btVector3 vb2(vv2[0],vv2[1],vv2[2]);
             btVector3 vb3(vv3[0],vv3[1],vv3[2]);
-            if(material->isZipper()) 
+            if(!material->isCrashable()) 
             {
                 m_non_collision_mesh->addTriangle(vb1, vb2, vb3, material);
             }

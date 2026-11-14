@@ -111,9 +111,9 @@ void Physics::update(float dt)
     // of objects.
     m_all_collisions.clear();
 
-    // Maximum of three substeps. This will work for framerate down to
+    // Maximum of six substeps. This will work for framerate down to
     // 20 FPS (bullet default frequency is 60 HZ).
-    m_dynamics_world->stepSimulation(dt, 5);
+    m_dynamics_world->stepSimulation(dt, 6, 1/120.f);
 
     // Now handle the actual collision. Note: rockets can not be removed
     // inside of this loop, since the same rocket might hit more than one

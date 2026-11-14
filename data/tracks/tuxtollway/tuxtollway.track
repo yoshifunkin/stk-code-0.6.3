@@ -1,13 +1,15 @@
 ;; -*- mode: lisp -*-
 
 (tuxkart-track
- (name        _("Tux Tollway")) 
- (version     1)
- (designer    "Ivar ten Cate")
- (music       "kart_grand_prix.music")
- (screenshot  "sshot-tuxtrack.rgb")
- (topview     "topview-tuxtrack.rgb")
- (groups      "Standard")
+ (name             _("Tux Tollway")) 
+ (version          1)
+ (designer         "Ivar ten Cate")
+ (default-laps     2)
+ (music            "kart_grand_prix.music")
+ (screenshot       "sshot-tuxtrack.rgb")
+ (topview          "topview-tuxtrack.rgb")
+ (groups           "Standard")
+ 
  (camera-final-position  -1 15 1)
  (camera-final-hpr       180 0 0)
 

@@ -73,7 +73,7 @@ void STKConfig::load(const std::string &filename)
 
     if(m_scores.size()==0 || (int)m_scores.size()!=m_max_karts)
     {
-        fprintf(stderr,"Not or not enough scores defined in stk_config");
+        fprintf(stderr,"No or not enough scores defined in stk_config");
         exit(-1);
     }
     if(m_leader_intervals.size()==0)
@@ -89,6 +89,11 @@ void STKConfig::load(const std::string &filename)
     if(m_mainmenu_background.size()==0)
     {
         fprintf(stderr,"No mainmenu background defined in stk_config");
+        exit(-1);
+    }
+    if(m_title_music.size()==0)
+    {
+        fprintf(stderr,"No title music defined in stk_config");
         exit(-1);
     }
     CHECK_NEG(m_max_karts,                 "max-karts"                  );
@@ -152,7 +157,6 @@ void STKConfig::init_defaults()
     m_max_kart_version         = -100;
     m_min_track_version        = -100;
     m_max_track_version        = -100;
-    m_title_music              = NULL;
     m_default_music            = NULL;
     m_enable_networking        = true;
     m_scores.clear();
@@ -176,6 +180,15 @@ const std::string &STKConfig::getBackgroundPicture(int n)
     else
         return m_menu_background[0];
 }   // getBackgroundPicture
+
+//-----------------------------------------------------------------------------
+const std::string &STKConfig::getTitleMusic(int n)
+{
+    if(n>=0 && n<(int)m_title_music.size())
+        return m_title_music[n];
+    else
+        return m_title_music[0];
+}   // getTitleMusic
 
 //-----------------------------------------------------------------------------
 /** Extracts the actual information from a lisp file.
@@ -222,12 +235,10 @@ void STKConfig::getAllData(const lisp::Lisp* lisp)
     lisp->getVector("menu-background",        m_menu_background        );
     lisp->getVector("mainmenu-background",    m_mainmenu_background    );
     lisp->get("enable_networking",            m_enable_networking      );
-    std::string title_music;
-    lisp->get("title-music",                  title_music              );
+    lisp->getVector("title-music",            m_title_music            );
     std::string default_music;
     lisp->get("default-track-music",          default_music            );
     m_default_music = new MusicInformation(file_manager->getMusicFile(default_music));
-    m_title_music   = new MusicInformation(file_manager->getMusicFile(title_music));
 
     // Get the default KartProperties
     // ------------------------------

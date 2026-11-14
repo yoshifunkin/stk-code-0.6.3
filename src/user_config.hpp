@@ -243,6 +243,7 @@ public:
     /** Returns the default difficulty. */
     int getDefaultDifficulty() const      { return m_difficulty;        }
     void nextBackgroundIndex();
+    void prevBackgroundIndex();
 
     /** Get the index of the background image. */
     int   getBackgroundIndex() const      { return m_background_index;  }

@@ -4,6 +4,6 @@
   (composer    "Matt Thomas"       )
   (music       "Boom_boom_boom.ogg")
   (gain        1.4  )
-  (max-pitch   0.092)
+  (max-pitch   0.09 )
   (loop        10   )
 )

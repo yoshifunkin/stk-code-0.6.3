@@ -47,9 +47,9 @@ private:
     /** Maximum speed at which no more slow down occurs. */
     float           m_max_speed_fraction;
 
-    bool  parseBool  ( char **p );
-    int   parseInt   ( char **p );
-    float parseFloat ( char **p );
+    bool  parseBool  (char **p, bool def_val=false);
+    int   parseInt   (char **p);
+    float parseFloat (char **p);
 
     void init    (int index);
     void install (bool is_full_path=false);
@@ -62,28 +62,26 @@ public:
 
     ~Material ();
 
-    int matches ( char *tx ) ;
-
     ssgSimpleState 
-         *getState           () const { return m_state ;             }
-    bool  isIgnore           () const { return m_ignore;             }
-    bool  isZipper           () const { return m_zipper;             }
-    bool  isSphereMap        () const { return m_sphere_map;         }
-    bool  isCrashable        () const { return m_collideable;        }
-    bool  isReset            () const { return m_resetter;           }
-    float getFriction        () const { return m_friction;           }
+         *getState           () const {return m_state ;            }
+    bool  isIgnore           () const {return m_ignore;            }
+    bool  isZipper           () const {return m_zipper;            }
+    bool  isSphereMap        () const {return m_sphere_map;        }
+    bool  isCrashable        () const {return m_collideable;       }
+    bool  isReset            () const {return m_resetter;          }
+    float getFriction        () const {return m_friction;          }
     const std::string& 
-          getTexFname        () const { return m_texname;            }
-    int   getIndex           () const { return m_index;              }
+          getTexFname        () const {return m_texname;           }
+    int   getIndex           () const {return m_index;             }
     /** Returns the fraction of maximum speed on this material. */
-    float getMaxSpeedFraction() const { return m_max_speed_fraction; }
+    float getMaxSpeedFraction() const {return m_max_speed_fraction;}
     /** Returns the slowdown that happens if a kart is
      *  faster than the maximum speed. */
-    float getSlowDown        () const { return m_slowdown;           }
-    void  apply              ()       { m_state ->apply();           }
-    void  force              ()       { m_state ->force();           }
+    float getSlowDown        () const {return m_slowdown;          }
+    void  apply              ()       {m_state ->apply();          }
+    void  force              ()       {m_state ->force();          }
 
-    void applyToLeaf ( ssgLeaf *l ) ;
+    void applyToLeaf(ssgLeaf *l);
 
 } ;
 

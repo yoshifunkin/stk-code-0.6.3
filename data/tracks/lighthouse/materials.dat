@@ -1,6 +1,7 @@
+
 # TextureName              Clamp Trans Alpha Light SphMp Frict Ign Zip Rst Col
 "light.rgb"                 N N    Y    0.0    N     N    1.0   Y   N   Y   N
-"lighthouse.rgb"            N N    N    0.0    N     N    0.5   N   N   N   N
-"lighthouse_sky.rgb"        N N    N    0.0    N     N    0.5   N   N   Y   Y
+"lighthouse.rgb"            N N    N    0.0    N     N    0.5   N   N   N   Y
+"lighthouse_sky.rgb"        N N    N    0.0    N     N    0.5   N   N   Y   N
 
 # EOF #

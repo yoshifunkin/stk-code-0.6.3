@@ -1,13 +1,15 @@
 ;; -*- mode: lisp -*-
 
 (tuxkart-track
- (name        _("Oliver's Math Class"))
- (version     1)
- (designer    "Oliver & Steve Baker")
- (music       "Boom_boom_boom.music")
- (screenshot  "sshot-olivermath.rgb")
- (topview     "topview-olivermath.rgb")
- (groups      "Standard")
+ (name             _("Oliver's Math Class"))
+ (version          1)
+ (designer         "Oliver & Steve Baker")
+ (music            "Boom_boom_boom.music")
+ (screenshot       "sshot-olivermath.rgb")
+ (topview          "topview-olivermath.rgb")
+ (groups           "Standard")
+ (default-laps     6)
+ 
  (camera-final-position   2 30 3.2)
  (camera-final-hpr       180 -10 0)
 )

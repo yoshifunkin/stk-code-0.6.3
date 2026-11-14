@@ -4,6 +4,7 @@
  (name                   _("City"))
  (version                1)
  (designer               "Thomas Oppl")
+ (default-laps           2)
  (music                  "Penguin_Party.music")
  (screenshot             "city_screenshot.rgb")
  (topview                "city_topview.rgb")

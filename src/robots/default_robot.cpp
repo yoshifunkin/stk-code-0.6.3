@@ -193,7 +193,7 @@ void DefaultRobot::update(float dt)
                                     / (getSpeed()-m_kart_ahead->getSpeed());
                 target += m_kart_ahead->getVelocity()*time_till_hit;
             }
-            float steer_angle = steerToPoint(m_kart_ahead->getXYZ().toFloat(), dt);
+            float steer_angle = steerToPoint(m_kart_ahead->getXYZ(), dt);
             setSteering(steer_angle, dt);
             commands_set = true;
         }
@@ -566,8 +566,8 @@ void DefaultRobot::handleAcceleration(const float DELTA)
 
     if(hasViewBlockedByPlunger())
     {
-        if(!(getSpeed() > getMaxSpeedOnTerrain()/5))
-            m_controls.m_accel = 0.2f;
+        if(!(getSpeed() > getMaxSpeedOnTerrain()/2))
+            m_controls.m_accel = 0.8f;
         else 
             m_controls.m_accel = 0.0f;
         return;
@@ -635,7 +635,7 @@ void DefaultRobot::handleNitroAndZipper(const float DELTA)
 {
     m_controls.m_nitro = false;
     // If we are already very fast, save nitro.
-    if(getSpeed() > 0.95f*getMaxSpeedOnTerrain())
+    if(getSpeed() > 0.96f*getMaxSpeedOnTerrain())
         return;
     // Don't use nitro when the AI has a plunger in the face!
     if(hasViewBlockedByPlunger()) return;
@@ -694,13 +694,13 @@ void DefaultRobot::handleNitroAndZipper(const float DELTA)
 
     // A kart within this distance is considered to be overtaking (or to be
     // overtaken).
-    const float overtake_distance = 15.0f;
+    const float overtake_distance = 22.0f;
 
     // Try to overtake a kart that is close ahead, except 
     // when we are already much faster than that kart
     // --------------------------------------------------
     if(m_kart_ahead && m_distance_ahead < overtake_distance &&
-       m_kart_ahead->getSpeed()+5.0f > getSpeed())
+       m_kart_ahead->getSpeed()+7.0f > getSpeed())
     {
         m_controls.m_nitro = true;
         return;
@@ -735,7 +735,7 @@ void DefaultRobot::handleNitroAndZipper(const float DELTA)
             if((rand() % 1) < 0.5f)
             {
                 // Start a new boost with random duration
-                m_random_nitro_duration = 0.1f + 
+                m_random_nitro_duration = 0.2f + 
                                          (float)(rand()) / RAND_MAX * 0.5f;
                 m_random_nitro_timer = m_random_nitro_duration;
             }
@@ -750,8 +750,8 @@ void DefaultRobot::handleNitroAndZipper(const float DELTA)
             // When boost ends, set cooldown before next
             if(m_random_nitro_timer <= 0.0f)
             {
-                m_random_nitro_cooldown = 0.2f + 
-                                         (float)(rand()) / RAND_MAX * 8.3f;
+                m_random_nitro_cooldown = 1.f + 
+                                         (float)(rand()) / RAND_MAX * 2.f;
                 m_random_nitro_timer = 0.0f;
             }
         }
@@ -796,8 +796,8 @@ float DefaultRobot::steerToPoint(const Vec3 point, float dt)
     // Angle is the point is relative to the heading - but take the current
     // angular velocity into account, too. The value is multiplied by two
     // to avoid 'oversteering' - experimentally found.
-    float angle_2_point   = theta - getHeading() 
-                                  - dt*m_body->getAngularVelocity().getZ();
+    float angle_2_point   = theta - getHeading()
+                                  - 2.f*dt*m_body->getAngularVelocity().getZ();
     angle_2_point         = normalizeAngle(angle_2_point);
     if(fabsf(angle_2_point)<0.1f) return 0.0f;
 
@@ -813,7 +813,7 @@ float DefaultRobot::steerToPoint(const Vec3 point, float dt)
      *  computed, and from that the turn radius, and then the steer angle.
      *  (note: the 2*M_PI can be removed from the computations)
      */
-    float radius          = dt*getSpeed()/angle_2_point;
+    float radius          = dt*getMaxSpeed()/angle_2_point;
     float sin_steer_angle = m_kart_properties->getWheelBase()/radius;
 #ifdef DEBUG_OUTPUT
     printf("theta %f a2p %f angularv %f radius %f ssa %f\n",
@@ -825,7 +825,7 @@ float DefaultRobot::steerToPoint(const Vec3 point, float dt)
     if(sin_steer_angle <= -1.0f) return -getMaxSteerAngle()*m_skidding_threshold-0.1f;
     if(sin_steer_angle >=  1.0f) return  getMaxSteerAngle()*m_skidding_threshold+0.1f;
     float steer_angle     = asin(sin_steer_angle);    
-    return steer_angle;
+    return steer_angle*2.f;
 }   // steerToPoint
 
 //-----------------------------------------------------------------------------
@@ -844,15 +844,13 @@ void DefaultRobot::checkCrashes(const int STEPS, const Vec3& pos)
     Vec3 step_coord;
     float kart_distance;
 
-    step_coord.setZ(0.0);
-
     m_crashes.clear();
 
     const size_t NUM_KARTS = race_manager->getNumKarts();
 
     // Protection against having vel_normal with nan values
     const Vec3 &VEL = getVelocity();
-    vel_normal.setValue(VEL.getX(), VEL.getY(), 0.0);
+    vel_normal.setValue(VEL.getX(), VEL.getY(), 0.0f);
     float len=vel_normal.length();
     // If the velocity is zero, no sense in checking for crashes in time
     if(len==0) return;
@@ -901,7 +899,7 @@ void DefaultRobot::checkCrashes(const int STEPS, const Vec3& pos)
         sgVec3 center;
         center[0] = step_coord[0];
         center[1] = step_coord[1];
-        center[2] = pos[2];
+        center[2] = step_coord[2];
         sphere->setCenter(center);
         sphere->setSize(m_kart_properties->getKartModel()->getLength());
         if(m_sector == Track::UNKNOWN_SECTOR)
@@ -922,11 +920,10 @@ void DefaultRobot::checkCrashes(const int STEPS, const Vec3& pos)
 #endif
         m_future_location[0] = step_coord[0]; 
         m_future_location[1] = step_coord[1];
+        m_future_location[1] = step_coord[2];
 
         if(m_sector == Track::UNKNOWN_SECTOR)
         {
-            m_future_sector = m_track->findOutOfRoadSector(step_coord,
-            Track::RS_DONT_KNOW, m_future_sector);
             m_crashes.m_road = true;
             break;
         }
@@ -943,7 +940,7 @@ void DefaultRobot::checkCrashes(const int STEPS, const Vec3& pos)
  *  the two edges of the track is closest to the next curve after wards,
  *  and return the position of that edge.
  */
-void DefaultRobot::findNonCrashingPoint(sgVec2 result)
+void DefaultRobot::findNonCrashingPoint(Vec3 &result)
 {
     const unsigned int DRIVELINE_SIZE = (unsigned int)m_track->m_driveline.size();
     
@@ -968,7 +965,7 @@ void DefaultRobot::findNonCrashingPoint(sgVec2 result)
 
         float len=direction.length_2d();
         steps = int(len / m_kart_length);
-        if(steps > 3) steps = 3;
+        if(steps > 15) steps = 15;
 
         //Protection against having vel_normal with nan values
         if(len>0.0f) {
@@ -989,7 +986,7 @@ void DefaultRobot::findNonCrashingPoint(sgVec2 result)
             //If we are outside, the previous sector is what we are looking for
             if(distance + m_kart_width * 0.5f > m_track->getWidth()[sector])
             {
-                sgCopyVec2(result, m_track->m_driveline[sector]);
+                sgCopyVec3(result, m_track->m_driveline[sector]);
 
 #ifdef SHOW_NON_CRASHING_POINT
                 ssgaSphere *sphere = new ssgaSphere;
@@ -1003,7 +1000,7 @@ void DefaultRobot::findNonCrashingPoint(sgVec2 result)
                 sgVec3 center;
                 center[0] = result[0];
                 center[1] = result[1];
-                center[2] = getXYZ().getZ();
+                center[2] = result[2];
                 sphere->setCenter(center);
                 sphere->setSize(0.5f);
 
@@ -1032,6 +1029,7 @@ void DefaultRobot::reset()
     m_curve_angle                = 0.0;
     m_future_location[0]         = 0.0;
     m_future_location[1]         = 0.0;
+    m_future_location[2]         = 0.0;
     m_future_sector              = 0;
     m_time_till_start            = -1.0f;
     m_crash_time                 = 0.0f;
@@ -1061,7 +1059,7 @@ inline float DefaultRobot::normalizeAngle(float angle)
 }   //normalizeAngle
 
 //-----------------------------------------------------------------------------
-/** calcSteps() divides the velocity vector by the lenght of the kart,
+/** calcSteps() divides the velocity vector by the length of the kart,
  *  and gets the number of steps to use for the sight line of the kart.
  *  The calling sequence guarantees that m_future_sector is not UNKNOWN.
  */

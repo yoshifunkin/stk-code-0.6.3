@@ -265,6 +265,15 @@ void UserConfig::nextBackgroundIndex()
     if(m_background_index>=(int)stk_config->m_mainmenu_background.size())
         m_background_index = 0;
 }
+
+// -----------------------------------------------------------------------------
+/** Sets the previous background image index. */
+void UserConfig::prevBackgroundIndex()
+{
+    if(m_background_index<=0)
+        m_background_index = (int)stk_config->m_mainmenu_background.size();
+    m_background_index--;
+}
  
 // -----------------------------------------------------------------------------
 /** Load default configuration file for this platform. */

@@ -94,7 +94,7 @@ ssgEntity *Loader::load(const std::string& filename, CallbackType t,
 }   // load
 
 //-----------------------------------------------------------------------------
-void Loader::preProcessObj (ssgEntity *entity, bool mirror)
+void Loader::preProcessObj(ssgEntity *entity, bool mirror)
 {
     if(entity == NULL) return;
 
@@ -103,11 +103,11 @@ void Loader::preProcessObj (ssgEntity *entity, bool mirror)
     if(entity->isAKindOf(ssgTypeLeaf()))
     {
         if(mirror)
-            for ( int i = 0 ; i < ((ssgLeaf *) entity)->getNumVertices(); i++)
+            for(int i = 0 ; i < ((ssgLeaf *) entity)->getNumVertices(); i++)
                 ((ssgLeaf *) entity)->getVertex(i)[0] *= -1.0f;
 
         material_manager->getMaterial((ssgLeaf *) entity)->applyToLeaf((ssgLeaf *) entity);
-        return ;
+        return;
     }
 
     if(mirror && entity->isAKindOf(ssgTypeTransform()))

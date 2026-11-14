@@ -27,6 +27,7 @@
 #include "modes/world.hpp"
 #include "user_config.hpp"
 #include "history.hpp"
+#include "file_manager.hpp"
 #include "audio/sound_manager.hpp"
 #include "graphics/scene.hpp"
 #include "gui/menu_manager.hpp"
@@ -65,6 +66,7 @@ void MainLoop::run()
 {
     loadBackgroundImages();
     
+    std::string cur_msc;
     bool music_on = false;
     m_curr_time = SDL_GetTicks();
     float dt;
@@ -81,7 +83,7 @@ void MainLoop::run()
             
             // don't allow the game to run slower than a certain amount.
             // when the computer can't keep it up, slow down the shown time instead
-            static const float max_elapsed_time = 3.0f*1.0f/60.0f*1000.0f; /* time 3 internal substeps take */
+            static const float max_elapsed_time = 6.f*1.0f/120.0f*1000.f; /* time 6 internal substeps take */
             if(dt > max_elapsed_time) dt=max_elapsed_time;
                                                
             // Throttle fps if more than maximum, which can reduce 
@@ -97,14 +99,29 @@ void MainLoop::run()
             }
             else break;
         }
-        dt *= 0.001f;
+        dt /= 1000.f;
 
-        if(!music_on && !race_manager->raceIsActive())
+        if(!race_manager->raceIsActive())
         {
-            sound_manager->stopMusic();   // stop potential 'left over' music from race
-            sound_manager->startMusic(stk_config->m_title_music);
-            music_on = true;
-        }
+            // the title music that is selected in the list
+            const std::string& sel_msc = 
+                stk_config->getTitleMusic(user_config->getBackgroundIndex());
+
+            if(!music_on || sel_msc != cur_msc)
+            {
+                // Get info from the file that's selected
+                // in the list, and compare it to the song
+                // which is supposed to be played right now.
+                const std::string path = file_manager->getMusicFile(sel_msc);
+
+                // If the song is changing or there were none, stop 
+                // the previous one and start the new selected one.
+                sound_manager->stopMusic();
+                sound_manager->startMusic(sound_manager->getMusicInformation(path));
+                cur_msc = sel_msc;
+                music_on = true;
+            }  // if music is changing/not playing
+        }   // if race is not active
 
         network_manager->update(dt);
 
@@ -121,7 +138,7 @@ void MainLoop::run()
             if(!race_manager->getWorld()->isFinishPhase())
                 network_manager->sendUpdates();
             music_on = false; 
-            if(user_config->m_profile) dt=1.0f/60.0f;
+            if(user_config->m_profile) dt=1.0f/120.0f;
             // In the first call dt might be large (includes loading time),
             // which can cause the camera to significantly tilt
             scene->draw(RaceManager::getWorld()->getPhase()==SETUP_PHASE ? 0.0f : dt);
@@ -179,7 +196,7 @@ void MainLoop::run()
             // which apparently reduces the load for the X server, so that no
             // buffering is done --> all key events are handled in time.
         #if !defined(WIN32) && !defined(__CYGWIN__)
-//          usleep(2000);
+            usleep(2000);
         #endif
             
             //Draw the splash screen

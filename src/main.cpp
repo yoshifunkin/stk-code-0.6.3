@@ -206,7 +206,7 @@ int handleCmdLine(int argc, char **argv)
                 break;
             case 2:
                 // FIXME: no medium AI atm race_manager->setDifficulty(RaceManager::RD_MEDIUM);
-                race_manager->setDifficulty(RaceManager::RD_HARD);
+                race_manager->setDifficulty(RaceManager::RD_MEDIUM);
                 break;
             case 3:
                 race_manager->setDifficulty(RaceManager::RD_HARD);

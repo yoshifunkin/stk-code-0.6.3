@@ -4,6 +4,7 @@
  (name                   _("Canyon"))
  (version                1)
  (designer               "Thomas Oppl")
+ (default-laps           2)
  (music                  "TheDeadRocks-EasyJob.music")
  (screenshot             "canyon_screenshot.rgb")
  (topview                "canyon_topview.rgb")

@@ -221,7 +221,7 @@ void Kart::createPhysics()
     //create the engine sound
     if(m_engine_sound)
     {
-        m_engine_sound->speed(0.58f);
+        m_engine_sound->speed(0.6f);
         m_engine_sound->loop();
         m_engine_sound->play();
     }
@@ -456,7 +456,7 @@ bool Kart::hasWheelsOnGround(int wheels) const
 //-----------------------------------------------------------------------------
 /** The kart is near the ground, but not necesarily on it (small jumps). This
  *  is used to determine when to switch off the upright constraint, so that
- *  explosions can be more violent, while still 
+ *  explosions can be more violent, while still being in the air.
  */
 bool Kart::isNearGround() const
 {
@@ -529,11 +529,6 @@ void Kart::update(float dt)
         m_controls.m_fire = false;
     }
 
-    // Previously, we would use PI as a limit when we are flying, but it would
-    // not always go the way it was intended, so instead of letting the kart
-    // free fly, we directly adjust it for landing so we don't hit the track
-    // (see mimiz videos)
-    m_uprightConstraint->setLimit(m_kart_properties->getUprightTolerance());
 
     m_zipper_time_left = m_zipper_time_left>0.0f ? m_zipper_time_left-dt : 0.0f;
 
@@ -634,7 +629,7 @@ void Kart::update(float dt)
         // since it can't hurt (material is only used for friction, zipper and
         // rescue, so those things are not triggered till the kart is on the 
         // track again)
-        if     (material->isReset()  && isOnGround())         forceRescue();
+        if     (material->isReset()  && hasWheelsOnGround(3)) forceRescue();
         else if(material->isZipper() && hasWheelsOnGround(2)) handleZipper();
         else
         {
@@ -934,13 +929,13 @@ void Kart::updatePhysics (float dt)
     }
 
     //at low velocity, forces on kart push it back and forth so we ignore this
-    if(fabsf(m_speed) < 0.2f) // quick'n'dirty workaround for bug 1776883
-         m_speed = 0;
+    if(fabsf(m_speed)<0.2f) // quick'n'dirty workaround for bug 1776883
+        m_speed = 0;
 
     // when going faster, use higher pitch for engine
     if(m_engine_sound && sfx_manager->sfxAllowed())
     {
-        m_engine_sound->speed(0.6f + (m_speed/max_speed)*0.7f);
+        m_engine_sound->speed(0.6f+(m_speed/max_speed)*0.7f);
         m_engine_sound->position(getXYZ());
     }
 #ifdef XX   
@@ -1043,8 +1038,8 @@ void Kart::applyEngineForce(float force)
 {
     // Split power to simulate a 4WD 60-40, other values possible
     // FWD or RWD is a matter of putting a 0 and 1 in the right place
-    float frontForce = force*0.6f;
-    float rearForce = force*0.4f;
+    float frontForce = force*0.4f;
+    float rearForce = force*0.6f;
     // Front wheels
     for(unsigned int i=0; i<2; i++)
     {

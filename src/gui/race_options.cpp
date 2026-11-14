@@ -18,6 +18,8 @@
 #include "gui/race_options.hpp"
 
 #include "race_manager.hpp"
+#include "tracks/track.hpp"
+#include "tracks/track_manager.hpp"
 #include "user_config.hpp"
 #include "material_manager.hpp"
 #include "gui/menu_manager.hpp"
@@ -54,9 +56,17 @@ enum WidgetTokens
 
 RaceOptions::RaceOptions() 
 {
-
     m_difficulty=user_config->getDefaultDifficulty();
     m_num_laps=user_config->getDefaultNumLaps();
+    if(race_manager->getMajorMode() != RaceManager::MAJOR_MODE_GRAND_PRIX &&
+       RaceManager::modeHasLaps(race_manager->getMinorMode()))
+    {
+        const Track* track = track_manager->getTrack(race_manager->getTrackName());
+        if(track->getDefaultLaps() > 0)
+        {
+            m_num_laps = track->getDefaultLaps();
+        }
+    }
     // Determine the minimum number of karts
     m_min_karts = (int)race_manager->getNumPlayers();
     if(race_manager->getMinorMode() == RaceManager::MINOR_MODE_FOLLOW_LEADER)
@@ -66,7 +76,6 @@ RaceOptions::RaceOptions()
         m_min_karts += (race_manager->getNumPlayers()==1 ? 2 : 1);
     }
     m_num_karts=std::max(user_config->getDefaultNumKarts(), m_min_karts);
-
 
     const int DESC_WIDTH=48;
     const int ITEM_WIDTH=35;
@@ -149,7 +158,7 @@ RaceOptions::RaceOptions()
     widget_manager->addEmptyWgt( WidgetManager::WGT_NONE, 10, 30);
     widget_manager->breakLine();
     
-    widget_manager->addTextButtonWgt( WTOK_QUIT, 60, 7, _("Press <ESC> to go back") );
+    widget_manager->addTextButtonWgt( WTOK_QUIT, 60, 7, _("Click or press <ESC> to go back") );
 
     widget_manager->layout(WGT_AREA_ALL);
     
@@ -176,39 +185,39 @@ void RaceOptions::update(float dt)
 //-----------------------------------------------------------------------------
 void RaceOptions::select()
 {
-    switch ( widget_manager->getSelectedWgt() )
+    switch(widget_manager->getSelectedWgt())
     {
         case WTOK_DIFFICULTY_UP:
-            if( m_difficulty == RaceManager::RD_HARD )
+            if(m_difficulty == RaceManager::RD_HARD)
             {
                 m_difficulty = RaceManager::RD_EASY;
             }
-            else if( m_difficulty == RaceManager::RD_MEDIUM )
+            else if(m_difficulty == RaceManager::RD_MEDIUM)
             {
                 m_difficulty = RaceManager::RD_HARD;
             }
-            else if( m_difficulty == RaceManager::RD_EASY )
+            else if(m_difficulty == RaceManager::RD_EASY)
             {
                 m_difficulty = RaceManager::RD_MEDIUM;
             }
-            widget_manager->setWgtText( WTOK_DIFFICULTY, getDifficultyString(m_difficulty) );
+            widget_manager->setWgtText(WTOK_DIFFICULTY, getDifficultyString(m_difficulty));
             break;
 
         case WTOK_DIFFICULTY_DOWN:
-            if( m_difficulty == RaceManager::RD_HARD )
+            if(m_difficulty == RaceManager::RD_HARD)
             {
                 m_difficulty = RaceManager::RD_MEDIUM;
             }
-            else if( m_difficulty == RaceManager::RD_MEDIUM )
+            else if(m_difficulty == RaceManager::RD_MEDIUM)
             {
                 m_difficulty = RaceManager::RD_EASY;
             } 
-            else if( m_difficulty == RaceManager::RD_EASY )
+            else if(m_difficulty == RaceManager::RD_EASY)
             {
                 m_difficulty = RaceManager::RD_HARD;
             } 
-            widget_manager->setWgtText( WTOK_DIFFICULTY, 
-                                        getDifficultyString(m_difficulty) );
+            widget_manager->setWgtText(WTOK_DIFFICULTY, 
+                                       getDifficultyString(m_difficulty));
 
             break;
 
@@ -218,9 +227,9 @@ void RaceOptions::select()
                             ? m_min_karts : m_num_karts + 1;
 
                 char label[ MAX_MESSAGE_LENGTH ];
-                snprintf( label, MAX_MESSAGE_LENGTH, "%d", m_num_karts );
+                snprintf(label, MAX_MESSAGE_LENGTH, "%d", m_num_karts);
 
-                widget_manager->setWgtText( WTOK_KARTS, label );
+                widget_manager->setWgtText(WTOK_KARTS, label);
             }
             break;
 
@@ -229,7 +238,7 @@ void RaceOptions::select()
                 m_num_karts = m_num_karts==m_min_karts 
                             ? stk_config->m_max_karts : m_num_karts-1;
                 char label[ MAX_MESSAGE_LENGTH ];
-                snprintf( label, MAX_MESSAGE_LENGTH, "%d", m_num_karts );
+                snprintf(label, MAX_MESSAGE_LENGTH, "%d", m_num_karts);
 
                 widget_manager->setWgtText( WTOK_KARTS, label );
             }
@@ -297,13 +306,13 @@ void RaceOptions::setAllValues()
     }
     else // invalid difficulty
     {
-        race_manager->setDifficulty( RaceManager::RD_EASY );
+        race_manager->setDifficulty(RaceManager::RD_EASY);
         user_config->setDefaultNumDifficulty(RaceManager::RD_EASY);
     }
 
     // if there is no AI, there's no point asking the player for the amount of karts.
     // It will always be the same as the number of human players
-    if(RaceManager::isBattleMode( race_manager->getMinorMode() ))
+    if(RaceManager::isBattleMode( race_manager->getMinorMode()))
     {
         race_manager->setNumKarts(race_manager->getNumLocalPlayers());
         // Don't change the default number of karts in user_config
@@ -315,9 +324,9 @@ void RaceOptions::setAllValues()
     }
 
     if( race_manager->getMajorMode() != RaceManager::MAJOR_MODE_GRAND_PRIX    &&
-        RaceManager::modeHasLaps( race_manager->getMinorMode() )    )
+        RaceManager::modeHasLaps(race_manager->getMinorMode()))
     {
-        race_manager->setNumLaps( m_num_laps );
+        race_manager->setNumLaps(m_num_laps);
         user_config->setDefaultNumLaps(m_num_laps);
     }
     // Might still be set from a previous challenge

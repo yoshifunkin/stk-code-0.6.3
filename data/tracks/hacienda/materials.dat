@@ -1,7 +1,8 @@
+
 # TextureName             Clamp Trans Alpha Light SphMp Frict Ign Zip Rst Col
-"mill.rgb"                 N N    Y    0.0    Y     N    1.0   Y   N   Y   Y
-"millstructure.rgb"        N N    Y    0.0    Y     N    1.0   Y   N   N   N
-"palmacacia.rgb"           N N    N    0.0    N     N    1.0   Y   N   N   N
+"mill.rgb"                 N N    Y    0.0    Y     N    1.0   Y   N   Y   N
+"millstructure.rgb"        N N    Y    0.0    Y     N    1.0   Y   N   N   Y
+"palmacacia.rgb"           N N    Y    0.8    N     N    1.0   Y   N   N   N
 "pix.rgb"                  Y N    Y    0.0    N     N    1.0   N   N   Y   Y
 "sageBrush.rgb"            Y N    Y    0.0    N     N    1.0   Y   N   N   N
 "sky.rgb"                  N N    N    0.0    N     N    1.0   N   N   N   N

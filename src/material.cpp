@@ -44,24 +44,27 @@ int setSpheremap(ssgEntity *)
 }   // setSpheremap
 
 //=============================================================================
-bool Material::parseBool(char **p)
+bool Material::parseBool(char **p, bool def_val)
 {
     /* Skip leading spaces */
+    while(**p<=' ' && **p!='\0') (*p)++;
 
-    while(**p <= ' ' && **p != '\0') (*p)++ ;
+    /* No values equals def_val */
+    if (**p == '\0')
+        return def_val;
 
-    const bool RES = ((**p == 'Y') || (**p == 'y'));
+    const bool RES = ((**p=='Y') || (**p=='y'));
 
-    while(**p > ' ' && **p != '\0') (*p)++;
+    while(**p>' '&& **p!='\0') (*p)++;
 
     return RES;
 }   // parseBool
 
 //-----------------------------------------------------------------------------
-int Material::parseInt (char **p)
+int Material::parseInt(char **p)
 {
     /* Skip leading spaces */
-    while(**p <= ' ' && **p != '\0') (*p)++;
+    while(**p<=' ' && **p!='\0') (*p)++;
 
     return strtol(*p, p, 0);
 }   // parseInt 
@@ -70,7 +73,7 @@ int Material::parseInt (char **p)
 float Material::parseFloat(char **p)
 {
     /* Skip leading spaces */
-    while(**p <=' ' && **p != '\0') (*p)++ ;
+    while(**p<=' ' && **p!= '\0') (*p)++ ;
 
     return (float)strtod(*p, p);
 }   // parseFloat 
@@ -92,7 +95,7 @@ Material::Material(const std::string& fname, char *description,
     m_texname = fname;
     m_predraw = m_postdraw = NULL;
 
-    init (index);
+    init(index);
 
     if(strlen(description)>0)
     {
@@ -101,13 +104,13 @@ Material::Material(const std::string& fname, char *description,
         
         m_transparency       = parseBool (&description);
         m_alpha_ref          = parseFloat(&description);
-        m_lighting           = parseBool (&description);
+        m_lighting           = parseBool (&description, true);
         m_sphere_map         = parseBool (&description);
         m_friction           = parseFloat(&description);
         m_ignore             = parseBool (&description);
         m_zipper             = parseBool (&description);
         m_resetter           = parseBool (&description);
-        m_collideable        = parseBool (&description);
+        m_collideable        = parseBool (&description, true);
         m_max_speed_fraction = parseFloat(&description);
         m_slowdown           = parseFloat(&description);
         // Set the optional parameters.
@@ -179,7 +182,7 @@ void Material::install(bool is_full_path)
     else
         m_state->disable(GL_TEXTURE_2D);
 
-    if (m_lighting)
+    if(m_lighting)
         m_state->enable(GL_LIGHTING);
     else
         m_state->disable(GL_LIGHTING);

@@ -93,8 +93,8 @@ public:
     std::vector<int>
           m_scores;                  /**<Scores depending on position.       */
 
-    MusicInformation 
-         *m_title_music;             /**<Filename of the title music to play.*/
+    std::vector<std::string> 
+          m_title_music;             /**<Filename of the title music to play.*/
     MusicInformation 
          *m_default_music;           /**<Filename of the default track music 
                                       *  to play.                            */
@@ -114,6 +114,7 @@ public:
          getDefaultKartProperties() const {return m_kart_properties; }
     const std::string &getMainMenuPicture(int n);
     const std::string &getBackgroundPicture(int n);
+    const std::string &getTitleMusic(int n);
 }
 ;   // STKConfig
 

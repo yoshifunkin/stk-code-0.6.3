@@ -1,18 +1,19 @@
 ;; -*- mode: lisp -*-
 
 (tuxkart-track
- (name     _("Crescent Crossing"))
- (version  1)
- (designer   "Ingo Ruhnke & Marianne Gagnon")
- (music      "ChillCarrier-Druckverlust.music")
- (screenshot "sshot-crescent.rgb")
- (topview    "topview-crescent.rgb")
- (groups     "Standard")
+ (name           _("Crescent Crossing"))
+ (version        1)
+ (designer       "Ingo Ruhnke & Marianne Gagnon")
+ (default-laps   2)
+ (music          "ChillCarrier-Druckverlust.music")
+ (screenshot     "sshot-crescent.rgb")
+ (topview        "topview-crescent.rgb")
+ (groups         "Standard")
  
- (sky-color    0.45 0.0 0.0 0.0)
- (sun-ambient  0.2 0.1 0.1)
- (sun-diffuse  0.2 0.1 0.1)
- (sun-specular 0.2 0.1 0.1)
+ (sky-color      0.45 0.0 0.0 0.0)
+ (sun-ambient    0.2 0.1 0.1)
+ (sun-diffuse    0.2 0.1 0.1)
+ (sun-specular   0.2 0.1 0.1)
 
  (camera-final-position  0 20 3)
  (camera-final-hpr       180 -10 0)

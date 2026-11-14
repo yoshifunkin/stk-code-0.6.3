@@ -145,9 +145,9 @@ void btUprightConstraint::solveConstraint(btScalar timeStep)
         if(m_disable_time>0.0f) return;
     }
 
-    solveAngularLimit(&m_limit[0], m_timeStep, 
+    solveAngularLimit(&m_limit[0], m_timeStep,
                       btScalar(1.) / m_jacAng[0].getDiagonal(), &m_rbA);
-    solveAngularLimit(&m_limit[1], 
-                      m_timeStep, btScalar(1.) / m_jacAng[1].getDiagonal(), &m_rbA);
+    solveAngularLimit(&m_limit[1], m_timeStep,
+                      btScalar(1.) / m_jacAng[1].getDiagonal(), &m_rbA);
 }
 

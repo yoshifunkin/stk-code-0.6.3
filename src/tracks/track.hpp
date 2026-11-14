@@ -68,6 +68,7 @@ private:
     Vec3                     m_camera_final_hpr;
     bool                     m_is_arena;
     int                      m_version;
+    int                      m_default_laps;
     Vec3                     m_aabb_min;
     Vec3                     m_aabb_max;
     
@@ -157,6 +158,7 @@ public:
     float              getGravity         () const {return m_gravity;         }
     /** Returns the version of the .track file. */
     int                getVersion         () const {return m_version;         }
+    int                getDefaultLaps     () const {return m_default_laps;    }
     float              getTrackLength     () const {return m_total_distance;  }
     const std::string& getIdent           () const {return m_ident;           }
     const char*        getName            () const {return m_name.c_str();    }

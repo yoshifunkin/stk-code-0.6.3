@@ -176,7 +176,7 @@ private:
     float steerToPoint(const Vec3 point, float dt);
 
     void  checkCrashes(const int STEPS, const Vec3& pos);
-    void  findNonCrashingPoint(sgVec2 result);
+    void  findNonCrashingPoint(Vec3 &result);
 
     float normalizeAngle(float angle);
     int   calcSteps();

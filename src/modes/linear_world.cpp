@@ -58,12 +58,12 @@ void LinearWorld::init()
             info.m_track_sector =
             m_track->findOutOfRoadSector(m_kart[n]->getXYZ(),
                                          Track::RS_DONT_KNOW,
-                                         Track::UNKNOWN_SECTOR );
+                                         Track::UNKNOWN_SECTOR);
         }
         
         m_track->spatialToTrack(info.m_curr_track_coords,
                                 m_kart[n]->getXYZ(),
-                                info.m_track_sector );
+                                info.m_track_sector);
 
         // Init the last track coords so that no new lap (or undoing
         // a lap) is counted in the first doLapCounting call.

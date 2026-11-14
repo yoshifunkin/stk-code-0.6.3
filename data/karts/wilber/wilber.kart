@@ -6,21 +6,21 @@
   (shadow-file  "wilber2shadow.rgb")
   (groups       "Standard")
   (engine-sound "small")
-  (rgb         0.93 0.53 0.18)
+  (rgb          0.93 0.53 0.18)
   (wheel-front-right
-    (position 0.345697 0.332242 0.103979)
+    (position 0.325697 0.332242 0.104979)
     (model    "wheel-front-right.ac")
   )
   (wheel-front-left
-    (position -0.345697 0.332242 0.103979)
+    (position -0.325697 0.332242 0.104979)
     (model    "wheel-front-left.ac")
   )
   (wheel-rear-right
-    (position 0.440863 -0.384902 0.134979)
+    (position 0.390863 -0.324902 0.134979)
     (model    "wheel-rear-right.ac")
   )
   (wheel-rear-left
-    (position -0.440863 -0.384547 0.134979)
+    (position -0.390863 -0.324902 0.134979)
     (model    "wheel-rear-left.ac")
   )
 )

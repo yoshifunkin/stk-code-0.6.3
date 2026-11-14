@@ -1,19 +1,20 @@
 ;; -*- mode: lisp -*-
 
 (tuxkart-track
- (name        _("Around the Lighthouse"))
- (version     1)
- (description _("Created by Ingo Ruhnke,
+ (name           _("Around the Lighthouse"))
+ (version        1)
+ (description    _("Created by Ingo Ruhnke,
 modified by M. Gagnon"))
- (music       "ChillCarrier-Druckverlust.music")
- (screenshot  "sshot-lighthouse.rgb")
- (topview     "topview-lighthouse.rgb")
- (groups      "Standard")
- (use-fog     #t)
- (fog-color   0.0  0.54  0.5  0.43)
- (fog-density 0.009) 
- (fog-start   100) 
- (fog-end     300)
+ (default-laps   4)
+ (music          "ChillCarrier-Druckverlust.music")
+ (screenshot     "sshot-lighthouse.rgb")
+ (topview        "topview-lighthouse.rgb")
+ (groups         "Standard")
+ (use-fog        #t)
+ (fog-color      0.0  0.54  0.5  0.43)
+ (fog-density    0.009) 
+ (fog-start      100) 
+ (fog-end        300)
  (sun-position   55.72 -9.8 25.24 )
  (camera-final-position  -10 25 3 )
  (camera-final-hpr       -140 -7 0)

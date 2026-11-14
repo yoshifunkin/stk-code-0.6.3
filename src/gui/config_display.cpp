@@ -38,6 +38,7 @@ enum WidgetTokens
 
     WTOK_FULLSCREEN,
     WTOK_NEXT_BACKGROUND,
+    WTOK_PREV_BACKGROUND,
     WTOK_INCR_RES,
     WTOK_DECR_RES,
     WTOK_CURRENT_RES,
@@ -55,12 +56,12 @@ ConfigDisplay::ConfigDisplay()
     m_curr_height = m_sizes[m_curr_res].second;
 
     widget_manager->switchOrder();
-    widget_manager->addTitleWgt( WTOK_TITLE, 60, 7, _("Display Settings"));
+    widget_manager->addTitleWgt(WTOK_TITLE, 60, 7, _("Display Settings"));
     widget_manager->hideWgtRect(WTOK_TITLE);
     
-    if( isBlacklisted( m_curr_width, m_curr_height ))
+    if(isBlacklisted(m_curr_width, m_curr_height))
     {
-        widget_manager->addEmptyWgt( WTOK_FULLSCREEN, 1, 7);
+        widget_manager->addEmptyWgt(WTOK_FULLSCREEN, 1, 7);
 
         if (user_config->m_fullscreen)
         {
@@ -71,63 +72,66 @@ ConfigDisplay::ConfigDisplay()
     {
         if(user_config->m_fullscreen)
         {
-            widget_manager->addTextButtonWgt( WTOK_FULLSCREEN, 60, 7,
+            widget_manager->addTextButtonWgt(WTOK_FULLSCREEN, 60, 7,
                 _("Window mode"));
         }
         else
         {
-            widget_manager->addTextButtonWgt( WTOK_FULLSCREEN, 60, 7,
+            widget_manager->addTextButtonWgt(WTOK_FULLSCREEN, 60, 7,
                 _("Fullscreen mode"));
         }
     }
 
     widget_manager->addTextButtonWgt(WTOK_NEXT_BACKGROUND, 60, 7, _("Next background"));
-    widget_manager->addEmptyWgt( WidgetManager::WGT_NONE, 60, 2 );
+    // Soon, the display configuration menu will have 2 
+    // buttons to switch background. Since not everything is set, 
+    // I'll just keep these values here.
+    /** widget_manager->addTextButtonWgt(WTOK_NEXT_BACKGROUND, 60, 7, _(">"));
+        widget_manager->addTextButtonWgt(WTOK_PREV_BACKGROUND, 60, 7, _("<")); */
+    widget_manager->addEmptyWgt(WidgetManager::WGT_NONE, 60, 2);
 
     char msg [MAX_MESSAGE_LENGTH];
     //I18N: displays current resolution
-    snprintf( msg, MAX_MESSAGE_LENGTH, _("Current: %dx%d"), m_curr_width, m_curr_height );
-    widget_manager->addTextWgt( WTOK_CURRENT_RES, 60, 7, msg);
+    snprintf(msg, MAX_MESSAGE_LENGTH, _("Current: %dx%d"), m_curr_width, m_curr_height);
+    widget_manager->addTextWgt(WTOK_CURRENT_RES, 60, 7, msg);
     widget_manager->hideWgtRect(WTOK_CURRENT_RES);
 
-    widget_manager->addTextButtonWgt( WTOK_INCR_RES, 60, 7,
+    widget_manager->addTextButtonWgt(WTOK_INCR_RES, 60, 7,
         _("Increase Resolution"));
-    widget_manager->addTextButtonWgt( WTOK_DECR_RES, 60, 7,
+    widget_manager->addTextButtonWgt(WTOK_DECR_RES, 60, 7,
         _("Decrease Resolution"));
 
-    widget_manager->addEmptyWgt( WidgetManager::WGT_NONE, 1, 2 );
-    widget_manager->addTextButtonWgt( WTOK_APPLY_RES, 60, 7, _("Apply "));
-    widget_manager->addEmptyWgt( WidgetManager::WGT_NONE, 1, 2 );
+    widget_manager->addEmptyWgt(WidgetManager::WGT_NONE, 1, 2);
+    widget_manager->addTextButtonWgt(WTOK_APPLY_RES, 60, 7, _("Apply"));
+    widget_manager->addEmptyWgt(WidgetManager::WGT_NONE, 1, 2);
 
-    widget_manager->addEmptyWgt( WTOK_CLEAR_BLACKLIST, 60, 7);
-    widget_manager->setWgtText( WTOK_CLEAR_BLACKLIST,
-        _("Clear from Blacklist") );
+    widget_manager->addEmptyWgt(WTOK_CLEAR_BLACKLIST, 60, 7);
+    widget_manager->setWgtText(WTOK_CLEAR_BLACKLIST,
+        _("Clear from Blacklist"));
 
-    widget_manager->addEmptyWgt( WidgetManager::WGT_NONE, 1, 2 );
+    widget_manager->addEmptyWgt(WidgetManager::WGT_NONE, 1, 2);
 
-    widget_manager->addTextButtonWgt( WTOK_QUIT, 60, 7, _("Press <ESC> to go back"));
-    widget_manager->setWgtTextSize( WTOK_QUIT, WGT_FNT_SML );
+    widget_manager->addTextButtonWgt(WTOK_QUIT, 60, 7, _("Press <ESC> to go back"));
+    widget_manager->setWgtTextSize(WTOK_QUIT, WGT_FNT_SML);
 
-    widget_manager->layout( WGT_AREA_ALL );
-}
+    widget_manager->layout(WGT_AREA_ALL);
+}   // ConfigDisplay
 
 //-----------------------------------------------------------------------------
 ConfigDisplay::~ConfigDisplay()
 {
     widget_manager->reset();
-}
+}   // ~ConfigDisplay
 
 //-----------------------------------------------------------------------------
 void ConfigDisplay::select()
 {
-    switch ( widget_manager->getSelectedWgt() )
+    switch(widget_manager->getSelectedWgt())
     {
     case WTOK_FULLSCREEN:
         inputDriver->toggleFullscreen();
-        if( user_config->m_fullscreen )
-        {
-            menu_manager->pushMenu( MENUID_RESOLUTION_CONFIRM_WIN );
-        }
+        if(user_config->m_fullscreen)
+            menu_manager->pushMenu(MENUID_RESOLUTION_CONFIRM_WIN);
         else
         {
 #if defined(WIN32) ||defined(__CYGWIN__)
@@ -151,13 +155,17 @@ void ConfigDisplay::select()
         user_config->nextBackgroundIndex();
         main_loop->loadBackgroundImages();
         break;
+    case WTOK_PREV_BACKGROUND:
+        user_config->prevBackgroundIndex();
+        main_loop->loadBackgroundImages();
+        break;
     case WTOK_INCR_RES:
         {
             const int NUM_RES = (int)m_sizes.size();
             m_curr_res = std::min(NUM_RES - 1, m_curr_res + 1);
 
-            if ( user_config->m_fullscreen &&
-                isBlacklisted( m_curr_width, m_curr_height ))
+            if(user_config->m_fullscreen &&
+                isBlacklisted( m_curr_width, m_curr_height))
             {
                 showBlacklistButtons();
             }
@@ -167,8 +175,8 @@ void ConfigDisplay::select()
 
     case WTOK_DECR_RES:
         m_curr_res = std::max(0,m_curr_res-1);
-        if ( user_config->m_fullscreen &&
-            isBlacklisted( m_curr_width, m_curr_height ))
+        if(user_config->m_fullscreen &&
+            isBlacklisted(m_curr_width, m_curr_height))
         {
             showBlacklistButtons();
         }
@@ -176,23 +184,23 @@ void ConfigDisplay::select()
         break;
 
     case WTOK_APPLY_RES:
-        if (m_curr_width != m_sizes[m_curr_res].first ||
+        if(m_curr_width != m_sizes[m_curr_res].first ||
             m_curr_height != m_sizes[m_curr_res].second)
         {
             changeResolution(m_sizes[m_curr_res].first,m_sizes[m_curr_res].second/*, false*/);
 
-            if (user_config->m_fullscreen)
+            if(user_config->m_fullscreen)
             {
                 menu_manager->pushMenu(MENUID_RESOLUTION_CONFIRM_FS);
             }
             else
             {
-                char msg [MAX_MESSAGE_LENGTH];
+                char msg[MAX_MESSAGE_LENGTH];
                 snprintf (msg, MAX_MESSAGE_LENGTH, "Current: %dx%d",
                 user_config->m_width, user_config->m_height);
                 widget_manager->setWgtText(WTOK_CURRENT_RES, msg);
 
-                if ( isBlacklisted( user_config->m_width,
+                if(isBlacklisted( user_config->m_width,
                     user_config->m_height ))
                 {
                     widget_manager->hideWgtText(WTOK_FULLSCREEN);
@@ -208,7 +216,7 @@ void ConfigDisplay::select()
                 }
                 widget_manager->layout();
 
-                user_config->m_prev_width = m_curr_width = user_config->m_width;
+                user_config->m_prev_width  = m_curr_width  = user_config->m_width;
                 user_config->m_prev_height = m_curr_height = user_config->m_height;
             }
         }
@@ -220,23 +228,23 @@ void ConfigDisplay::select()
             int black_width, black_height = 0;
             int id = -1;
 
-            for ( int i = 0; i < NUM_BLACKLISTED; ++i )
+            for(int i=0; i<NUM_BLACKLISTED; ++i)
             {
                 sscanf(user_config->m_blacklist_res[i].c_str(),
                        "%dx%d",& black_width, & black_height);
 
-                if ( m_sizes[m_curr_res].first == black_width &&
-                     m_sizes[m_curr_res].second == black_height )
+                if(m_sizes[m_curr_res].first == black_width &&
+                   m_sizes[m_curr_res].second == black_height)
                 {
                     id = i;
                     break;
                 }
             }
 
-            if( id != -1 )
+            if(id!=(-1))
             {
-                user_config->m_blacklist_res.erase(
-                    user_config->m_blacklist_res.begin() + id );
+                user_config->m_blacklist_res.erase
+                (user_config->m_blacklist_res.begin()+id);
             }
             else
             {
@@ -255,7 +263,7 @@ void ConfigDisplay::select()
 
     default: break;
     }
-}
+}   // select
 
 //-----------------------------------------------------------------------------
 void ConfigDisplay::changeResolution(int width, int height/*, bool reverse*/)
@@ -290,14 +298,15 @@ void ConfigDisplay::changeResolution(int width, int height/*, bool reverse*/)
 
     inputDriver->setVideoMode();
     glViewport(0,0,user_config->m_width, user_config->m_height);
-}
+}   // changeResolution
 
+//-----------------------------------------------------------------------------
 /**This gets the available screen resolutions available on the hardware and
  * populates a vector with them.
  */
 void ConfigDisplay::getScreenModes()
 {
-    SDL_Rect **modes = SDL_ListModes( NULL, SDL_OPENGL | SDL_FULLSCREEN | SDL_HWSURFACE );
+    SDL_Rect **modes = SDL_ListModes(NULL, SDL_OPENGL | SDL_FULLSCREEN | SDL_HWSURFACE);
 
     if (modes == NULL)
     {
@@ -329,18 +338,18 @@ void ConfigDisplay::getScreenModes()
         const int MIN_HEIGHT = 480;
         const int NUM_RES = (int)m_sizes.size();
 
-        for (int i = NUM_RES - 1; i >= 0; --i)
+        for(int i = NUM_RES - 1; i >= 0; --i)
         {
-            if ( m_sizes[i].first < MIN_WIDTH )
+            if(m_sizes[i].first < MIN_WIDTH)
             {
                 //Remove the resolutions with a width smaller than MIN_WIDTH
-                m_sizes.erase( m_sizes.begin(), m_sizes.begin() + i + 1 );
+                m_sizes.erase(m_sizes.begin(), m_sizes.begin()+i+1);
                 break;
             }
-            else if ( m_sizes[i].first == MIN_WIDTH &&
-                m_sizes[i].second < MIN_HEIGHT )
+            else if(m_sizes[i].first == MIN_WIDTH &&
+                    m_sizes[i].second < MIN_HEIGHT)
             {
-                m_sizes.erase( m_sizes.begin(), m_sizes.begin() + i + 1 );
+                m_sizes.erase(m_sizes.begin(), m_sizes.begin()+i+1);
                 break;
             }
         }
@@ -351,10 +360,10 @@ void ConfigDisplay::getScreenModes()
     m_curr_res = -1;
     const int NUM_RES = (int)m_sizes.size();
 
-    for (int i = 0; i < NUM_RES; ++i)
+    for(int i=0; i<NUM_RES; ++i)
     {
-        if (m_sizes[i].first == user_config->m_width
-         && m_sizes[i].second == user_config->m_height)
+        if(m_sizes[i].first  == user_config->m_width
+        && m_sizes[i].second == user_config->m_height)
         {
             m_curr_res = i;
             return;
@@ -362,7 +371,7 @@ void ConfigDisplay::getScreenModes()
     }
 
     m_curr_res = 0;
-}
+}   // getScreenModes
 
 //-----------------------------------------------------------------------------
 void ConfigDisplay::changeApplyButton()
@@ -409,9 +418,9 @@ void ConfigDisplay::showBlacklistButtons()
     widget_manager->deactivateWgt(WTOK_APPLY_RES);
 
     //show Remove from blacklist button
-    widget_manager->showWgtRect( WTOK_CLEAR_BLACKLIST);
-    widget_manager->showWgtText( WTOK_CLEAR_BLACKLIST);
-    widget_manager->activateWgt( WTOK_CLEAR_BLACKLIST);
+    widget_manager->showWgtRect(WTOK_CLEAR_BLACKLIST);
+    widget_manager->showWgtText(WTOK_CLEAR_BLACKLIST);
+    widget_manager->activateWgt(WTOK_CLEAR_BLACKLIST);
 }
 
 /** loadDefaultModes() populates our list of resolutios manually, sorted from
@@ -424,15 +433,15 @@ void ConfigDisplay::loadDefaultModes()
 {
     m_sizes.clear();
 
-    m_sizes.push_back( std::pair <int, int> (800, 600) );  // 4:3
-    m_sizes.push_back( std::pair <int, int> (1024, 768) ); // 4:3
-    m_sizes.push_back( std::pair <int, int> (1152, 864) ); // 4:3
-    m_sizes.push_back( std::pair <int, int> (1280, 768) ); // 5:3
-    m_sizes.push_back( std::pair <int, int> (1280, 800) ); // 8:5
-    m_sizes.push_back( std::pair <int, int> (1280, 960) ); // 4:3
-    m_sizes.push_back( std::pair <int, int> (1280, 1024) );// 5:4
-    m_sizes.push_back( std::pair <int, int> (1440, 900) ); // 8:5
-    m_sizes.push_back( std::pair <int, int> (1680, 1050) );// 8:5
-    m_sizes.push_back( std::pair <int, int> (1920, 1200) );// 8:5
+    m_sizes.push_back(std::pair <int, int> (800, 600));  // 4:3
+    m_sizes.push_back(std::pair <int, int> (1024, 768)); // 4:3
+    m_sizes.push_back(std::pair <int, int> (1152, 864)); // 4:3
+    m_sizes.push_back(std::pair <int, int> (1280, 768)); // 5:3
+    m_sizes.push_back(std::pair <int, int> (1280, 800)); // 8:5
+    m_sizes.push_back(std::pair <int, int> (1280, 960)); // 4:3
+    m_sizes.push_back(std::pair <int, int> (1280, 1024));// 5:4
+    m_sizes.push_back(std::pair <int, int> (1440, 900)); // 8:5
+    m_sizes.push_back(std::pair <int, int> (1680, 1050));// 8:5
+    m_sizes.push_back(std::pair <int, int> (1920, 1200));// 8:5
 };
 

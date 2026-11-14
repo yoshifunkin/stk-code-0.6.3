@@ -111,7 +111,7 @@ void StaticSSG::Distribute(ssgEntity* p, sgMat4 m)
     if(p->isAKindOf(ssgTypeLeaf()))
     {
         ssgLeaf* l=(ssgLeaf*)p;
-        if (material_manager->getMaterial(l)->isIgnore())return;
+        if(material_manager->getMaterial(l)->isIgnore())return;
         for(int i=0; i<l->getNumTriangles(); i++)
         {
             short v1,v2,v3;
@@ -119,9 +119,9 @@ void StaticSSG::Distribute(ssgEntity* p, sgMat4 m)
 
             l->getTriangle(i, &v1, &v2, &v3);
 
-            sgXformPnt3 ( vv1, l->getVertex(v1), m );
-            sgXformPnt3 ( vv2, l->getVertex(v2), m );
-            sgXformPnt3 ( vv3, l->getVertex(v3), m );
+            sgXformPnt3(vv1, l->getVertex(v1), m);
+            sgXformPnt3(vv2, l->getVertex(v2), m);
+            sgXformPnt3(vv3, l->getVertex(v3), m);
             StoreTriangle(l, i, vv1, vv2, vv3);
         }   // for i<p->getNumTriangles
     }

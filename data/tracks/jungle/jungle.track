@@ -4,6 +4,7 @@
  (name                   _("Amazonian Journey"))
  (version                1)
  (designer               "M. Gagnon")
+ (default-laps           2)
  (music                  "amazon_jungle.music")
  (screenshot             "sshot-jungle.rgb")
  (topview                "topview-jungle.rgb")

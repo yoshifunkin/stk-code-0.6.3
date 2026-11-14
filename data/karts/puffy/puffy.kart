@@ -6,13 +6,13 @@
   (shadow-file  "puffy-shadow.rgb")
   (groups       "Standard")
   (engine-sound "small")
-  (rgb         0.125000 0.500000 0.125000)
+  (rgb          0.125000 0.500000 0.125000)
   (wheel-front-right
-    (position 0.500000 0.500000 0.140000)
+    (position 0.41000 0.500000 0.140000)
     (model    "wheel-front-right.ac")
   )
   (wheel-front-left
-    (position -0.400000 0.500000 0.140000)
+    (position -0.41000 0.500000 0.140000)
     (model    "wheel-front-left.ac")
   )
   (wheel-rear-right
