@@ -2,9 +2,21 @@ SuperTuxKart - 0.6.3 - DEV
 ==============================
 Visit SuperTuxKart at : http://supertuxkart.sourceforge.net
 
+SuperTuxKart 0.6.3 Administrators:
+----------------------------------
 
-SuperTuxKart Administrators:
-----------------------------
+YoshiFunkin'
+- Project leader
+- Programming
+- Backported karts and tracks
+
+P1ngvin
+- Backported karts and tracks
+- Add-ons
+
+
+Original SuperTuxKart 0.6.2 Administrators:
+-------------------------------------
 
 Joerg Henrichs (hiker)
 - Project leader
@@ -70,7 +82,7 @@ Marianne Gagnon (Auria)
 - 'Amazonian Journey' track
 - 'Fort Magma' track (based on previous track 'BSOD castle' from original TuxKart) (modified by conso)
 - 'Crescent Crossing' track (Based on previous track 'little volcano' from GOTM contributors)
-- New icon
+- New icons
 
 Frederico de Oliveira Linhares
 - Hexley the platypus character (modified and arranged with modified Wilber-kart by conso)
@@ -105,7 +117,7 @@ Ivar ten Cate (Varivar)
 - Tux Tollway track
 
 Robert Howie
-- Skyline Track  (with modifications by conso)
+- Skyline Track (with modifications by conso)
 
 Canis Lupus
 - Snow Mountain track
@@ -245,7 +257,6 @@ Eduardo Hernandez Munoz (Coz) (former Co-admin)
 
 Maik Semder (Ikework)
 - Bug fixes
-
 
 
 Game of the Month, STK version 0.0.0

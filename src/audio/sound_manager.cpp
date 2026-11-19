@@ -43,7 +43,7 @@ SoundManager::SoundManager()
     m_current_music= NULL;
     setMasterMusicVolume(0.7f);
 
-    ALCdevice* device = alcOpenDevice ( NULL ); //The default sound device
+    ALCdevice* device = alcOpenDevice(NULL); //The default sound device
     if( device == NULL )
     {
         fprintf(stderr, "WARNING: Could not open the default sound device.\n");
@@ -52,16 +52,16 @@ SoundManager::SoundManager()
     else
     {
 
-        ALCcontext* context = alcCreateContext( device, NULL );
+        ALCcontext* context = alcCreateContext(device, NULL);
 
-        if( context == NULL )
+        if(context == NULL)
         {
             fprintf(stderr, "WARNING: Could not create a sound context.\n");
             m_initialized = false;
         }
         else
         {
-            alcMakeContextCurrent( context );
+            alcMakeContextCurrent(context);
             m_initialized = true;
         }
     }
@@ -79,12 +79,12 @@ SoundManager::~SoundManager()
     if(m_initialized)
     {
         ALCcontext* context = alcGetCurrentContext();
-        ALCdevice* device = alcGetContextsDevice( context );
+        ALCdevice* device = alcGetContextsDevice(context);
 
-        alcMakeContextCurrent( NULL );
-        alcDestroyContext( context );
+        alcMakeContextCurrent(NULL);
+        alcDestroyContext(context);
 
-        alcCloseDevice( device );
+        alcCloseDevice(device);
     }
 }   // ~SoundManager
 

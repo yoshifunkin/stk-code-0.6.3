@@ -370,46 +370,66 @@ void RaceGUI::drawPlayerIcons(const KartIconDisplayInfo* info)
     glEnable(GL_TEXTURE_2D);
     Material *last_players_gst = NULL;
     glDisable(GL_CULL_FACE);
-    
+
     Kart* kart;
     const unsigned int kart_amount = race_manager->getNumKarts();
     const unsigned int max_on_screen = 8;
-    
-    unsigned int drawn = 0;
+
+    Kart* display_karts[8];
+    float icon_sizes[8];
+    float icon_y[8];
     unsigned int non_eliminated = 0;
-    
-    // First, count the karts that are doing the race 
-    // (i.e in FTL, the non-eliminated karts).
-    for(unsigned int i=0; i<kart_amount; ++i)
+    for(unsigned int slot=0; slot<max_on_screen; ++slot)
     {
-        kart = RaceManager::getKart(i);
-        if(!kart->isEliminated())
-            ++non_eliminated;
+        display_karts[slot] = NULL;
+        icon_sizes[slot] = ICON_PLAYER_WIDTH;
     }
+
+    for(unsigned int i=0; i<kart_amount; ++i)
+        if(!RaceManager::getKart(i)->isEliminated())
+            ++non_eliminated;
 
     // Draw "Top 8" above icons when there are more than 8 karts driving.
     if(non_eliminated > max_on_screen)
         font_race->PrintShadow("Top 8", 30*minRatio, x, (600-35)*minRatio);
-    
-    // Since, drawn starts at 0, we have to give a max of 7, because the 1st kart
-    // will be counted as 0 in drawn.
-    for(unsigned int pos=1; drawn<max_on_screen && pos<=kart_amount; ++pos)
-    {
-        int i = -1;
-        for(unsigned int j=0; j<kart_amount; ++j)
-        {
-            kart = RaceManager::getKart(j);
-            if(!kart->isEliminated() && pos == kart->getPosition())
-            {
-                i = j;
-                break;
-            }
-        }
-        if(i == -1) continue;
 
-        y = viewport[3]*0.85f-(drawn*(ICON_PLAYER_WIDTH+(2*minRatio)));
+    // Reserve a row based on each kart's position, or its index if unranked.
+    for(unsigned int i=0; i<kart_amount; ++i)
+    {
+        kart = RaceManager::getKart(i);
+        if(kart->isEliminated()) continue;
+
+        const int pos = kart->getPosition();
+        if(pos > (int)max_on_screen) continue;
+
+        const int slot = pos == -1 ? (int)i : pos-1;
+        if(slot < 0 || slot >= (int)max_on_screen)
+            continue;
+
+        icon_sizes[slot] = kart->isPlayerKart() ?
+            ICON_PLAYER_WIDTH : ICON_WIDTH;
+    }
+
+    icon_y[0] = viewport[3]*0.85f;
+    for(unsigned int slot=1; slot<max_on_screen; ++slot)
+        icon_y[slot] = icon_y[slot-1]-icon_sizes[slot]-(10*minRatio);
+
+    // Draw karts in world order, using the reference's position-based rows.
+    for(unsigned int i=0; i<kart_amount; ++i)
+    {
+        kart = RaceManager::getKart(i);
+        if(kart->isEliminated()) continue;
+
+        const int pos = kart->getPosition();
+        if(pos > (int)max_on_screen) continue;
+
+        const int slot = pos == -1 ? (int)i : pos-1;
+        if(slot < 0 || slot >= (int)max_on_screen) continue;
+
+        y = icon_y[slot];
 
         GLfloat COLOR[] = {info[i].r, info[i].g, info[i].b, 1.0f};
+        glDisable(GL_CULL_FACE);
         font_race->PrintShadow(info[i].time.c_str(), 30*minRatio, ICON_PLAYER_WIDTH+x, y+5*ratio_y, COLOR);
 
         if(info[i].special_title.length()>0)
@@ -451,29 +471,29 @@ void RaceGUI::drawPlayerIcons(const KartIconDisplayInfo* info)
         }
         glEnd();
         // draw position (1st, 2nd...)
-        glDisable(GL_CULL_FACE);
-        char str[256];
-        sprintf(str, "%d", pos);
-            font_race->PrintShadow(str, 27*minRatio, x-7*minRatio, y-4*minRatio);
-        if(pos == 1)
-            font_race->PrintShadow("st", (13*minRatio),
-                                   x-7*minRatio + (17*minRatio),
-                                   y-5*minRatio + (17*minRatio));
-        else if(pos == 2)
-            font_race->PrintShadow("nd", (13*minRatio),
-                                   x-7*minRatio + (17*minRatio),
-                                   y-5*minRatio + (17*minRatio));
-        else if(pos == 3)
-            font_race->PrintShadow("rd", (13*minRatio),
-                                   x-7*minRatio + (17*minRatio),
-                                   y-5*minRatio + (17*minRatio));
-        else
-            font_race->PrintShadow("th", (13*minRatio),
-                                   x-7*minRatio + (17*minRatio),
-                                   y-5*minRatio + (17*minRatio));
-
-        // Draw everything until it hits the 8th position.
-        drawn++;
+        if(pos != -1 && race_manager->getMinorMode() != RaceManager::MINOR_MODE_3_STRIKES)
+        {
+            glDisable(GL_CULL_FACE);
+            char str[256];
+            sprintf(str, "%d", pos);
+                font_race->PrintShadow(str, 27*minRatio, x-7*minRatio, y-4*minRatio);
+            if(pos == 1)
+                font_race->PrintShadow("st", (13*minRatio),
+                                       x-7*minRatio + (17*minRatio),
+                                       y-5*minRatio + (17*minRatio));
+            else if(pos == 2)
+                font_race->PrintShadow("nd", (13*minRatio),
+                                       x-7*minRatio + (17*minRatio),
+                                       y-5*minRatio + (17*minRatio));
+            else if(pos == 3)
+                font_race->PrintShadow("rd", (13*minRatio),
+                                       x-7*minRatio + (17*minRatio),
+                                       y-5*minRatio + (17*minRatio));
+            else
+                font_race->PrintShadow("th", (13*minRatio),
+                                       x-7*minRatio + (17*minRatio),
+                                       y-5*minRatio + (17*minRatio));
+        }
     } // next kart
     glEnable(GL_CULL_FACE);
 }   // drawPlayerIcons
@@ -495,7 +515,7 @@ void RaceGUI::drawPowerupIcons(Kart* player_kart, int offset_x, int offset_y,
     float x = (float)(offset_x + ((800/2-8)*ratio_x)-(n*(minRatio*30))/2);
     float y = (float)(offset_y + (600*5/6)*ratio_y);
 
-    float nSize = 64*minRatio;
+    float nSize = 64*ratio_y;
     powerup->getIcon()->apply();
 
     if(n>7) n=7;
@@ -666,10 +686,9 @@ void RaceGUI::drawEnergyMeter(Kart *player_kart, int offset_x, int offset_y,
 void RaceGUI::drawSpeed(Kart* kart, int offset_x, int offset_y,
                         float ratio_x, float ratio_y)
 {
-    float minRatio = std::min(ratio_x, ratio_y);
-    const int SPEEDWIDTH = 120;
-    int width  = (int)(SPEEDWIDTH*minRatio);
-    int height = (int)(SPEEDWIDTH*minRatio);
+    const int SPEEDWIDTH = 128;
+    int width  = (int)(SPEEDWIDTH*ratio_y);
+    int height = (int)(SPEEDWIDTH*ratio_y);
     offset_x += (int)((800*ratio_x-10)) - width;
     offset_y += (int)(10*ratio_y);
 
@@ -748,8 +767,9 @@ void RaceGUI::drawSpeed(Kart* kart, int offset_x, int offset_y,
 } // drawSpeed
 
 //-----------------------------------------------------------------------------
-void RaceGUI::drawLap(const KartIconDisplayInfo* info, Kart* kart, 
-                      int offset_x, int offset_y, float ratio_x, float ratio_y)
+void RaceGUI::drawLapAndRank(const KartIconDisplayInfo* info, Kart* kart, 
+                            int offset_x, int offset_y, float ratio_x, 
+                            float ratio_y)
 {
     // Don't display laps in follow the leader mode.
     if(!RaceManager::getWorld()->raceHasLaps()) return;
@@ -784,7 +804,7 @@ void RaceGUI::drawLap(const KartIconDisplayInfo* info, Kart* kart,
         sprintf(str, "%d/%d", lap<0 ? 0 : lap+1, race_manager->getNumLaps());
         font_race->PrintShadow(str, size, (float)offset_x, (float)offset_y);
     }
-} // drawLap
+} // drawLapAndRank
 
 //-----------------------------------------------------------------------------
 /** Removes messages which have been displayed long enough. This function
@@ -1025,7 +1045,8 @@ void RaceGUI::drawStatusText(const float dt)
 
             if(player_kart->hasViewBlockedByPlunger())
             {
-                int plunger_size = viewport_height;
+                int plunger_size = numPlayers == 2 ? user_config->m_width/2 
+                                                   : viewport_height;
                 int screen_width = viewport_width;
                 int plunger_x = offset_x + screen_width/2 - plunger_size/2;
 
@@ -1044,7 +1065,7 @@ void RaceGUI::drawStatusText(const float dt)
                                  split_screen_ratio_x, split_screen_ratio_y);
             drawSpeed           (player_kart, offset_x, offset_y,
                                  split_screen_ratio_x, split_screen_ratio_y);
-            drawLap             (info, player_kart, offset_x, offset_y,
+            drawLapAndRank      (info, player_kart, offset_x, offset_y,
                                  split_screen_ratio_x, split_screen_ratio_y);
             drawAllMessages     (player_kart, offset_x, offset_y,
                                  split_screen_ratio_x, split_screen_ratio_y);

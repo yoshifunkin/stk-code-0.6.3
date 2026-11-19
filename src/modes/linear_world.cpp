@@ -602,7 +602,7 @@ void LinearWorld::updateRacePosition(Kart* kart, KartInfo& kart_info)
         if(!kart->hasFinishedRace() && m_kart[j]->hasFinishedRace()) {p++; continue;}
 
         /* has done more or less lapses */
-        assert(j==m_karts[j]->getWorldKartId());
+        assert(j==m_kart[j]->getWorldKartId());
         int other_laps = getLapForKart(j);
         if (other_laps !=  my_laps)
         {

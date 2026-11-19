@@ -205,10 +205,17 @@ void SFXManager::loadSingleSfx(const lisp::Lisp* lisp,
 SFXBase *SFXManager::newSFX(SFXType id)
 {
     bool positional = false;
+    float gain = m_sfx_gain[id];
     if(race_manager->getNumLocalPlayers() < 2)
-        positional = m_sfx_positional[id]!=0;
+        positional = m_sfx_positional[id]!=0; 
+    else
+    {
+        positional = false;
+        gain /= race_manager->getNumLocalPlayers();
+        
+    }
 
-    SFXBase *p=new SFXOpenAL(m_sfx_buffers[id], positional, m_sfx_rolloff[id], m_sfx_gain[id]);
+    SFXBase *p=new SFXOpenAL(m_sfx_buffers[id], positional, m_sfx_rolloff[id], gain);
     m_all_sfx.push_back(p);
     return p;
 }   // newSFX

@@ -1,43 +1,33 @@
-; Before you start you will need the shelllink plugin for NSIS
-; Download it from the nsis webpage, and unzip it in the NSIS
-; install dir.
-;
-; To use just put this in a directory below the supertuxkart directory
-; which should be called "supertuxkart" and then copy the
-; GPL in the supertuxkart directory to 'license.txt'.
-; Next to supertuxkart create a subdirectory called 'prerequisites'
-; and copy the VC++ (vcredist_x86.exe) and OpenAL (oalinst.exe) 
-; redistributables.
-; You will then need to make an icon, you can use:
-; http://tools.dynamicdrive.com/favicon/ to convert a png to an icon.
-; Once you have made an icon put it in the supertuxkart dir and call it
-; icon.ico. You will need to do the same for install.ico nd uninstall.ico
-; Once there done then all you need to do is compile with NSIS.
+;--------------------------------------------------------------------------
+; To use just install NSIS 3.x and compile.
+; Just be careful to select the good vcredist_86.exe here
+; since the game can be compiled using VC9 or VC10
+;(either rename the file here or in the dir).
 
 ;--------------------------------
-;Include Modern UI
+; Include Modern UI 2
 
-  !include "MUI.nsh"
+  !include "MUI2.nsh"
 
 ;--------------------------------
-;General
+; General
 
   ;Name and file
-  Name "SuperTuxKart 0.6.3-Alpha-3a"
-  OutFile "supertuxkart-0.6.3-alpha3a-win.exe"
+  Name "SuperTuxKart 0.6.3 Alpha-4"
+  OutFile "supertuxkart-0.6.3-alpha4-win.exe"
 
   ;Default installation folder
-  InstallDir "$PROGRAMFILES\SuperTuxKart"
+  InstallDir "$PROGRAMFILES\SuperTuxKart 0.6.3 Alpha-4"
 
   ;Get installation folder from registry if available
-  InstallDirRegKey HKCU "Software\SuperTuxKart" ""
+  InstallDirRegKey HKCU "Software\SuperTuxKart 0.6.3 Alpha-4" ""
 
   ;Sets the text in the bottom corner
-  BrandingText "SuperTuxKart 0.6.3a Installer"
+  BrandingText "SuperTuxKart 0.6.3 Installer"
 
   ;Set the icon
-  !define MUI_ICON "SuperTuxKart\install.ico"
-  !define MUI_UNICON "SuperTuxKart\uninstall.ico"
+  !define MUI_ICON "install.ico"
+  !define MUI_UNICON "uninstall.ico"
 
   ;Sets the compressor to /SOLID lzma which when I tested was the best
   SetCompressor /SOLID lzma
@@ -46,105 +36,124 @@
   RequestExecutionLevel admin
 
 ;--------------------------------
-;Variables
+; Variables
 
   Var MUI_TEMP
   Var STARTMENU_FOLDER
 
 ;--------------------------------
-;Interface Settings
+; Interface Settings
 
   !define MUI_ABORTWARNING
 
 ;--------------------------------
-;Pages
+; Pages
 
-  ;Installer pages
+  ; Installer pages
   !insertmacro MUI_PAGE_WELCOME
-  !insertmacro MUI_PAGE_LICENSE "SuperTuxKart\License.txt"
+  !insertmacro MUI_PAGE_LICENSE "..\..\LICENSE.md"
   !insertmacro MUI_PAGE_DIRECTORY
 
-  ;Start Menu Folder Page Configuration
+  ; Start Menu Folder Page Configuration
   !define MUI_STARTMENUPAGE_REGISTRY_ROOT "HKCU"
-  !define MUI_STARTMENUPAGE_REGISTRY_KEY "Software\SuperTuxKart"
+  !define MUI_STARTMENUPAGE_REGISTRY_KEY "Software\SuperTuxKart 0.6.3 Alpha-4"
   !define MUI_STARTMENUPAGE_REGISTRY_VALUENAME "Start Menu Folder"
   !insertmacro MUI_PAGE_STARTMENU Application $STARTMENU_FOLDER
 
   !insertmacro MUI_PAGE_INSTFILES
   !insertmacro MUI_PAGE_FINISH
 
-
-  ;Uninstaller pages
+  ; Uninstaller pages
   !insertmacro MUI_UNPAGE_WELCOME
   !insertmacro MUI_UNPAGE_CONFIRM
   !insertmacro MUI_UNPAGE_INSTFILES
   !insertmacro MUI_UNPAGE_FINISH
 
 ;--------------------------------
-;Languages
+; Languages
 
   !insertmacro MUI_LANGUAGE "English"
 
 ;--------------------------------
-;Installer Sections
+; Installer Sections
 
 Section "Main Section" SecMain
 
   SetOutPath "$INSTDIR"
 
-  ;Adds all the tux kart files
-  File /r supertuxkart\*.*
+  ; Adds all the supertuxkart files
+  File /r "..\..\*.dll"
+  File /r "..\..\supertuxkart.exe"
+  File /r "..\..\TODO"
+  File /r "..\..\README.md"
+  File /r "icon.ico"
+  File /r "install.ico"
+  File /r "uninstall.ico"
+  File /r "..\..\INSTALL.md"
+  File /r "..\..\LICENSE.md"
+  File /r "..\..\ChangeLog.md"
+  File /r "..\..\data"
+  
+  SetOutPath $INSTDIR\doc
+  
+  File /r "..\..\doc\challenges_dependencies.odg"
+  File /r "..\..\doc\conventions.txt"
+  File /r "..\..\doc\implementation.txt"
+  File /r "..\..\doc\robots.txt"
+  
+  SetOutPath $INSTDIR
+  
+  ; Store installation folder
+  WriteRegStr HKCU "Software\SuperTuxKart 0.6.3 Alpha-4" "" $INSTDIR
 
-  ;Store installation folder
-  WriteRegStr HKCU "Software\SuperTuxKart" "" $INSTDIR
-
-  ;Create uninstaller
+  ; Create uninstaller
   WriteUninstaller "$INSTDIR\Uninstall.exe"
 
   !insertmacro MUI_STARTMENU_WRITE_BEGIN Application
 
-    ;Create shortcuts
+    ; Create shortcuts
     CreateDirectory "$SMPROGRAMS\$STARTMENU_FOLDER"
     CreateShortCut "$SMPROGRAMS\$STARTMENU_FOLDER\Uninstall.lnk" "$INSTDIR\Uninstall.exe" "" "$INSTDIR\uninstall.ico"
-    CreateShortCut "$SMPROGRAMS\$STARTMENU_FOLDER\Run.lnk" "$INSTDIR\supertuxkart.exe" "" "$INSTDIR\icon.ico"
-    ShellLink::SetShortCutShowMode $SMPROGRAMS\$STARTMENU_FOLDER\Run.lnk 0
+    CreateShortCut "$SMPROGRAMS\$STARTMENU_FOLDER\SuperTuxKart 0.6.3 Alpha-4.lnk" "$INSTDIR\supertuxkart.exe" "" "$INSTDIR\icon.ico"
 
   !insertmacro MUI_STARTMENU_WRITE_END
 
 SectionEnd
 
 Section -Prerequisites
-  SetOutPath $INSTDIR\Prerequisites
+  ; Be careful to select the good vcredist_86.exe here
+  ; since the game can be compiled using VC9 or VC10
+  ; (either rename the file here or in the dir)
+  SetOutPath $INSTDIR\prerequisites
   MessageBox MB_YESNO "Install Microsoft VC++ runtime libraries?" /SD IDYES IDNO endVC
-    File "prerequisites\vcredist_x86.exe"
+    File "..\..\prerequisites\vcredist_x86.exe"
     ExecWait "$INSTDIR\Prerequisites\vcredist_x86.exe"
     Goto endVC
   endVC:
   MessageBox MB_YESNO "Install OpenAL sound libraries?" /SD IDYES IDNO endOA
-    File "prerequisites\oalinst.exe"
+    File "..\..\prerequisites\oalinst.exe"
     ExecWait "$INSTDIR\Prerequisites\oalinst.exe"
     Goto endOA
   endOA:
 SectionEnd
 ;--------------------------------
-;Uninstaller Section
+; Uninstaller Section
 
 Section "Uninstall"redist
 
-  ;Removes all the supertuxkart data files
+  ; Removes all the supertuxkart data files
   RMDir /r /REBOOTOK $INSTDIR
 
   Delete "$INSTDIR\Uninstall.exe"
   RMDir "$INSTDIR"
 
-
-  ;Remove start menuy items
+  ; Remove start menu items
   !insertmacro MUI_STARTMENU_GETFOLDER Application $MUI_TEMP
 
   Delete "$SMPROGRAMS\$MUI_TEMP\Uninstall.lnk"
-  Delete "$SMPROGRAMS\$MUI_TEMP\Run.lnk"
+  Delete "$SMPROGRAMS\$MUI_TEMP\SuperTuxKart 0.6.3 Alpha-4.lnk"
 
-  ;Delete empty start menu parent diretories
+  ; Delete empty start menu parent diretories
   StrCpy $MUI_TEMP "$SMPROGRAMS\$MUI_TEMP"
 
   startMenuDeleteLoop:
@@ -157,8 +166,7 @@ Section "Uninstall"redist
     StrCmp $MUI_TEMP $SMPROGRAMS startMenuDeleteLoopDone startMenuDeleteLoop
   startMenuDeleteLoopDone:
 
-
-  DeleteRegKey /ifempty HKCU "Software\SuperTuxKart"
+  DeleteRegKey /ifempty HKCU "Software\SuperTuxKart 0.6.3 Alpha-4"
 
 SectionEnd
 

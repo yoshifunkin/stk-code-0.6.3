@@ -103,8 +103,8 @@
     ;; Bullet physics attributes:
 	;; --------------------------
     (brake-factor              11.0)
-    ;; Defines the smallest turn radius at lowest speed (4.64 m at
-    ;; speed 0) and at high speed (13.5 m at speed 12 m/s). Maximum
+    ;; Defines the smallest turn radius at lowest speed (6.64 m at
+    ;; speed 0) and at high speed (21.5 m at speed 15 m/s). Maximum
     ;; steering angles for speeds in between will be interpolated. This 
     ;; allows for tighter turns at lower speeds. The actual steering
     ;; angle is dependent on the wheel base of the kart:
@@ -120,7 +120,7 @@
     ;; hard, medium, low level order!
     (max-speed         32.5  27  22) ;; ≃ 117 97 78 km/h 
     (mass                     225.0)
-    (suspension-stiffness      51.0)
+    (suspension-stiffness      48.0)
     (wheel-damping-relaxation  20.0)
     (wheel-damping-compression 4.40)
     (friction-slip         10000000)

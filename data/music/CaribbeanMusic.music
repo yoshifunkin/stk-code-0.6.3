@@ -3,6 +3,7 @@
   (enable-fast #t                  )
   (composer    "Dr.Sternhagel"     )
   (music       "CaribbeanMusic.ogg")
-  (loop        10                  )
+  (loop        10  )
+  (max-pitch   0.09)
 )
 

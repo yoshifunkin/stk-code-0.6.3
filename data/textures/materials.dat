@@ -148,7 +148,6 @@
 "tinytux.rgb"               Y Y    Y    0.8    N     N    1.0   Y   N   N   N
 "butterfly.rgb"             Y Y    Y    0.8    N     N    1.0   Y   N   N   N
 "track2.rgb"                N N    N    0.0    Y     N    0.0000003 N N N   Y
-"zipper_collect.rgb"        N N    N    0.0    N     N    1.0   N   Y   N   N
 "zipper.rgb"                N N    N    0.0    N     N    1.0   N   Y   N   N
 "banana.rgb"                N N    N    0.5    Y     N    1.0   N   N   N   Y
 "bananawrap.rgb"            Y Y    Y    0.5    N     N    1.0   N   Y   N   N
@@ -215,6 +214,7 @@
 "bubblegum-icon.rgb"        N N    Y    0.0    N     N    1.0   N   N   N   Y
 "cake-icon.rgb"             N N    Y    0.0    N     N    1.0   N   N   N   Y
 "plunger-icon.rgb"          N N    Y    0.0    N     N    1.0   N   N   N   Y
+"zipper_collect.rgb"        N N    Y    0.0    N     N    1.0   N   Y   N   N
 "plungerface.rgb"           N N    Y    0.0    N     N    1.0   N   N   N   Y
 "nitro-tank.rgb"            N Y    Y    0.5    Y     N    1.0   N   N   N   Y
 "parachutetexture.rgb"      N N    N    0.0    Y     N    1.0   Y   N   N   N

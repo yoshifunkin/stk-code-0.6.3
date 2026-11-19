@@ -129,7 +129,7 @@ private:
     void cleanupMessages       (const float dt);
     void drawSpeed             (Kart* kart, int offset_x, int offset_y,
                                 float ratio_x, float ratio_y);
-    void drawLap               (const KartIconDisplayInfo* info, Kart* kart, 
+    void drawLapAndRank        (const KartIconDisplayInfo* info, Kart* kart, 
                                 int offset_x,  int offset_y,
                                 float ratio_x, float ratio_y);
 };
