@@ -17,9 +17,9 @@
   
   ;; Three lists which must have the same length, containing the list of all
   ;; possible main menu, background images and title musics.
-  (mainmenu-background      "st_title_screen.rgb" "st_title_screen_2.rgb" "st_title_screen_3.rgb")
-  (menu-background          "menu_background.rgb" "menu_background_2.rgb" "menu_background_3.rgb")
-  (title-music              "MayDayMayhem.music"   "MayDayMayhem.music"      "old_theme.music"   )
+  (mainmenu-background      "st_title_screen.rgb" "st_title_screen_2.rgb" "st_title_screen_3.rgb" "st_title_screen_4.rgb")
+  (menu-background          "menu_background.rgb" "menu_background_2.rgb" "menu_background_3.rgb" "menu_background_4.rgb")
+  (title-music              "MayDayMayhem.music"   "MayDayMayhem.music"    "MayDayMayhem.music"      "old_theme.music"   )
   
   (max-history                1000)   ;; Maximum number of history frames.
   (max-skidmarks              1000)   ;; Maximum number of skidmarks per kart.
