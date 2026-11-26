@@ -419,6 +419,14 @@ const Vec3& Track::trackToSpatial(const int SECTOR) const
 }   // trackToSpatial
 
 //-------------------------------------------------------------------------------------------------
+float Track::getAngleToNext(int from, int to) const
+{
+    float dx = m_driveline[to].getX() - m_driveline[from].getX();
+    float dy = m_driveline[to].getY() - m_driveline[from].getY();
+    return -atan2(dx, dy);
+}   // getAngleToNext
+
+//-------------------------------------------------------------------------------------------------
 /** Returns the start coordinates for a kart on a given position pos
  *  (with pos ranging from 0 to kart_num-1).
  */
@@ -761,11 +769,7 @@ void Track::loadDriveline()
     for(unsigned int i=0; i<DRIVELINE_SIZE; ++i)
     {
         unsigned int next = i+1 >= DRIVELINE_SIZE ? 0 : i+1;
-        float dx = m_driveline[next].getX() - m_driveline[i].getX();
-        float dy = m_driveline[next].getY() - m_driveline[i].getY();
-
-        float theta = -atan2(dx, dy);
-        m_angle.push_back(theta);
+        m_angle.push_back(getAngleToNext(i, next));
     }
 
     m_driveline_min = Vec3( SG_MAX/2.0f);

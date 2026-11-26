@@ -68,45 +68,45 @@ DefaultRobot::DefaultRobot(const std::string& kart_name,
     m_track = RaceManager::getTrack();
     m_world = dynamic_cast<LinearWorld*>(RaceManager::getWorld());
     assert(m_world != NULL);
-    
+
     switch(race_manager->getDifficulty())
     {
-    case RaceManager::RD_EASY:
-        m_wait_for_players   = true;
-        m_max_handicap_accel = 0.9f;
-        m_fallback_tactic    = FT_AVOID_TRACK_CRASH;
-        m_item_tactic        = IT_TEN_SECONDS;
-        m_max_start_delay    = 0.5f;
-        m_min_steps          = 0;
-        m_skidding_threshold = 4.0f;
-        m_nitro_level        = NITRO_NONE;
-        m_handle_bomb        = false;
-        break;
-    case RaceManager::RD_MEDIUM:
-        m_wait_for_players   = true;
-        m_max_handicap_accel = 0.95f;
-        // FT_PARALLEL had problems on some tracks when suddenly a smaller 
-        // section occurred (e.g. bridge in stone track): the AI would drive
-        // over and over into the river
-        m_fallback_tactic    = FT_FAREST_POINT;
-        m_item_tactic        = IT_CALCULATE;
-        m_max_start_delay    = 0.4f;
-        m_min_steps          = 1;
-        m_skidding_threshold = 2.0f;
-        m_nitro_level        = NITRO_SOME;
-        m_handle_bomb        = true;
-        break;
-    case RaceManager::RD_HARD:
-        m_wait_for_players   = false;
-        m_max_handicap_accel = 1.0f;
-        m_fallback_tactic    = FT_FAREST_POINT;
-        m_item_tactic        = IT_CALCULATE;
-        m_max_start_delay    = 0.1f;
-        m_min_steps          = 2;
-        m_skidding_threshold = 1.3f;
-        m_nitro_level        = NITRO_ALL;
-        m_handle_bomb        = true;
-        break;
+        case RaceManager::RD_EASY:
+            m_wait_for_players   = true;
+            m_max_handicap_accel = 0.9f;
+            m_fallback_tactic    = FT_AVOID_TRACK_CRASH;
+            m_item_tactic        = IT_TEN_SECONDS;
+            m_max_start_delay    = 0.5f;
+            m_min_steps          = 0;
+            m_skidding_threshold = 4.0f;
+            m_nitro_level        = NITRO_NONE;
+            m_handle_bomb        = false;
+            break;
+        case RaceManager::RD_MEDIUM:
+            m_wait_for_players   = true;
+            m_max_handicap_accel = 0.95f;
+            // FT_PARALLEL had problems on some tracks when suddenly a smaller 
+            // section occurred (e.g. bridge in stone track): the AI would drive
+            // over and over into the river
+            m_fallback_tactic    = FT_FAREST_POINT;
+            m_item_tactic        = IT_CALCULATE;
+            m_max_start_delay    = 0.4f;
+            m_min_steps          = 1;
+            m_skidding_threshold = 2.0f;
+            m_nitro_level        = NITRO_SOME;
+            m_handle_bomb        = true;
+            break;
+        case RaceManager::RD_HARD:
+            m_wait_for_players   = false;
+            m_max_handicap_accel = 1.0f;
+            m_fallback_tactic    = FT_FAREST_POINT;
+            m_item_tactic        = IT_CALCULATE;
+            m_max_start_delay    = 0.1f;
+            m_min_steps          = 2;
+            m_skidding_threshold = 1.3f;
+            m_nitro_level        = NITRO_ALL;
+            m_handle_bomb        = true;
+            break;
     }
 }   // DefaultRobot
 
@@ -797,7 +797,7 @@ float DefaultRobot::steerToPoint(const Vec3 point, float dt)
     // angular velocity into account, too. The value is multiplied by two
     // to avoid 'oversteering' - experimentally found.
     float angle_2_point   = theta - getHeading()
-                                  - 2.f*dt*m_body->getAngularVelocity().getZ();
+                                  - dt*m_body->getAngularVelocity().getZ()*2.0f;
     angle_2_point         = normalizeAngle(angle_2_point);
     if(fabsf(angle_2_point)<0.1f) return 0.0f;
 
@@ -813,7 +813,7 @@ float DefaultRobot::steerToPoint(const Vec3 point, float dt)
      *  computed, and from that the turn radius, and then the steer angle.
      *  (note: the 2*M_PI can be removed from the computations)
      */
-    float radius          = dt*getMaxSpeed()/angle_2_point;
+    float radius          = dt*getSpeed()/angle_2_point;
     float sin_steer_angle = m_kart_properties->getWheelBase()/radius;
 #ifdef DEBUG_OUTPUT
     printf("theta %f a2p %f angularv %f radius %f ssa %f\n",
@@ -825,7 +825,7 @@ float DefaultRobot::steerToPoint(const Vec3 point, float dt)
     if(sin_steer_angle <= -1.0f) return -getMaxSteerAngle()*m_skidding_threshold-0.1f;
     if(sin_steer_angle >=  1.0f) return  getMaxSteerAngle()*m_skidding_threshold+0.1f;
     float steer_angle     = asin(sin_steer_angle);    
-    return steer_angle*2.f;
+    return steer_angle;
 }   // steerToPoint
 
 //-----------------------------------------------------------------------------
@@ -965,7 +965,9 @@ void DefaultRobot::findNonCrashingPoint(Vec3 &result)
 
         float len=direction.length_2d();
         steps = int(len / m_kart_length);
-        if(steps > 15) steps = 15;
+        if(steps < 3) steps = 3;
+
+        if(steps > 1000) steps = 1000;
 
         //Protection against having vel_normal with nan values
         if(len>0.0f) {
@@ -980,8 +982,8 @@ void DefaultRobot::findNonCrashingPoint(Vec3 &result)
             m_track->spatialToTrack(step_track_coord, step_coord,
                                     sector);
 
-            distance = step_track_coord[0] > 0.0f ? step_track_coord[0]
-                       : -step_track_coord[0];
+            distance =  step_track_coord[0] > 0.0f ? step_track_coord[0]
+                     : -step_track_coord[0];
 
             //If we are outside, the previous sector is what we are looking for
             if(distance + m_kart_width * 0.5f > m_track->getWidth()[sector])
@@ -1016,6 +1018,7 @@ void DefaultRobot::findNonCrashingPoint(Vec3 &result)
         }
         sector = target_sector;
     }
+    sgCopyVec3(result, m_track->m_driveline[sector]);
 }   // findNonCrashingPoint
 
 //-----------------------------------------------------------------------------
@@ -1218,7 +1221,8 @@ void DefaultRobot::findCurve()
         next_hint = i + 1 < DRIVELINE_SIZE ? i + 1 : 0;
         total_dist += sgDistanceVec2(m_track->m_driveline[i], m_track->m_driveline[next_hint]);
     }
-    m_curve_angle = normalizeAngle(m_track->m_angle[i] - m_track->m_angle[m_track_sector]);
+    m_curve_angle = normalizeAngle(m_track->getAngleToNext(i, next_hint < DRIVELINE_SIZE ? next_hint + 1 : 0)
+                                 - m_track->getAngleToNext(m_track_sector, next_hint));
     m_inner_curve = m_curve_angle > 0.0 ? -1 : 1;
 
     m_curve_target_speed = getMaxSpeedOnTerrain();

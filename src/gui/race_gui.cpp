@@ -250,13 +250,10 @@ void RaceGUI::drawFPS()
     float ratio_y  = (float)(user_config->m_height/600.f);
     float minRatio = std::min(ratio_x, ratio_y);
 
-    // Since Font::CENTER_OF_SCREEN doesn't align with powerup icons, 
-    // we have to create our own center for the FPS counter.
-    float center_x = (float)((800/2-50)*ratio_x);
 #ifdef USE_WIDGET_MANAGER
     widget_manager->setWgtText(WTOK_FPS, m_fps_string);
 #else
-    font_race->PrintShadow(m_fps_string, 30.f*minRatio, center_x, 
+    font_race->PrintShadow(m_fps_string, 30.f*minRatio, (float)Font::CENTER_OF_SCREEN, 
                           (600-32.f)*ratio_y);
 #endif
 }   // drawFPS
@@ -295,11 +292,12 @@ void RaceGUI::drawMap()
     assert(RaceManager::getWorld() != NULL);
 
     // Scaling variables.
-    float ratio = user_config->m_height/480.f;
+    float ratio_x = user_config->m_width/800.f;
+    float ratio_y = user_config->m_height/600.f;
 
     // sizes
-    const float map_w = 100.f*ratio;
-    const float map_h = 100.f*ratio;
+    const float map_w = 128.f*ratio_x;
+    const float map_h = 128.f*ratio_y;
 
     Track* m_track = RaceManager::getTrack();
 
@@ -312,8 +310,8 @@ void RaceGUI::drawMap()
     float sy = map_h / track_height;
 
     // offsets
-    float map_x = (10.f*ratio)+(map_w - track_width * sx)/2.f;
-    float map_y = (10.f*ratio)+(map_h - track_height * sy)/2.f;
+    float map_x = (10.f*ratio_x)+(map_w - track_width * sx)/2.f;
+    float map_y = (10.f*ratio_y)+(map_h - track_height * sy)/2.f;
 
     // Draw minimap.
     RaceManager::getTrack()->draw2DMiniMap(map_x, map_y, sx, sy);
@@ -330,17 +328,17 @@ void RaceGUI::drawMap()
         // If it's a player, draw a bigger sign.
         if(kart->isPlayerKart())
         {
-            RaceManager::getTrack()->glVtx(xyz, map_x+(3*ratio), map_y+(3*ratio), sx, sy);
-            RaceManager::getTrack()->glVtx(xyz, map_x-(2*ratio), map_y+(3*ratio), sx, sy);
-            RaceManager::getTrack()->glVtx(xyz, map_x-(2*ratio), map_y-(2*ratio), sx, sy);
-            RaceManager::getTrack()->glVtx(xyz, map_x+(3*ratio), map_y-(2*ratio), sx, sy);
+            RaceManager::getTrack()->glVtx(xyz, map_x+(3*ratio_x), map_y+(3*ratio_y), sx, sy);
+            RaceManager::getTrack()->glVtx(xyz, map_x-(2*ratio_x), map_y+(3*ratio_y), sx, sy);
+            RaceManager::getTrack()->glVtx(xyz, map_x-(2*ratio_x), map_y-(2*ratio_y), sx, sy);
+            RaceManager::getTrack()->glVtx(xyz, map_x+(3*ratio_x), map_y-(2*ratio_y), sx, sy);
         }
         else
         {
-            RaceManager::getTrack()->glVtx(xyz, map_x+(2*ratio), map_y+(2*ratio), sx, sy);
-            RaceManager::getTrack()->glVtx(xyz, map_x-(1*ratio), map_y+(2*ratio), sx, sy);
-            RaceManager::getTrack()->glVtx(xyz, map_x-(1*ratio), map_y-(1*ratio), sx, sy);
-            RaceManager::getTrack()->glVtx(xyz, map_x+(2*ratio), map_y-(1*ratio), sx, sy);
+            RaceManager::getTrack()->glVtx(xyz, map_x+(2*ratio_x), map_y+(2*ratio_y), sx, sy);
+            RaceManager::getTrack()->glVtx(xyz, map_x-(1*ratio_x), map_y+(2*ratio_y), sx, sy);
+            RaceManager::getTrack()->glVtx(xyz, map_x-(1*ratio_x), map_y-(1*ratio_y), sx, sy);
+            RaceManager::getTrack()->glVtx(xyz, map_x+(2*ratio_x), map_y-(1*ratio_y), sx, sy);
         }
     }
     glEnd();
@@ -371,18 +369,16 @@ void RaceGUI::drawPlayerIcons(const KartIconDisplayInfo* info)
     Material *last_players_gst = NULL;
     glDisable(GL_CULL_FACE);
 
-    Kart* kart;
     const unsigned int kart_amount = race_manager->getNumKarts();
-    const unsigned int max_on_screen = 8;
-
-    Kart* display_karts[8];
-    float icon_sizes[8];
-    float icon_y[8];
     unsigned int non_eliminated = 0;
-    for(unsigned int slot=0; slot<max_on_screen; ++slot)
+
+    Kart* player_kart = race_manager->getPlayerKart(0);
+    if(player_kart && !player_kart->isEliminated())
     {
-        display_karts[slot] = NULL;
-        icon_sizes[slot] = ICON_PLAYER_WIDTH;
+        int p_slot = 0;
+        const int p_pos = player_kart->getPosition();
+        if(p_pos >= 1 && p_pos <= 8)
+            p_slot = p_pos - 1;
     }
 
     for(unsigned int i=0; i<kart_amount; ++i)
@@ -390,52 +386,35 @@ void RaceGUI::drawPlayerIcons(const KartIconDisplayInfo* info)
             ++non_eliminated;
 
     // Draw "Top 8" above icons when there are more than 8 karts driving.
-    if(non_eliminated > max_on_screen)
+    if(non_eliminated > 8)
         font_race->PrintShadow("Top 8", 30*minRatio, x, (600-35)*minRatio);
 
-    // Reserve a row based on each kart's position, or its index if unranked.
     for(unsigned int i=0; i<kart_amount; ++i)
     {
-        kart = RaceManager::getKart(i);
+        Kart *kart = RaceManager::getKart(i);
         if(kart->isEliminated()) continue;
 
         const int pos = kart->getPosition();
-        if(pos > (int)max_on_screen) continue;
+        if(pos > 8) continue;
 
-        const int slot = pos == -1 ? (int)i : pos-1;
-        if(slot < 0 || slot >= (int)max_on_screen)
-            continue;
+        const int slot = (pos == -1) ? (int)i : pos - 1;
+        if(slot < 0 || slot >= 8) continue;
 
-        icon_sizes[slot] = kart->isPlayerKart() ?
-            ICON_PLAYER_WIDTH : ICON_WIDTH;
-    }
+        y = viewport[3]*0.85f-(slot*(ICON_PLAYER_WIDTH + (2*minRatio)));
 
-    icon_y[0] = viewport[3]*0.85f;
-    for(unsigned int slot=1; slot<max_on_screen; ++slot)
-        icon_y[slot] = icon_y[slot-1]-icon_sizes[slot]-(10*minRatio);
-
-    // Draw karts in world order, using the reference's position-based rows.
-    for(unsigned int i=0; i<kart_amount; ++i)
-    {
-        kart = RaceManager::getKart(i);
-        if(kart->isEliminated()) continue;
-
-        const int pos = kart->getPosition();
-        if(pos > (int)max_on_screen) continue;
-
-        const int slot = pos == -1 ? (int)i : pos-1;
-        if(slot < 0 || slot >= (int)max_on_screen) continue;
-
-        y = icon_y[slot];
+        if(!kart->isPlayerKart())
+            y += 5*minRatio;
+        
+        float offset = kart->isPlayerKart() ? 10*minRatio : 5*minRatio;
 
         GLfloat COLOR[] = {info[i].r, info[i].g, info[i].b, 1.0f};
         glDisable(GL_CULL_FACE);
-        font_race->PrintShadow(info[i].time.c_str(), 30*minRatio, ICON_PLAYER_WIDTH+x, y+5*ratio_y, COLOR);
+        font_race->PrintShadow(info[i].time.c_str(), 30*minRatio, ICON_PLAYER_WIDTH+x, y+offset, COLOR);
 
         if(info[i].special_title.length()>0)
         {
             GLfloat const RED[] = {1.0f, 0, 0, 1.0f};
-            font_race->PrintShadow(info[i].special_title.c_str(), 30*minRatio, ICON_PLAYER_WIDTH+x, y+5*ratio_y, RED);
+            font_race->PrintShadow(info[i].special_title.c_str(), 30*minRatio, ICON_PLAYER_WIDTH+x, y+5*minRatio, RED);
         }
         
         glEnable(GL_CULL_FACE);
@@ -471,28 +450,31 @@ void RaceGUI::drawPlayerIcons(const KartIconDisplayInfo* info)
         }
         glEnd();
         // draw position (1st, 2nd...)
-        if(pos != -1 && race_manager->getMinorMode() != RaceManager::MINOR_MODE_3_STRIKES)
+        if(race_manager->getMinorMode() != RaceManager::MINOR_MODE_3_STRIKES)
         {
-            glDisable(GL_CULL_FACE);
-            char str[256];
-            sprintf(str, "%d", pos);
-                font_race->PrintShadow(str, 27*minRatio, x-7*minRatio, y-4*minRatio);
-            if(pos == 1)
-                font_race->PrintShadow("st", (13*minRatio),
-                                       x-7*minRatio + (17*minRatio),
-                                       y-5*minRatio + (17*minRatio));
-            else if(pos == 2)
-                font_race->PrintShadow("nd", (13*minRatio),
-                                       x-7*minRatio + (17*minRatio),
-                                       y-5*minRatio + (17*minRatio));
-            else if(pos == 3)
-                font_race->PrintShadow("rd", (13*minRatio),
-                                       x-7*minRatio + (17*minRatio),
-                                       y-5*minRatio + (17*minRatio));
-            else
-                font_race->PrintShadow("th", (13*minRatio),
-                                       x-7*minRatio + (17*minRatio),
-                                       y-5*minRatio + (17*minRatio));
+            if(pos != -1)
+            {
+                glDisable(GL_CULL_FACE);
+                char str[256];
+                sprintf(str, "%d", pos);
+                    font_race->PrintShadow(str, 27*minRatio, x-7*minRatio, y-4*minRatio);
+                if(pos == 1)
+                    font_race->PrintShadow("st", (13*minRatio),
+                                           x-7*minRatio + (17*minRatio),
+                                           y-5*minRatio + (17*minRatio));
+                else if(pos == 2)
+                    font_race->PrintShadow("nd", (13*minRatio),
+                                           x-7*minRatio + (17*minRatio),
+                                           y-5*minRatio + (17*minRatio));
+                else if(pos == 3)
+                    font_race->PrintShadow("rd", (13*minRatio),
+                                           x-7*minRatio + (17*minRatio),
+                                           y-5*minRatio + (17*minRatio));
+                else
+                    font_race->PrintShadow("th", (13*minRatio),
+                                           x-7*minRatio + (17*minRatio),
+                                           y-5*minRatio + (17*minRatio));
+            }
         }
     } // next kart
     glEnable(GL_CULL_FACE);
@@ -504,23 +486,25 @@ void RaceGUI::drawPlayerIcons(const KartIconDisplayInfo* info)
 void RaceGUI::drawPowerupIcons(Kart* player_kart, int offset_x, int offset_y, 
                                float ratio_x, float ratio_y)
 {
+
     // If player doesn't have anything, do nothing.
     Powerup* powerup=player_kart->getPowerup();
     if(powerup->getType() == POWERUP_NOTHING) return;
 
     int n = player_kart->getNumPowerup();
     float minRatio = std::min(ratio_x, ratio_y);
-    
-    // Originally the hardcoded sizes were 320-32 and 400.
-    float x = (float)(offset_x + ((800/2-8)*ratio_x)-(n*(minRatio*30))/2);
-    float y = (float)(offset_y + (600*5/6)*ratio_y);
-
-    float nSize = 64*ratio_y;
-    powerup->getIcon()->apply();
 
     if(n>7) n=7;
     if(n<1) n=1;
 
+    float nSize = 64*minRatio;
+    float width = nSize+((n-1)*(30.0f*minRatio));
+
+    // Originally the hardcoded sizes were 320-32 and 400.
+    float x = (float)(offset_x + ((800/2)*ratio_x)-(width/2));
+    float y = (float)(offset_y + (600*5/6)*ratio_y);
+
+    powerup->getIcon()->apply();
     glBegin(GL_QUADS);
     glColor4f(1,1,1,1);
     for(int i=0; i<n; i++)
@@ -774,36 +758,92 @@ void RaceGUI::drawLapAndRank(const KartIconDisplayInfo* info, Kart* kart,
     // Don't display laps in follow the leader mode.
     if(!RaceManager::getWorld()->raceHasLaps()) return;
     
-    const int lap = info[kart->getWorldKartId()].lap;
+    const int lap  = info[kart->getWorldKartId()].lap;
+    const int rank = kart->getPosition();
+    const int numKarts = race_manager->getNumKarts();
     float size;
 
-    // Don't display 'lap 0/...', or do nothing if laps are disabled.
+    // Don't display 'lap 0/...' if laps are disabled.
     if(lap<0) return; 
 
     float minRatio = std::min(ratio_x, ratio_y);
     char str[256];
-    if(race_manager->getNumLocalPlayers() < 2)
+
+    const int numPlayers = race_manager->getNumLocalPlayers();
+    for(int pla=0; pla<numPlayers; ++pla)
     {
-        offset_x += (int)(160*minRatio);
-        offset_y += (int)(70*minRatio);
-        size = 40*minRatio;
-    }
-    else
-    {
-        offset_x += (int)(615*minRatio);
-        offset_y += (int)(750*minRatio);
-        size = 37*minRatio;
+        if (RaceManager::getWorld()->getLocalPlayerKart(pla) != kart)
+            continue;
+
+        offset_y += (int)(50*ratio_y);
+        size = 30*ratio_y;
+
+        if(numPlayers == 1)
+            offset_x += (int)(160*ratio_x);
+
+        if(numPlayers == 2)
+        {
+            if(pla == 0)
+                offset_x += (int)(300*ratio_x);
+
+            else if(pla == 1)
+                offset_x += (int)(32*ratio_x);
+        }
+        if(numPlayers == 3)
+        {
+            if(pla == 0)
+                offset_x += (int)(80*ratio_x);
+            else if(pla == 1)
+                offset_x += (int)(32*ratio_x);
+            else
+            {
+                offset_x += (int)(160*ratio_x);
+
+                // we have to multiply these values
+                // by 2 because of the viewport
+                offset_y += (int)(50*ratio_y);
+                size = 2*size; 
+            }
+        }
+        if(numPlayers == 4)
+        {
+            size = size*1.25f;
+            offset_y += (int)(12.5f*ratio_y);
+            if(pla == 0)
+                offset_x += (int)(80*ratio_x);
+            else if (pla == 2)
+            {
+                // we have to multiply these values
+                // by 2 because of the viewport
+                offset_x += (int)(290*ratio_x); 
+            }
+            else
+                offset_x += (int)(10*ratio_x);
+        }
+        break;
     }
 
     if(kart->hasFinishedRace())
         return;
     else
     {
-        font_race->PrintShadow(_("Lap"), size, (float)offset_x, (float)offset_y);
-        offset_y -= (int)(size+2*minRatio);
+        // drawing of laps
+        font_race->PrintShadow(_("Lap"), size, (float)(offset_x), (float)(offset_y));
+        offset_y -= (int)(size+2*ratio_y);
         sprintf(str, "%d/%d", lap<0 ? 0 : lap+1, race_manager->getNumLaps());
-        font_race->PrintShadow(str, size, (float)offset_x, (float)offset_y);
+        font_race->PrintShadow(str, size, (float)(offset_x), (float)(offset_y));
+
+        // since the offset has already been edited before,
+        // we have to edit it again right here
+        offset_y += (int)((size*3)+6*ratio_y);
+
+        // drawing of rank (we use a slightly scaled down size for rank)
+        font_race->PrintShadow(_("Rank"), size*0.95f, (float)(offset_x), (float)(offset_y));
+        offset_y -= (int)(size+2*ratio_y);
+        sprintf(str, "%d/%d", lap<0 ? 0 : rank, race_manager->getNumKarts());
+        font_race->PrintShadow(str, size, (float)(offset_x), (float)(offset_y));
     }
+    
 } // drawLapAndRank
 
 //-----------------------------------------------------------------------------
@@ -1038,8 +1078,8 @@ void RaceGUI::drawStatusText(const float dt)
                     offset_x = user_config->m_width/2;
             }
 
-            float split_screen_ratio_x = (float)viewport_width/800.0f;
-            float split_screen_ratio_y = (float)viewport_height/600.0f;
+            float split_screen_ratio_x = (float)viewport_width/800;
+            float split_screen_ratio_y = (float)viewport_height/600;
 
             Kart* player_kart = RaceManager::getWorld()->getLocalPlayerKart(pla);
 
@@ -1049,14 +1089,15 @@ void RaceGUI::drawStatusText(const float dt)
                                                    : viewport_height;
                 int screen_width = viewport_width;
                 int plunger_x = offset_x + screen_width/2 - plunger_size/2;
-
+                int plunger_y = numPlayers == 2 ? user_config->m_height/16
+                                                : offset_y;
                 glColor4f(1,1,1,1);
                 m_plunger_face->getState()->force();
                 glBegin(GL_QUADS);
-                glTexCoord2f(1, 0); glVertex2i(plunger_x+plunger_size, offset_y);
-                glTexCoord2f(0, 0); glVertex2i(plunger_x, offset_y);
-                glTexCoord2f(0, 1); glVertex2i(plunger_x, offset_y+plunger_size);
-                glTexCoord2f(1, 1); glVertex2i(plunger_x+plunger_size, offset_y+plunger_size);
+                glTexCoord2f(1, 0); glVertex2i(plunger_x+plunger_size, plunger_y);
+                glTexCoord2f(0, 0); glVertex2i(plunger_x, plunger_y);
+                glTexCoord2f(0, 1); glVertex2i(plunger_x, plunger_y+plunger_size);
+                glTexCoord2f(1, 1); glVertex2i(plunger_x+plunger_size, plunger_y+plunger_size);
                 glEnd();
             }
             drawPowerupIcons    (player_kart, offset_x, offset_y,

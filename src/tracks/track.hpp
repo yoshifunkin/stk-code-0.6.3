@@ -150,6 +150,7 @@ public:
                                            const Vec3& POS,
                                            const int SECTOR) const;
     const Vec3&        trackToSpatial     (const int SECTOR) const;
+    float              getAngleToNext     (int from, int to) const;
     void               loadTrackModel     ();
     bool               isShortcut         (const int OLDSEC, const int NEWSEC) const;
     void               addMusic           (MusicInformation* mi)

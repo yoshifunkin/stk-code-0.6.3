@@ -9,22 +9,6 @@
       <Configuration>BulletRelease</Configuration>
       <Platform>Win32</Platform>
     </ProjectConfiguration>
-    <ProjectConfiguration Include="Debug|Win32">
-      <Configuration>Debug</Configuration>
-      <Platform>Win32</Platform>
-    </ProjectConfiguration>
-    <ProjectConfiguration Include="PLibSoundDebug|Win32">
-      <Configuration>PLibSoundDebug</Configuration>
-      <Platform>Win32</Platform>
-    </ProjectConfiguration>
-    <ProjectConfiguration Include="PLibSoundRelease|Win32">
-      <Configuration>PLibSoundRelease</Configuration>
-      <Platform>Win32</Platform>
-    </ProjectConfiguration>
-    <ProjectConfiguration Include="Release|Win32">
-      <Configuration>Release</Configuration>
-      <Platform>Win32</Platform>
-    </ProjectConfiguration>
     <ProjectConfiguration Include="ReplayDebug|Win32">
       <Configuration>ReplayDebug</Configuration>
       <Platform>Win32</Platform>
@@ -58,24 +42,6 @@
     <ConfigurationType>Application</ConfigurationType>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='PLibSoundRelease|Win32'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
-    <CharacterSet>MultiByte</CharacterSet>
-    <WholeProgramOptimization>true</WholeProgramOptimization>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='PLibSoundDebug|Win32'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
-    <CharacterSet>MultiByte</CharacterSet>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
-    <CharacterSet>MultiByte</CharacterSet>
-    <WholeProgramOptimization>true</WholeProgramOptimization>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
-    <CharacterSet>MultiByte</CharacterSet>
-  </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
   </ImportGroup>
@@ -91,33 +57,9 @@
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='ReplayDebug|Win32'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
-  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='PLibSoundRelease|Win32'" Label="PropertySheets">
-    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-  </ImportGroup>
-  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='PLibSoundDebug|Win32'" Label="PropertySheets">
-    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-  </ImportGroup>
-  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
-    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-  </ImportGroup>
-  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
-    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-  </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup>
     <_ProjectFileVersion>10.0.30319.1</_ProjectFileVersion>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">..\..\../</OutDir>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(Configuration)\</IntDir>
-    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</LinkIncremental>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">..\..\../</OutDir>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(Configuration)\</IntDir>
-    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</LinkIncremental>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='PLibSoundDebug|Win32'">..\..\../</OutDir>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='PLibSoundDebug|Win32'">$(Configuration)\</IntDir>
-    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='PLibSoundDebug|Win32'">true</LinkIncremental>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='PLibSoundRelease|Win32'">..\..\../</OutDir>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='PLibSoundRelease|Win32'">$(Configuration)\</IntDir>
-    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='PLibSoundRelease|Win32'">false</LinkIncremental>
     <OutDir Condition="'$(Configuration)|$(Platform)'=='ReplayDebug|Win32'">..\..\../</OutDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='ReplayDebug|Win32'">$(Configuration)\</IntDir>
     <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='ReplayDebug|Win32'">true</LinkIncremental>
@@ -133,115 +75,11 @@
     <TargetName Condition="'$(Configuration)|$(Platform)'=='BulletRelease|Win32'">$(ProjectName)</TargetName>
     <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='BulletRelease|Win32'">false</LinkIncremental>
   </PropertyGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <ClCompile>
-      <WholeProgramOptimization>false</WholeProgramOptimization>
-      <AdditionalIncludeDirectories>./../../../src;$(PLIB_PATH);$(SDL_PATH)\include;$(ALUT_PATH)\include;$(OGG_PATH)\include;$(VORBIS_PATH)\include;$(OPENAL_PATH)\include;$(OPENAL_PATH)\include\AL;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>HAVE_OPENAL;HAVE_OGGVORBIS;_DEBUG;_CONSOLE;WIN32;NOMINMAX;VERSION="0.6.3";_CRT_SECURE_NO_WARNINGS;_CRT_SECURE_NO_DEPRECATE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <MinimalRebuild>true</MinimalRebuild>
-      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
-      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
-      <PrecompiledHeader>
-      </PrecompiledHeader>
-      <WarningLevel>Level3</WarningLevel>
-      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
-    </ClCompile>
-    <Link>
-      <AdditionalDependencies>opengl32.lib;user32.lib;gdi32.lib;winmm.lib;advapi32.lib;SDL.lib;SDLmain.lib;OpenAL32.lib;alut.lib;libogg.lib;libvorbis.lib;libvorbisfile.lib;sg_d.lib;ssg_d.lib;ul_d.lib;ssgAux_d.lib;fnt_d.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <OutputFile>$(OutDir)/$(ProjectName)_d.exe</OutputFile>
-      <AdditionalLibraryDirectories>$(SDL_PATH)\lib;$(PLIB_PATH)\plib;$(OPENAL_PATH)\libs\Win32;$(ALUT_PATH)\lib;$(OGG_PATH)\win32\VS2003\libogg\Release;$(VORBIS_PATH)\win32\VS2005\libvorbis\Release;$(VORBIS_PATH)\win32\VS2005\libvorbisfile\Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <IgnoreSpecificDefaultLibraries>libcmtd.lib;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
-      <SubSystem>Console</SubSystem>
-      <RandomizedBaseAddress>false</RandomizedBaseAddress>
-      <DataExecutionPrevention>
-      </DataExecutionPrevention>
-      <TargetMachine>MachineX86</TargetMachine>
-    </Link>
-  </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <ClCompile>
-	  <WholeProgramOptimization>true</WholeProgramOptimization>
-      <AdditionalIncludeDirectories>./../../../src;$(PLIB_PATH);$(SDL_PATH)\include;$(ALUT_PATH)\include;$(OGG_PATH)\include;$(VORBIS_PATH)\include;$(OPENAL_PATH)\include;$(OPENAL_PATH)\include\AL;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>HAVE_OPENAL;HAVE_OGGVORBIS;NDEBUG;_CONSOLE;WIN32;NOMINMAX;VERSION="0.6.3";_CRT_SECURE_NO_WARNINGS;_CRT_SECURE_NO_DEPRECATE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
-      <PrecompiledHeader>
-      </PrecompiledHeader>
-      <WarningLevel>Level3</WarningLevel>
-      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
-    </ClCompile>
-    <Link>
-      <AdditionalDependencies>opengl32.lib;user32.lib;gdi32.lib;winmm.lib;advapi32.lib;SDL.lib;SDLmain.lib;OpenAL32.lib;alut.lib;libogg.lib;libvorbis.lib;libvorbisfile.lib;sg.lib;ssg.lib;ul.lib;ssgAux.lib;fnt.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <OutputFile>$(OutDir)/$(ProjectName).exe</OutputFile>
-      <AdditionalLibraryDirectories>$(SDL_PATH)\lib;$(PLIB_PATH)\plib;$(OPENAL_PATH)\libs\Win32;$(ALUT_PATH)\lib;$(OGG_PATH)\win32\VS2003\libogg\Release;$(VORBIS_PATH)\win32\VS2005\libvorbis\Release;$(VORBIS_PATH)\win32\VS2005\libvorbisfile\Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <IgnoreSpecificDefaultLibraries>libcmt.lib;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
-      <SubSystem>Console</SubSystem>
-      <OptimizeReferences>true</OptimizeReferences>
-      <EnableCOMDATFolding>true</EnableCOMDATFolding>
-      <RandomizedBaseAddress>false</RandomizedBaseAddress>
-      <DataExecutionPrevention>
-      </DataExecutionPrevention>
-      <TargetMachine>MachineX86</TargetMachine>
-    </Link>
-  </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='PLibSoundDebug|Win32'">
-    <ClCompile>
-	  <WholeProgramOptimization>false</WholeProgramOptimization>
-      <AdditionalIncludeDirectories>./../../../src;$(PLIB_PATH);$(SDL_PATH)\include;$(ALUT_PATH)\include;$(OGG_PATH)\include;$(VORBIS_PATH)\include;$(OPENAL_PATH)\include;$(OPENAL_PATH)\include\AL;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>_DEBUG;_CONSOLE;WIN32;NOMINMAX;VERSION="0.4alpha";_CRT_SECURE_NO_WARNINGS;_CRT_SECURE_NO_DEPRECATE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <MinimalRebuild>true</MinimalRebuild>
-      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
-      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
-      <PrecompiledHeader>
-      </PrecompiledHeader>
-      <WarningLevel>Level3</WarningLevel>
-      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
-    </ClCompile>
-    <Link>
-      <AdditionalDependencies>opengl32.lib;user32.lib;gdi32.lib;winmm.lib;advapi32.lib;SDL.lib;SDLmain.lib;fnt_d.lib;net_d.lib;psl_d.lib;pui_d.lib;sg_d.lib;sl_d.lib;ssgAux_d.lib;ul_d.lib;js_d.lib;puAux_d.lib;pw_d.lib;ssg_d.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <OutputFile>$(OutDir)/$(ProjectName)_plib_sound_d.exe</OutputFile>
-      <AdditionalLibraryDirectories>$(SDL_PATH)\lib;$(PLIB_PATH)\plib;$(OPENAL_PATH)\libs\Win32;$(ALUT_PATH)\lib;$(OGG_PATH)\win32\VS2003\libogg\Release;$(VORBIS_PATH)\win32\VS2005\libvorbis\Release;$(VORBIS_PATH)\win32\VS2005\libvorbisfile\Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <IgnoreSpecificDefaultLibraries>libcmtd.lib;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
-      <SubSystem>Console</SubSystem>
-      <RandomizedBaseAddress>false</RandomizedBaseAddress>
-      <DataExecutionPrevention>
-      </DataExecutionPrevention>
-      <TargetMachine>MachineX86</TargetMachine>
-    </Link>
-  </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='PLibSoundRelease|Win32'">
-    <ClCompile>
-	  <WholeProgramOptimization>true</WholeProgramOptimization>
-      <AdditionalIncludeDirectories>./../../../src;$(PLIB_PATH);$(SDL_PATH)\include;$(ALUT_PATH)\include;$(OGG_PATH)\include;$(VORBIS_PATH)\include;$(OPENAL_PATH)\include;$(OPENAL_PATH)\include\AL;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>NDEBUG;_CONSOLE;WIN32;NOMINMAX;VERSION="0.6.3";_CRT_SECURE_NO_WARNINGS;_CRT_SECURE_NO_DEPRECATE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
-      <PrecompiledHeader>
-      </PrecompiledHeader>
-      <WarningLevel>Level3</WarningLevel>
-      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
-    </ClCompile>
-    <Link>
-      <AdditionalDependencies>opengl32.lib;user32.lib;gdi32.lib;winmm.lib;advapi32.lib;SDL.lib;SDLmain.lib;fnt.lib;net.lib;psl.lib;pui.lib;sg.lib;sl.lib;ssgAux.lib;ul.lib;js.lib;puAux.lib;pw.lib;ssg.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <OutputFile>$(OutDir)/$(ProjectName)_plib_sound.exe</OutputFile>
-      <AdditionalLibraryDirectories>$(SDL_PATH)\lib;$(PLIB_PATH)\plib;$(OPENAL_PATH)\libs\Win32;$(ALUT_PATH)\lib;$(OGG_PATH)\win32\VS2003\libogg\Release;$(VORBIS_PATH)\win32\VS2005\libvorbis\Release;$(VORBIS_PATH)\win32\VS2005\libvorbisfile\Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <IgnoreSpecificDefaultLibraries>libcmt.lib;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
-      <SubSystem>Console</SubSystem>
-      <OptimizeReferences>true</OptimizeReferences>
-      <EnableCOMDATFolding>true</EnableCOMDATFolding>
-      <RandomizedBaseAddress>false</RandomizedBaseAddress>
-      <DataExecutionPrevention>
-      </DataExecutionPrevention>
-      <TargetMachine>MachineX86</TargetMachine>
-    </Link>
-  </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='ReplayDebug|Win32'">
     <ClCompile>
       <WholeProgramOptimization>false</WholeProgramOptimization>
-      <AdditionalIncludeDirectories>./../../../src;$(PLIB_PATH);$(SDL_PATH)\include;$(ALUT_PATH)\include;$(OGG_PATH)\include;$(VORBIS_PATH)\include;$(OPENAL_PATH)\include;$(OPENAL_PATH)\include\AL;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>HAVE_GHOST_REPLAY;HAVE_OPENAL;HAVE_OGGVORBIS;_DEBUG;_CONSOLE;WIN32;NOMINMAX;VERSION="0.6.3";_CRT_SECURE_NO_WARNINGS;_CRT_SECURE_NO_DEPRECATE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>./../../../src;../../../src/bullet/src;../../../include;../../../src/enet/include;</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>HAVE_GHOST_REPLAY;HAVE_OPENAL;HAVE_OGGVORBIS;_DEBUG;_CONSOLE;WIN32;NOMINMAX;VERSION="0.6.3";_CRT_SECURE_NO_WARNINGS;_CRT_SECURE_NO_DEPRECATE;DEBUG;PACKAGE="supertuxkart";HAVE_GETTEXT;ENABLE_NLS;HAVE_GLUT;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>true</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
@@ -253,7 +91,7 @@
     <Link>
       <AdditionalDependencies>opengl32.lib;user32.lib;gdi32.lib;winmm.lib;advapi32.lib;SDL.lib;SDLmain.lib;OpenAL32.lib;alut.lib;libogg.lib;libvorbis.lib;libvorbisfile.lib;sg_d.lib;ssg_d.lib;ul_d.lib;ssgAux_d.lib;fnt_d.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>$(OutDir)/$(ProjectName)_replay_d.exe</OutputFile>
-      <AdditionalLibraryDirectories>$(SDL_PATH)\lib;$(PLIB_PATH)\plib;$(OPENAL_PATH)\libs\Win32;$(ALUT_PATH)\lib;$(OGG_PATH)\win32\VS2003\libogg\Release;$(VORBIS_PATH)\win32\VS2005\libvorbis\Release;$(VORBIS_PATH)\win32\VS2005\libvorbisfile\Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>../../../libraries;</AdditionalLibraryDirectories>
       <IgnoreSpecificDefaultLibraries>libcmtd.lib;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Console</SubSystem>
@@ -266,8 +104,8 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='ReplayRelease|Win32'">
     <ClCompile>
 	  <WholeProgramOptimization>true</WholeProgramOptimization>
-      <AdditionalIncludeDirectories>./../../../src;$(PLIB_PATH);$(SDL_PATH)\include;$(ALUT_PATH)\include;$(OGG_PATH)\include;$(VORBIS_PATH)\include;$(OPENAL_PATH)\include;$(OPENAL_PATH)\include\AL;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>HAVE_GHOST_REPLAY;HAVE_OPENAL;HAVE_OGGVORBIS;NDEBUG;_CONSOLE;WIN32;NOMINMAX;VERSION="0.6.3";_CRT_SECURE_NO_WARNINGS;_CRT_SECURE_NO_DEPRECATE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>./../../../src;../../../src/bullet/src;../../../include;../../../src/enet/include;</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>HAVE_GHOST_REPLAY;HAVE_OPENAL;HAVE_OGGVORBIS;NDEBUG;_CONSOLE;WIN32;NOMINMAX;VERSION="0.6.3";_CRT_SECURE_NO_WARNINGS;_CRT_SECURE_NO_DEPRECATE;BT_NO_PROFILE;PACKAGE="supertuxkart";HAVE_GETTEXT;ENABLE_NLS;HAVE_GLUT;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <PrecompiledHeader>
       </PrecompiledHeader>
@@ -277,7 +115,7 @@
     <Link>
       <AdditionalDependencies>opengl32.lib;user32.lib;gdi32.lib;winmm.lib;advapi32.lib;SDL.lib;SDLmain.lib;OpenAL32.lib;alut.lib;libogg.lib;libvorbis.lib;libvorbisfile.lib;sg.lib;ssg.lib;ul.lib;ssgAux.lib;fnt.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>$(OutDir)/$(ProjectName)_replay.exe</OutputFile>
-      <AdditionalLibraryDirectories>$(SDL_PATH)\lib;$(PLIB_PATH)\plib;$(OPENAL_PATH)\libs\Win32;$(ALUT_PATH)\lib;$(OGG_PATH)\win32\VS2003\libogg\Release;$(VORBIS_PATH)\win32\VS2005\libvorbis\Release;$(VORBIS_PATH)\win32\VS2005\libvorbisfile\Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>../../../libraries;</AdditionalLibraryDirectories>
       <IgnoreSpecificDefaultLibraries>libcmt.lib;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Console</SubSystem>
@@ -292,7 +130,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='BulletDebug|Win32'">
     <ClCompile>
       <WholeProgramOptimization>false</WholeProgramOptimization>
-      <AdditionalIncludeDirectories>../../../src;../../../src/bullet/src;../../../include;../../../src/enet/include;)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../../src;../../../src/bullet/src;../../../include;../../../src/enet/include;</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>BT_NO_PROFILE;HAVE_OPENAL;HAVE_OGGVORBIS;_DEBUG;_CONSOLE;WIN32;NOMINMAX;VERSION="0.6.3";_CRT_SECURE_NO_WARNINGS;_CRT_SECURE_NO_DEPRECATE;DEBUG;PACKAGE="supertuxkart";HAVE_GETTEXT;ENABLE_NLS;HAVE_GLUT;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PreprocessToFile>false</PreprocessToFile>
       <PreprocessSuppressLineNumbers>false</PreprocessSuppressLineNumbers>

@@ -322,18 +322,17 @@ void PlayerKart::raceFinished(float time)
 
 //-----------------------------------------------------------------------------
 /** Called when a kart hits or uses a zipper.
- * \param play_sfx This makes the sfx sound play even if the kart is not
- *                 on a zipper material. It is used by the zipper powerup.
+ * \param play_sfx This makes the sfx play even if the kart is not on
+ *                 a zipper material. It is used by the zipper powerup.
  */
 void PlayerKart::handleZipper(bool play_sfx)
 {
-    if(play_sfx || m_wee_sound->getStatus() != SFXManager::SFX_PLAYING && 
+    if(play_sfx || m_wee_sound->getStatus() != SFXManager::SFX_PLAYING &&
        getMaterial()!=getLastMaterial())
     {
         m_wee_sound->play();
-    }
-	if(m_wee_sound->getStatus()==SFXManager::SFX_PLAYING)
         Kart::handleZipper();
+    }
 }   // handleZipper
 
 //-----------------------------------------------------------------------------

@@ -34,8 +34,8 @@
                                       ;; are displayed.
   (final-camera-time           1.5)   ;; Time for the final camera to reach 
                                       ;; it's destination.
-  (enable_networking            #f)   ;; Enable or disable networking. Actually,
-                                      ;; it is off because it's not used at this stage.
+  (enable_networking            #f)   ;; Enable or disable networking. It is
+                                      ;; disabled because it is not used at this stage.
   
   ;; Attachment related parameters:
   ;; ------------------------------
@@ -74,7 +74,7 @@
     ;; A value of 1/maxFPS / 2 will guarantee that the wheel can
     ;; go from -1 to +1 steering in one frame, basically 
     ;; disabling this mechanism.
-    (time-full-steer-ai        0.1) 
+    (time-full-steer-ai        0.08) 
     (corn-f                    4.0)
     (corn-r                    4.0)
 	
@@ -162,8 +162,6 @@
     (rubber-band-force        1500)  ;; Force a plunger/rubber band applies to the kart(s).
     (rubber-band-duration      1.0)  ;; Duration a rubber band acts.
     (0.7-camera-mode            #f)  ;; Enable or disable 0.7.0's camera. Disabled by default.
-    (camera-max-accel         10.0)
-    (camera-max-brake          5.0)
     (camera-distance           3.5) 
   ) ;; end of kart-defaults
 )

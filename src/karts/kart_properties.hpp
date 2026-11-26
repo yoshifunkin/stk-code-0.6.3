@@ -144,8 +144,6 @@ private:
     // Camera related setting
     // ----------------------
     bool  m_next_gen_camera;          // enable or disable 0.7.0 camera
-    float m_camera_max_accel;         // maximum acceleration of camera
-    float m_camera_max_brake;         // maximum braking of camera
     float m_camera_distance;          // distance of normal camera from kart
     
     /** The following two vectors define at what ratio of the maximum speed what
@@ -236,8 +234,6 @@ public:
           getGearSwitchRatio        () const {return m_gear_switch_ratio;        }
     const std::vector<float>& 
           getGearPowerIncrease      () const {return m_gear_power_increase;      }
-    float getCameraMaxAccel         () const {return m_camera_max_accel;         }
-    float getCameraMaxBrake         () const {return m_camera_max_brake;         }
     float getCameraDistance         () const {return m_camera_distance;          }
     bool  useNextGenCamera          () const {return m_next_gen_camera;          }
 };

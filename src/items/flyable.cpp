@@ -40,29 +40,30 @@ float      Flyable::m_st_min_height[POWERUP_MAX];
 float      Flyable::m_st_max_height[POWERUP_MAX];
 float      Flyable::m_st_force_updown[POWERUP_MAX];
 btVector3  Flyable::m_st_extend[POWERUP_MAX];
+
 // ----------------------------------------------------------------------------
 
 Flyable::Flyable(Kart *kart, PowerupType type, float mass) : Moveable()
 {
     // get the appropriate data from the static fields
-    m_speed             = m_st_speed[type];
-    m_extend            = m_st_extend[type];
-    m_max_height        = m_st_max_height[type];
-    m_min_height        = m_st_min_height[type];
-    m_average_height    = (m_min_height+m_max_height)/2;
-    m_force_updown      = m_st_force_updown[type];
-    m_owner             = kart;
-    m_has_hit_something = false;
-    m_exploded          = false;
-    m_shape             = NULL;
-    m_mass              = mass;
-    m_adjust_z_velocity = true;
-    m_time_since_thrown = 0;
+    m_speed                        = m_st_speed[type];
+    m_extend                       = m_st_extend[type];
+    m_max_height                   = m_st_max_height[type];
+    m_min_height                   = m_st_min_height[type];
+    m_average_height               = (m_min_height+m_max_height)/2;
+    m_force_updown                 = m_st_force_updown[type];
+    m_owner                        = kart;
+    m_has_hit_something            = false;
+    m_exploded                     = false;
+    m_shape                        = NULL;
+    m_mass                         = mass;
+    m_adjust_z_velocity            = true;
+    m_time_since_thrown            = 0;
     m_owner_has_temporary_immunity = true;
-    m_max_lifespan = -1;
+    m_max_lifespan                 = -1;
     
     // Add the graphical model
-    ssgTransform *m     = getModelTransform();
+    ssgTransform *m                = getModelTransform();
     m->addKid(m_st_model[type]);
     scene->add(m);
 }   // Flyable

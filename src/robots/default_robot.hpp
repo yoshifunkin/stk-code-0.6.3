@@ -100,8 +100,8 @@ private:
     float m_distance_behind;
 
     /** Time an item has been collected and not used. */
-    float m_time_since_last_shot;
-    int   m_future_sector;
+    float  m_time_since_last_shot;
+    int    m_future_sector;
     sgVec2 m_future_location;
 
     float m_time_till_start; // Used to simulate a delay at the start of the
@@ -109,7 +109,7 @@ private:
                              // at the same time and rarely repeat the a
                              // previous timing.
 
-    int m_inner_curve;//-1 left, 1 = right, 0 = center
+    int   m_inner_curve;//-1 left, 1 = right, 0 = center
     float m_curve_target_speed;
     float m_curve_angle;
 

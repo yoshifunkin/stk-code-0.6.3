@@ -936,8 +936,8 @@ void Kart::updatePhysics (float dt)
     if(m_engine_sound && sfx_manager->sfxAllowed())
     {
         float factor = 0.6f+(m_speed/max_speed)*0.7f;
-        if(factor > 1.3f)
-            factor = 1.3f;
+        if(factor >= 1.29f)
+            factor = 1.29f;
 
         m_engine_sound->speed(factor);
         m_engine_sound->position(getXYZ());

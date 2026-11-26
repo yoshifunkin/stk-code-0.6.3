@@ -71,7 +71,7 @@ void Camera::setScreenPosition(int camera_index)
     }
     else if(num_players == 2)
     {
-        m_camera->setFOV(50.0f, 50.0f);
+        m_camera->setFOV(42.5f, 50.0f);
         switch(camera_index)
         {
             case 0 : m_x = 0.0f; m_y = 0.0f; m_w = 0.5f; m_h = 1.0f; break;
@@ -129,10 +129,10 @@ void Camera::setMode(Mode mode)
         // 1.333 or 1.5 times the normal distance to compensate and make the 
         // kart visible
         const int num_players = race_manager->getNumPlayers();
-        if(num_players==2 || (num_players==3 && m_index==3) )
+        if(num_players==3 && m_index==3)
             m_distance *= 1.5f;
-        else if(num_players>=3)
-            m_distance *= 1.0f;
+        else if(num_players>=3 || num_players==2)
+            m_distance *= 1.333f;
     }
 }   // setMode
 

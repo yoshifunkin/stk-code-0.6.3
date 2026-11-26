@@ -19,8 +19,8 @@
 
 #ifdef HAVE_GHOST_REPLAY
 
-#include "kart_properties_manager.hpp"
-#include "kart_properties.hpp"
+#include "karts/kart_properties_manager.hpp"
+#include "karts/kart_properties.hpp"
 
 #include "replay_player.hpp"
 
@@ -50,7 +50,7 @@ bool ReplayKart::init( const std::string &strKartIdent )
     m_kart_properties = kart_properties_manager->getKart( strKartIdent );
     if( NULL == m_kart_properties ) return false;
 
-    ssgEntity *obj = m_kart_properties->getModel();
+    ssgEntity *obj = m_kart_properties->getKartModel()->getRoot();
     assert( obj );
     // Optimize the model, this can't be done while loading the model
     // because it seems that it removes the name of the wheels or something
@@ -68,7 +68,7 @@ bool ReplayKart::init( const std::string &strKartIdent )
     return true;
 }
     
-#include "scene.hpp"
+#include "graphics/scene.hpp"
 
 ReplayPlayer::ReplayPlayer() 
 : ReplayBase(), m_current_frame_index(-1)

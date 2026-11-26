@@ -22,7 +22,9 @@
 #include <cassert>
 
 #include "replay_recorder.hpp"
+#include "race_manager.hpp"
 #include "modes/world.hpp"
+#include "utils/coord.hpp"
 
 const float ReplayRecorder::REPLAY_TIME_STEP_MIN = 1.0f / (float)ReplayRecorder::REPLAY_FREQUENCY_MAX;
 
@@ -67,15 +69,16 @@ bool ReplayRecorder::pushFrame()
 
     ReplayFrame *pFrame = getNewFrame();
     if( !pFrame ) return false;
-    pFrame->time = RaceManager::getWorld()->getClock();
+    pFrame->time = race_manager->getWorld()->getTime();
 
     Kart const *kart;
-    int number_karts = RaceManager::getWorld()->getNumKarts();
+    int number_karts = race_manager->getNumKarts();
     for( int kart_index = 0; kart_index < number_karts; ++kart_index )
     {
         kart = RaceManager::getKart( kart_index );
+        sgCoord c = Coord(kart->getXYZ(), kart->getHPR()).toSgCoord();
         sgCopyCoord( &( pFrame->p_kart_states[ kart_index ].position ), 
-                     kart->getCoord() );
+                     &c);
     }
 
     return true;

@@ -17,322 +17,6 @@
 	</ToolFiles>
 	<Configurations>
 		<Configuration
-			Name="Debug|Win32"
-			OutputDirectory="$(ConfigurationName)"
-			IntermediateDirectory="$(ConfigurationName)"
-			ConfigurationType="1"
-			CharacterSet="2"
-			>
-			<Tool
-				Name="VCPreBuildEventTool"
-			/>
-			<Tool
-				Name="VCCustomBuildTool"
-			/>
-			<Tool
-				Name="VCXMLDataGeneratorTool"
-			/>
-			<Tool
-				Name="VCWebServiceProxyGeneratorTool"
-			/>
-			<Tool
-				Name="VCMIDLTool"
-			/>
-			<Tool
-				Name="VCCLCompilerTool"
-				Optimization="0"
-				AdditionalIncludeDirectories="./../../../src;$(PLIB_PATH);$(SDL_PATH)\include;$(ALUT_PATH)\include;$(OGG_PATH)\include;$(VORBIS_PATH)\include;$(OPENAL_PATH)\include;$(OPENAL_PATH)\include\AL;"
-				PreprocessorDefinitions="HAVE_OPENAL;HAVE_OGGVORBIS;_DEBUG;_CONSOLE;WIN32;NOMINMAX;VERSION=\&quot;0.4alpha\&quot;;_CRT_SECURE_NO_WARNINGS;_CRT_SECURE_NO_DEPRECATE"
-				MinimalRebuild="true"
-				BasicRuntimeChecks="3"
-				RuntimeLibrary="3"
-				UsePrecompiledHeader="0"
-				WarningLevel="3"
-				Detect64BitPortabilityProblems="true"
-				DebugInformationFormat="4"
-			/>
-			<Tool
-				Name="VCManagedResourceCompilerTool"
-			/>
-			<Tool
-				Name="VCResourceCompilerTool"
-			/>
-			<Tool
-				Name="VCPreLinkEventTool"
-			/>
-			<Tool
-				Name="VCLinkerTool"
-				AdditionalDependencies="opengl32.lib user32.lib gdi32.lib winmm.lib advapi32.lib SDL.lib SDLmain.lib OpenAL32.lib alut.lib libogg.lib libvorbis.lib libvorbisfile.lib sg_d.lib ssg_d.lib ul_d.lib ssgAux_d.lib fnt_d.lib"
-				OutputFile="./../../../$(ProjectName)_d.exe"
-				LinkIncremental="2"
-				AdditionalLibraryDirectories="$(SDL_PATH)\lib;$(PLIB_PATH)\plib;$(OPENAL_PATH)\libs\Win32;$(ALUT_PATH)\lib;$(OGG_PATH)\win32\VS2003\libogg\Release;$(VORBIS_PATH)\win32\VS2005\libvorbis\Release;$(VORBIS_PATH)\win32\VS2005\libvorbisfile\Release;"
-				IgnoreDefaultLibraryNames="libcmtd.lib"
-				GenerateDebugInformation="true"
-				SubSystem="1"
-				RandomizedBaseAddress="1"
-				DataExecutionPrevention="0"
-				TargetMachine="1"
-			/>
-			<Tool
-				Name="VCALinkTool"
-			/>
-			<Tool
-				Name="VCManifestTool"
-			/>
-			<Tool
-				Name="VCXDCMakeTool"
-			/>
-			<Tool
-				Name="VCBscMakeTool"
-			/>
-			<Tool
-				Name="VCFxCopTool"
-			/>
-			<Tool
-				Name="VCAppVerifierTool"
-			/>
-			<Tool
-				Name="VCPostBuildEventTool"
-			/>
-		</Configuration>
-		<Configuration
-			Name="Release|Win32"
-			OutputDirectory="$(ConfigurationName)"
-			IntermediateDirectory="$(ConfigurationName)"
-			ConfigurationType="1"
-			CharacterSet="2"
-			WholeProgramOptimization="1"
-			>
-			<Tool
-				Name="VCPreBuildEventTool"
-			/>
-			<Tool
-				Name="VCCustomBuildTool"
-			/>
-			<Tool
-				Name="VCXMLDataGeneratorTool"
-			/>
-			<Tool
-				Name="VCWebServiceProxyGeneratorTool"
-			/>
-			<Tool
-				Name="VCMIDLTool"
-			/>
-			<Tool
-				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories="./../../../src;;$(PLIB_PATH);$(SDL_PATH)\include;$(ALUT_PATH)\include;$(OGG_PATH)\include;$(VORBIS_PATH)\include;$(OPENAL_PATH)\include;$(OPENAL_PATH)\include\AL;"
-				PreprocessorDefinitions="HAVE_OPENAL;HAVE_OGGVORBIS;NDEBUG;_CONSOLE;WIN32;NOMINMAX;VERSION=\&quot;0.4alpha\&quot;;_CRT_SECURE_NO_WARNINGS;_CRT_SECURE_NO_DEPRECATE"
-				RuntimeLibrary="2"
-				UsePrecompiledHeader="0"
-				WarningLevel="3"
-				Detect64BitPortabilityProblems="true"
-				DebugInformationFormat="3"
-			/>
-			<Tool
-				Name="VCManagedResourceCompilerTool"
-			/>
-			<Tool
-				Name="VCResourceCompilerTool"
-			/>
-			<Tool
-				Name="VCPreLinkEventTool"
-			/>
-			<Tool
-				Name="VCLinkerTool"
-				AdditionalDependencies="opengl32.lib user32.lib gdi32.lib winmm.lib advapi32.lib SDL.lib SDLmain.lib OpenAL32.lib alut.lib libogg.lib libvorbis.lib libvorbisfile.lib sg.lib ssg.lib ul.lib ssgAux.lib fnt.lib"
-				OutputFile="./../../../$(ProjectName).exe"
-				LinkIncremental="1"
-				AdditionalLibraryDirectories="$(SDL_PATH)\lib;$(PLIB_PATH)\plib;$(OPENAL_PATH)\libs\Win32;$(ALUT_PATH)\lib;$(OGG_PATH)\win32\VS2003\libogg\Release;$(VORBIS_PATH)\win32\VS2005\libvorbis\Release;$(VORBIS_PATH)\win32\VS2005\libvorbisfile\Release;"
-				IgnoreDefaultLibraryNames="libcmt.lib"
-				GenerateDebugInformation="true"
-				SubSystem="1"
-				OptimizeReferences="2"
-				EnableCOMDATFolding="2"
-				RandomizedBaseAddress="1"
-				DataExecutionPrevention="0"
-				TargetMachine="1"
-			/>
-			<Tool
-				Name="VCALinkTool"
-			/>
-			<Tool
-				Name="VCManifestTool"
-			/>
-			<Tool
-				Name="VCXDCMakeTool"
-			/>
-			<Tool
-				Name="VCBscMakeTool"
-			/>
-			<Tool
-				Name="VCFxCopTool"
-			/>
-			<Tool
-				Name="VCAppVerifierTool"
-			/>
-			<Tool
-				Name="VCPostBuildEventTool"
-			/>
-		</Configuration>
-		<Configuration
-			Name="PLibSoundDebug|Win32"
-			OutputDirectory="$(ConfigurationName)"
-			IntermediateDirectory="$(ConfigurationName)"
-			ConfigurationType="1"
-			CharacterSet="2"
-			>
-			<Tool
-				Name="VCPreBuildEventTool"
-			/>
-			<Tool
-				Name="VCCustomBuildTool"
-			/>
-			<Tool
-				Name="VCXMLDataGeneratorTool"
-			/>
-			<Tool
-				Name="VCWebServiceProxyGeneratorTool"
-			/>
-			<Tool
-				Name="VCMIDLTool"
-			/>
-			<Tool
-				Name="VCCLCompilerTool"
-				Optimization="0"
-				AdditionalIncludeDirectories="./../../../src;;$(PLIB_PATH);$(SDL_PATH)\include;$(ALUT_PATH)\include;$(OGG_PATH)\include;$(VORBIS_PATH)\include;$(OPENAL_PATH)\include;$(OPENAL_PATH)\include\AL;"
-				PreprocessorDefinitions="_DEBUG;_CONSOLE;WIN32;NOMINMAX;VERSION=\&quot;0.4alpha\&quot;;_CRT_SECURE_NO_WARNINGS;_CRT_SECURE_NO_DEPRECATE"
-				MinimalRebuild="true"
-				BasicRuntimeChecks="3"
-				RuntimeLibrary="3"
-				UsePrecompiledHeader="0"
-				WarningLevel="3"
-				Detect64BitPortabilityProblems="true"
-				DebugInformationFormat="4"
-			/>
-			<Tool
-				Name="VCManagedResourceCompilerTool"
-			/>
-			<Tool
-				Name="VCResourceCompilerTool"
-			/>
-			<Tool
-				Name="VCPreLinkEventTool"
-			/>
-			<Tool
-				Name="VCLinkerTool"
-				AdditionalDependencies="opengl32.lib user32.lib gdi32.lib winmm.lib advapi32.lib SDL.lib SDLmain.lib fnt_d.lib net_d.lib psl_d.lib pui_d.lib sg_d.lib sl_d.lib ssgAux_d.lib ul_d.lib js_d.lib puAux_d.lib pw_d.lib ssg_d.lib"
-				OutputFile="./../../../$(ProjectName)_plib_sound_d.exe"
-				LinkIncremental="2"
-				AdditionalLibraryDirectories="$(SDL_PATH)\lib;$(PLIB_PATH)\plib;$(OPENAL_PATH)\libs\Win32;$(ALUT_PATH)\lib;$(OGG_PATH)\win32\VS2003\libogg\Release;$(VORBIS_PATH)\win32\VS2005\libvorbis\Release;$(VORBIS_PATH)\win32\VS2005\libvorbisfile\Release;"
-				IgnoreDefaultLibraryNames="libcmtd.lib"
-				GenerateDebugInformation="true"
-				SubSystem="1"
-				RandomizedBaseAddress="1"
-				DataExecutionPrevention="0"
-				TargetMachine="1"
-			/>
-			<Tool
-				Name="VCALinkTool"
-			/>
-			<Tool
-				Name="VCManifestTool"
-			/>
-			<Tool
-				Name="VCXDCMakeTool"
-			/>
-			<Tool
-				Name="VCBscMakeTool"
-			/>
-			<Tool
-				Name="VCFxCopTool"
-			/>
-			<Tool
-				Name="VCAppVerifierTool"
-			/>
-			<Tool
-				Name="VCPostBuildEventTool"
-			/>
-		</Configuration>
-		<Configuration
-			Name="PLibSoundRelease|Win32"
-			OutputDirectory="$(ConfigurationName)"
-			IntermediateDirectory="$(ConfigurationName)"
-			ConfigurationType="1"
-			CharacterSet="2"
-			WholeProgramOptimization="1"
-			>
-			<Tool
-				Name="VCPreBuildEventTool"
-			/>
-			<Tool
-				Name="VCCustomBuildTool"
-			/>
-			<Tool
-				Name="VCXMLDataGeneratorTool"
-			/>
-			<Tool
-				Name="VCWebServiceProxyGeneratorTool"
-			/>
-			<Tool
-				Name="VCMIDLTool"
-			/>
-			<Tool
-				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories="./../../../src;;$(PLIB_PATH);$(SDL_PATH)\include;$(ALUT_PATH)\include;$(OGG_PATH)\include;$(VORBIS_PATH)\include;$(OPENAL_PATH)\include;$(OPENAL_PATH)\include\AL;"
-				PreprocessorDefinitions="NDEBUG;_CONSOLE;WIN32;NOMINMAX;VERSION=\&quot;0.4alpha\&quot;;_CRT_SECURE_NO_WARNINGS;_CRT_SECURE_NO_DEPRECATE"
-				RuntimeLibrary="2"
-				UsePrecompiledHeader="0"
-				WarningLevel="3"
-				Detect64BitPortabilityProblems="true"
-				DebugInformationFormat="3"
-			/>
-			<Tool
-				Name="VCManagedResourceCompilerTool"
-			/>
-			<Tool
-				Name="VCResourceCompilerTool"
-			/>
-			<Tool
-				Name="VCPreLinkEventTool"
-			/>
-			<Tool
-				Name="VCLinkerTool"
-				AdditionalDependencies="opengl32.lib user32.lib gdi32.lib winmm.lib advapi32.lib SDL.lib SDLmain.lib fnt.lib net.lib psl.lib pui.lib sg.lib sl.lib ssgAux.lib ul.lib js.lib puAux.lib pw.lib ssg.lib"
-				OutputFile="./../../../$(ProjectName)_plib_sound.exe"
-				LinkIncremental="1"
-				AdditionalLibraryDirectories="$(SDL_PATH)\lib;$(PLIB_PATH)\plib;$(OPENAL_PATH)\libs\Win32;$(ALUT_PATH)\lib;$(OGG_PATH)\win32\VS2003\libogg\Release;$(VORBIS_PATH)\win32\VS2005\libvorbis\Release;$(VORBIS_PATH)\win32\VS2005\libvorbisfile\Release;"
-				IgnoreDefaultLibraryNames="libcmt.lib"
-				GenerateDebugInformation="true"
-				SubSystem="1"
-				OptimizeReferences="2"
-				EnableCOMDATFolding="2"
-				RandomizedBaseAddress="1"
-				DataExecutionPrevention="0"
-				TargetMachine="1"
-			/>
-			<Tool
-				Name="VCALinkTool"
-			/>
-			<Tool
-				Name="VCManifestTool"
-			/>
-			<Tool
-				Name="VCXDCMakeTool"
-			/>
-			<Tool
-				Name="VCBscMakeTool"
-			/>
-			<Tool
-				Name="VCFxCopTool"
-			/>
-			<Tool
-				Name="VCAppVerifierTool"
-			/>
-			<Tool
-				Name="VCPostBuildEventTool"
-			/>
-		</Configuration>
-		<Configuration
 			Name="ReplayDebug|Win32"
 			OutputDirectory="$(ConfigurationName)"
 			IntermediateDirectory="$(ConfigurationName)"
@@ -357,14 +41,14 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="./../../../src;;$(PLIB_PATH);$(SDL_PATH)\include;$(ALUT_PATH)\include;$(OGG_PATH)\include;$(VORBIS_PATH)\include;$(OPENAL_PATH)\include;$(OPENAL_PATH)\include\AL;"
-				PreprocessorDefinitions="HAVE_GHOST_REPLAY;HAVE_OPENAL;HAVE_OGGVORBIS;_DEBUG;_CONSOLE;WIN32;NOMINMAX;VERSION=\&quot;0.4alpha\&quot;;_CRT_SECURE_NO_WARNINGS;_CRT_SECURE_NO_DEPRECATE"
+				AdditionalIncludeDirectories="../../../src;../../../src/bullet/src;../../../include;../../../src/enet/include"
+				PreprocessorDefinitions="HAVE_GHOST_REPLAY;HAVE_OPENAL;HAVE_OGGVORBIS;_DEBUG;_CONSOLE;WIN32;NOMINMAX;VERSION=\&quot;0.6.3\&quot;;_CRT_SECURE_NO_WARNINGS;_CRT_SECURE_NO_DEPRECATE;BT_NO_PROFILE;PACKAGE=\&quot;supertuxkart\&quot;;HAVE_GETTEXT;ENABLE_NLS;HAVE_GLUT"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
 				UsePrecompiledHeader="0"
 				WarningLevel="3"
-				Detect64BitPortabilityProblems="true"
+				Detect64BitPortabilityProblems="false"
 				DebugInformationFormat="4"
 			/>
 			<Tool
@@ -381,7 +65,7 @@
 				AdditionalDependencies="opengl32.lib user32.lib gdi32.lib winmm.lib advapi32.lib SDL.lib SDLmain.lib OpenAL32.lib alut.lib libogg.lib libvorbis.lib libvorbisfile.lib sg_d.lib ssg_d.lib ul_d.lib ssgAux_d.lib fnt_d.lib"
 				OutputFile="./../../../$(ProjectName)_replay_d.exe"
 				LinkIncremental="2"
-				AdditionalLibraryDirectories="$(SDL_PATH)\lib;$(PLIB_PATH)\plib;$(OPENAL_PATH)\libs\Win32;$(ALUT_PATH)\lib;$(OGG_PATH)\win32\VS2003\libogg\Release;$(VORBIS_PATH)\win32\VS2005\libvorbis\Release;$(VORBIS_PATH)\win32\VS2005\libvorbisfile\Release;"
+				AdditionalLibraryDirectories="../../../libraries;"
 				IgnoreDefaultLibraryNames="libcmtd.lib"
 				GenerateDebugInformation="true"
 				SubSystem="1"
@@ -436,12 +120,12 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories="./../../../src;;$(PLIB_PATH);$(SDL_PATH)\include;$(ALUT_PATH)\include;$(OGG_PATH)\include;$(VORBIS_PATH)\include;$(OPENAL_PATH)\include;$(OPENAL_PATH)\include\AL;"
-				PreprocessorDefinitions="HAVE_GHOST_REPLAY;HAVE_OPENAL;HAVE_OGGVORBIS;NDEBUG;_CONSOLE;WIN32;NOMINMAX;VERSION=\&quot;0.4alpha\&quot;;_CRT_SECURE_NO_WARNINGS;_CRT_SECURE_NO_DEPRECATE"
+				AdditionalIncludeDirectories="../../../src;../../../src/bullet/src;../../../include;../../../src/enet/include"
+				PreprocessorDefinitions="HAVE_GHOST_REPLAY;HAVE_OPENAL;HAVE_OGGVORBIS;NDEBUG;_CONSOLE;WIN32;NOMINMAX;VERSION=\&quot;0.6.3\&quot;;_CRT_SECURE_NO_WARNINGS;_CRT_SECURE_NO_DEPRECATE;BT_NO_PROFILE;PACKAGE=\&quot;supertuxkart\&quot;;HAVE_GETTEXT;ENABLE_NLS;HAVE_GLUT"
 				RuntimeLibrary="2"
 				UsePrecompiledHeader="0"
 				WarningLevel="3"
-				Detect64BitPortabilityProblems="true"
+				Detect64BitPortabilityProblems="false"
 				DebugInformationFormat="3"
 			/>
 			<Tool
@@ -455,10 +139,10 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="opengl32.lib user32.lib gdi32.lib winmm.lib advapi32.lib SDL.lib SDLmain.lib OpenAL32.lib alut.lib libogg.lib libvorbis.lib libvorbisfile.lib sg.lib ssg.lib ul.lib ssgAux.lib fnt.lib"
+				AdditionalDependencies="opengl32.lib user32.lib gdi32.lib winmm.lib advapi32.lib SDL.lib SDLmain.lib OpenAL32.lib libogg.lib libvorbis.lib libvorbisfile.lib sg.lib ssg.lib ul.lib ssgAux.lib fnt.lib intl.lib ws2_32.lib"
 				OutputFile="./../../../$(ProjectName)_replay.exe"
 				LinkIncremental="1"
-				AdditionalLibraryDirectories="$(SDL_PATH)\lib;$(PLIB_PATH)\plib;$(OPENAL_PATH)\libs\Win32;$(ALUT_PATH)\lib;$(OGG_PATH)\win32\VS2003\libogg\Release;$(VORBIS_PATH)\win32\VS2005\libvorbis\Release;$(VORBIS_PATH)\win32\VS2005\libvorbisfile\Release;"
+				AdditionalLibraryDirectories="../../../libraries;"
 				IgnoreDefaultLibraryNames="libcmt.lib"
 				GenerateDebugInformation="true"
 				SubSystem="1"
