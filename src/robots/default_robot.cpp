@@ -134,6 +134,7 @@ void DefaultRobot::update(float dt)
     m_controls.m_look_back = false;
     m_controls.m_nitro     = false;
     m_track_sector         = m_world->m_kart_info[getWorldKartId()].m_track_sector;
+
     // The client does not do any AI computations.
     if(network_manager->getMode()==NetworkManager::NW_CLIENT) 
     {
