@@ -161,8 +161,8 @@
 "bzzt.rgb"                  N N    Y    0.1    N     N    1.0   Y   N   N   N
 "anchor-icon.rgb"           Y Y    Y    0.1    N     N    1.0   Y   N   N   N
 "parachute.rgb"             Y Y    Y    0.1    N     N    1.0   Y   N   N   N
-"speedback.rgb"             Y Y    Y    0.0    N     N    1.0   Y   N   N   N
-"speedfore.rgb"             Y Y    Y    0.0    N     N    1.0   Y   N   N   N
+"speedback.rgb"             Y Y    Y    0.1    N     N    1.0   Y   N   N   N
+"speedfore.rgb"             Y Y    Y    0.1    N     N    1.0   Y   N   N   N
 "water_light.rgb"           N N    N    0.1    N     N    1.0   N   N   Y   Y
 "waterfall.rgb"             N N    Y    0.0    N     N    1.0   N   N   Y   N
 "palm.rgb"                  N N    N    0.0    Y     N    1.0   N   N   N   N
@@ -225,6 +225,8 @@
 "menu_background_2.rgb"     Y Y    N    1.0    N     N    1.0   N   N   N   Y
 "st_title_screen_3.rgb"     Y Y    N    1.0    N     N    1.0   N   N   N   Y
 "menu_background_3.rgb"     Y Y    N    1.0    N     N    1.0   N   N   N   Y
+"st_title_screen_4.rgb"     Y Y    N    1.0    N     N    1.0   N   N   N   Y
+"menu_background_4.rgb"     Y Y    N    1.0    N     N    1.0   N   N   N   Y
 
 
 # EOF #
